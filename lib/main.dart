@@ -1,6 +1,8 @@
 // Root of the aplication
 
+// import 'package:covid19_app/pages/intro_page.dart';
 import 'package:covid19_app/pages/intro_page.dart';
+import 'package:covid19_app/pages/statistics_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());

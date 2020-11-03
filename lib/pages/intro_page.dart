@@ -1,6 +1,8 @@
 import 'package:covid19_app/core/consts.dart';
 import 'package:flutter/material.dart';
 
+import 'home_page.dart';
+
 class IntroPage extends StatefulWidget {
   @override
   _IntroPageState createState() => _IntroPageState();
@@ -86,8 +88,8 @@ class _IntroPageState extends State<IntroPage> {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                      // builder: (_) => HomePage(),
-                      ),
+                    builder: (_) => HomePage(),
+                  ),
                 );
               },
               child: Container(
