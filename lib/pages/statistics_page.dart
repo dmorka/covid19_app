@@ -31,8 +31,7 @@ class _StatisticPageState extends State<StatisticPage> {
           ),
           Container(
             padding: EdgeInsets.only(top: 25),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
               children: <Widget>[
                 CustomAppBarWidget(),
                 Padding(
