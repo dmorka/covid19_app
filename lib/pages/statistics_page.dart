@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class StatisticPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _StatisticPageState();
+  _StatisticPageState createState() => _StatisticPageState();
 }
 
 class _StatisticPageState extends State<StatisticPage> {
@@ -20,11 +20,12 @@ class _StatisticPageState extends State<StatisticPage> {
           Container(
             height: 275,
             decoration: BoxDecoration(
-                color: AppColors.mainColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
-                )),
+              color: AppColors.mainColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25),
+              ),
+            ),
             padding: EdgeInsets.only(top: 25),
             child: Image.asset("assets/images/virus2.png"),
           ),
@@ -76,17 +77,18 @@ class _StatisticPageState extends State<StatisticPage> {
                         ),
                         children: [
                           TextSpan(
-                              text: "COVID 19",
-                              style: TextStyle(
-                                color: AppColors.mainColor,
-                              ))
+                            text: "COVID 19",
+                            style: TextStyle(
+                              color: AppColors.mainColor,
+                            ),
+                          ),
                         ]),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.all(16),
                   child: Container(
-                    height: 120,
+                    height: 130,
                     child: Center(child: Image.asset("assets/images/map.png")),
                   ),
                 ),
@@ -145,7 +147,7 @@ class _StatisticPageState extends State<StatisticPage> {
               )
             ],
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Text(
             value,
             style: TextStyle(
@@ -171,7 +173,7 @@ class _StatisticPageState extends State<StatisticPage> {
             offset: Offset(1, 1),
             spreadRadius: 1,
             blurRadius: 1,
-          )
+          ),
         ],
       ),
       margin: EdgeInsets.symmetric(horizontal: 16),
@@ -179,7 +181,7 @@ class _StatisticPageState extends State<StatisticPage> {
       child: Center(
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Container(
               width: 150,
               height: 150,
@@ -193,7 +195,7 @@ class _StatisticPageState extends State<StatisticPage> {
                     Colors.blueAccent, "Confirmed", "23,29,539"),
                 _buildStatisticItem(
                     Colors.yellowAccent, "Recovered", "5,92,229"),
-                _buildStatisticItem(Colors.redAccent, "Deaths", "1,60,171"),
+                _buildStatisticItem(Colors.redAccent, "Deaths", "1,60,717"),
               ],
             ),
           ],
@@ -202,9 +204,9 @@ class _StatisticPageState extends State<StatisticPage> {
     );
   }
 
-  Row _buildStatisticItem(Color color, String title, String value) {
+  Widget _buildStatisticItem(Color color, String title, String value) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         Icon(
           FlutterIcons.label,
@@ -222,9 +224,9 @@ class _StatisticPageState extends State<StatisticPage> {
               ),
             ),
             SizedBox(height: 5),
-            Text(value)
+            Text(value),
           ],
-        )
+        ),
       ],
     );
   }

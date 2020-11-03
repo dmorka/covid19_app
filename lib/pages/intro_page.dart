@@ -86,8 +86,8 @@ class _IntroPageState extends State<IntroPage> {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => HomePage(),
-                  ),
+                      // builder: (_) => HomePage(),
+                      ),
                 );
               },
               child: Container(
