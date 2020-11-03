@@ -82,30 +82,39 @@ class _IntroPageState extends State<IntroPage> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 25),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      // builder: (_) => HomePage(),
+                      ),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(1, 1),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                    )
+                  ],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(1, 1),
-                    spreadRadius: 1,
-                    blurRadius: 3,
-                  )
-                ],
-              ),
-              width: MediaQuery.of(context).size.width * .85,
-              height: 60,
-              child: Center(
-                child: Text(
-                  "GET STARTED",
-                  style: TextStyle(
-                    color: AppColors.mainColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                width: MediaQuery.of(context).size.width * .85,
+                height: 60,
+                child: Center(
+                  child: Text(
+                    "GET STARTED",
+                    style: TextStyle(
+                      color: AppColors.mainColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
