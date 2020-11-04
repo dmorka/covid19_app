@@ -26,8 +26,11 @@ class _StatisticPageState extends State<StatisticPage> {
                 bottomRight: Radius.circular(25),
               ),
             ),
-            padding: EdgeInsets.only(top: 25),
-            child: Image.asset("assets/images/virus2.png"),
+            padding: EdgeInsets.only(top: 25, bottom: 30),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Image.asset("assets/images/virus2.png"),
+            ),
           ),
           Container(
             child: ListView(

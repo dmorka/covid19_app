@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:covid19_app/core/consts.dart';
-import 'package:covid19_app/core/flutter_icons.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
 import 'package:covid19_app/widgets/custom_appbar_widget.dart';
 import 'package:flutter/material.dart';
@@ -232,47 +231,51 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSymptomItem(String path, String text) {
-    return Column(
-      children: <Widget>[
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-            gradient: LinearGradient(
-              colors: [
-                Colors.purple.withOpacity(.01),
-                Colors.white,
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
+              gradient: LinearGradient(
+                colors: [
+                  Colors.purple.withOpacity(.01),
+                  Colors.white,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              border: Border.all(color: Colors.white),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  offset: Offset(1, 1),
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                )
               ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
             ),
-            border: Border.all(color: Colors.white),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                offset: Offset(1, 1),
-                spreadRadius: 1,
-                blurRadius: 3,
-              )
-            ],
+            padding: EdgeInsets.only(top: 15),
+            child: Image.asset(path),
           ),
-          padding: EdgeInsets.only(top: 15),
-          child: Image.asset(path),
-          margin: EdgeInsets.only(right: 20),
-        ),
-        SizedBox(height: 7),
-        Text(
-          text,
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
+          SizedBox(height: 7),
+          Container(
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
+      margin: EdgeInsets.only(right: 20),
     );
   }
 
