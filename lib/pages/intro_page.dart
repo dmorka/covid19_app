@@ -60,7 +60,7 @@ class _IntroPageState extends State<IntroPage> {
 
   Widget _buildFooter(BuildContext context) {
     return Positioned(
-      bottom: 50,
+      bottom: 70,
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -84,43 +84,54 @@ class _IntroPageState extends State<IntroPage> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 25),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => HomePage(),
-                  ),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      offset: Offset(1, 1),
-                      spreadRadius: 1,
-                      blurRadius: 3,
-                    )
-                  ],
-                ),
-                width: MediaQuery.of(context).size.width * .85,
-                height: 60,
-                child: Center(
-                  child: Text(
-                    "GET STARTED",
-                    style: TextStyle(
-                      color: AppColors.mainColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: RaisedButton(
+                      color: Colors.blue,
+                      onPressed: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           LoginPage()),
+                        // );
+                      },
+                      child:
+                          Text("LOGIN", style: TextStyle(color: Colors.white)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
+                        ),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 16),
                     ),
                   ),
-                ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: RaisedButton(
+                      color: Colors.red,
+                      onPressed: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => SignupPage()),
+                        // );
+                      },
+                      child:
+                          Text("SIGNUP", style: TextStyle(color: Colors.white)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
+                        ),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                    ),
+                  ),
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),

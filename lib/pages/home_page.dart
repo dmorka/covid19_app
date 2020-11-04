@@ -310,7 +310,8 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            "This application was created to help people suffering from coronavirus, you can add your own ad for any help you need.",
+            "This application was created to help people suffering from "
+            "coronavirus, you can add your own ad for any help you may need.",
             style: TextStyle(
               color: Colors.white,
               height: 1.3,
