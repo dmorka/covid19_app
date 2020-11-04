@@ -1,4 +1,6 @@
+import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
+import 'package:covid19_app/pages/user_personal_info_edit_page.dart';
 import 'package:flutter/material.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -61,7 +63,23 @@ class _UserProfileState extends State<UserProfilePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 50),
+        Container(
+          alignment: Alignment.centerRight,
+          margin: const EdgeInsets.only(top: 10, right: 10, bottom: 15),
+          child: RoundedButton(
+            text: "EDIT",
+            color: Colors.white30,
+            size: const Size(70, 30),
+            padding: null,
+            press: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPersonalInfoEditPage()),
+              );
+            },
+          ),
+        ),
         Row(
           children: [
             Container(
@@ -83,7 +101,7 @@ class _UserProfileState extends State<UserProfilePage> {
                 Container(
                   width: MediaQuery.of(context).size.width * .5,
                   child: Text(
-                    "Dawid Morka",
+                    "Jan Kowalski",
                     style: TextStyle(
                       fontSize: 32,
                       color: Colors.white,
@@ -95,7 +113,7 @@ class _UserProfileState extends State<UserProfilePage> {
                 _buildUserPersonalDataItem(Icons.phone, "023 622 523"),
                 SizedBox(height: 5),
                 _buildUserPersonalDataItem(
-                    Icons.email_outlined, "dmorka@example.com"),
+                    Icons.email_outlined, "jkowalski@example.com"),
                 SizedBox(height: 5),
                 _buildUserPersonalDataItem(Icons.location_pin,
                     "ul. Kościelna 67 m.106, 00-001 Warszawa"),
