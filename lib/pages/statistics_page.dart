@@ -1,7 +1,7 @@
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/core/flutter_icons.dart';
-import 'package:covid19_app/widgets/chart_widget.dart';
-import 'package:covid19_app/widgets/custom_appbar_widget.dart';
+import 'package:covid19_app/components/chart_widget.dart';
+import 'package:covid19_app/components/custom_appbar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +14,13 @@ class _StatisticPageState extends State<StatisticPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: backgroundColor,
       body: Stack(
         children: <Widget>[
           Container(
-            height: 275,
+            // height: 275,
             decoration: BoxDecoration(
-              color: AppColors.mainColor,
+              color: mainColor,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25),
@@ -80,7 +80,7 @@ class _StatisticPageState extends State<StatisticPage> {
                           TextSpan(
                             text: "COVID 19",
                             style: TextStyle(
-                              color: AppColors.mainColor,
+                              color: mainColor,
                             ),
                           ),
                         ]),

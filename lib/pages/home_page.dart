@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
-import 'package:covid19_app/widgets/custom_appbar_widget.dart';
+import 'package:covid19_app/components/custom_appbar_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,14 +15,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // resizeToAvoidBottomPadding: false,
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                color: AppColors.mainColor,
+                color: mainColor,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(25),
                   bottomRight: Radius.circular(25),
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                     TextSpan(
                       text: "COVID 19",
                       style: TextStyle(
-                        color: AppColors.mainColor,
+                        color: mainColor,
                       ),
                     ),
                   ],
@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                       text: TextSpan(
                         text: "CASES\n",
                         style: TextStyle(
-                          color: AppColors.mainColor,
+                          color: mainColor,
                           fontWeight: FontWeight.bold,
                           height: 1.3,
                         ),
@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                 text: TextSpan(
                   text: "$text1\n",
                   style: TextStyle(
-                    color: AppColors.mainColor,
+                    color: mainColor,
                     fontWeight: FontWeight.bold,
                   ),
                   children: [
@@ -337,21 +337,6 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
-              // SizedBox(width: 20),
-              // Expanded(
-              //   child: RaisedButton(
-              //     color: Colors.red,
-              //     onPressed: () {},
-              //     child:
-              //         Text("EMERGENCY", style: TextStyle(color: Colors.white)),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.all(
-              //         Radius.circular(50),
-              //       ),
-              //     ),
-              //     padding: EdgeInsets.symmetric(vertical: 16),
-              //   ),
-              // ),
             ],
           ),
         ),

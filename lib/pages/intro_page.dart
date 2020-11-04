@@ -2,6 +2,7 @@ import 'package:covid19_app/core/consts.dart';
 import 'package:flutter/material.dart';
 
 import 'home_page.dart';
+import 'login_page.dart';
 
 class IntroPage extends StatefulWidget {
   @override
@@ -18,8 +19,8 @@ class _IntroPageState extends State<IntroPage> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              AppColors.mainColor,
-              AppColors.mainColor.withOpacity(.5),
+              mainColor,
+              mainColor.withOpacity(.5),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -89,15 +90,13 @@ class _IntroPageState extends State<IntroPage> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: RaisedButton(
+                    child: FlatButton(
                       color: Colors.blue,
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           LoginPage()),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
                       },
                       child:
                           Text("LOGIN", style: TextStyle(color: Colors.white)),
@@ -111,13 +110,13 @@ class _IntroPageState extends State<IntroPage> {
                   ),
                   SizedBox(width: 20),
                   Expanded(
-                    child: RaisedButton(
+                    child: FlatButton(
                       color: Colors.red,
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => SignupPage()),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
                       },
                       child:
                           Text("SIGNUP", style: TextStyle(color: Colors.white)),
