@@ -1,3 +1,4 @@
+import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:flutter/material.dart';
 
@@ -61,7 +62,7 @@ class _IntroPageState extends State<IntroPage> {
 
   Widget _buildFooter(BuildContext context) {
     return Positioned(
-      bottom: 70,
+      bottom: 35,
       child: Container(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -84,52 +85,26 @@ class _IntroPageState extends State<IntroPage> {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 25),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: FlatButton(
-                      color: Colors.blue,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        );
-                      },
-                      child:
-                          Text("LOGIN", style: TextStyle(color: Colors.white)),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
-                        ),
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: FlatButton(
-                      color: Colors.red,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                        );
-                      },
-                      child:
-                          Text("SIGNUP", style: TextStyle(color: Colors.white)),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
-                        ),
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                    ),
-                  ),
-                ],
-              ),
+            SizedBox(height: 20),
+            RoundedButton(
+              text: "LOGIN",
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+            ),
+            SizedBox(height: 15),
+            RoundedButton(
+              text: "SIGNUP",
+              color: Colors.red,
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
             ),
           ],
         ),

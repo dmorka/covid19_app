@@ -18,12 +18,14 @@ class RoundedInputField extends StatelessWidget {
     return TextFieldContainer(
       child: TextField(
         onChanged: onChanged,
+        style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           icon: Icon(
             icon,
             color: backgroundColor,
           ),
           hintText: hintText,
+          hintStyle: TextStyle(color: Colors.white),
           border: InputBorder.none,
         ),
       ),

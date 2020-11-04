@@ -1,3 +1,4 @@
+import 'package:covid19_app/components/already_have_an_account_check.dart';
 import 'package:covid19_app/components/background.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/components/rounded_input_field.dart';
@@ -11,31 +12,39 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       body: Background(
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 250),
-              child: Text(
-                "LOGIN",
-                style: TextStyle(fontWeight: FontWeight.bold),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: size.height * 0.05),
+              Container(
+                child: Text(
+                  "LOGIN",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            SizedBox(height: 50),
-            RoundedInputField(
-              hintText: "Your Email",
-              onChanged: (value) {},
-            ),
-            RoundedPasswordField(
-              onChanged: (value) {},
-            ),
-            RoundedButton(
-              text: "LOGIN",
-              press: () {},
-            ),
-          ],
+              SizedBox(height: size.height * 0.35),
+              RoundedInputField(
+                hintText: "Your Email",
+                onChanged: (value) {},
+              ),
+              SizedBox(height: size.height * 0.02),
+              RoundedPasswordField(
+                onChanged: (value) {},
+              ),
+              SizedBox(height: size.height * 0.04),
+              RoundedButton(
+                text: "LOGIN",
+                press: () {},
+              ),
+              SizedBox(height: size.height * 0.04),
+              AlreadyHaveAnAccountCheck(
+                press: () {},
+              ),
+            ],
+          ),
         ),
       ),
     );
