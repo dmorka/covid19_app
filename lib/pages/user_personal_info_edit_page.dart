@@ -114,13 +114,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                     RoundedButton(
                       text: "SAVE",
                       color: mainColor,
-                      press: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UserPersonalInfoEditPage()),
-                        );
-                      },
+                      press: () {},
                     ),
                   ],
                 ),
