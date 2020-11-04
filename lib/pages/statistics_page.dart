@@ -30,7 +30,6 @@ class _StatisticPageState extends State<StatisticPage> {
             child: Image.asset("assets/images/virus2.png"),
           ),
           Container(
-            padding: EdgeInsets.only(top: 25),
             child: ListView(
               children: <Widget>[
                 CustomAppBarWidget(),

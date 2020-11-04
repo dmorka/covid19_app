@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            SizedBox(height: 25),
+            SizedBox(height: 15),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: RichText(
@@ -351,32 +351,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildAppBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        IconButton(
-          icon: Icon(FlutterIcons.menu, color: Colors.white),
-          onPressed: null,
-        ),
-        Container(
-          width: 50,
-          height: 50,
-          margin: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
-            borderRadius: BorderRadius.all(
-              Radius.circular(100),
-            ),
-            image: DecorationImage(
-              image: AssetImage("assets/images/profile.jpg"),
-            ),
-          ),
-        )
       ],
     );
   }
