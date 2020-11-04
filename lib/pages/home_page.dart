@@ -299,7 +299,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            "Coronavirus Relief Fund",
+            "Mutual assistance system",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -310,7 +310,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            "this fund will help to stop the virus's spread and give\ncomunitesion the font lines.",
+            "This application was created to help people suffering from coronavirus, you can add your own ad for any help you need.",
             style: TextStyle(
               color: Colors.white,
               height: 1.3,
@@ -326,8 +326,8 @@ class _HomePageState extends State<HomePage> {
                 child: RaisedButton(
                   color: Colors.blue,
                   onPressed: () {},
-                  child:
-                      Text("DONATE NOW", style: TextStyle(color: Colors.white)),
+                  child: Text("ADD AN ANNOUCMENT",
+                      style: TextStyle(color: Colors.white)),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(50),
@@ -336,21 +336,21 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
-              SizedBox(width: 20),
-              Expanded(
-                child: RaisedButton(
-                  color: Colors.red,
-                  onPressed: () {},
-                  child:
-                      Text("EMERGENCY", style: TextStyle(color: Colors.white)),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(50),
-                    ),
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                ),
-              ),
+              // SizedBox(width: 20),
+              // Expanded(
+              //   child: RaisedButton(
+              //     color: Colors.red,
+              //     onPressed: () {},
+              //     child:
+              //         Text("EMERGENCY", style: TextStyle(color: Colors.white)),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.all(
+              //         Radius.circular(50),
+              //       ),
+              //     ),
+              //     padding: EdgeInsets.symmetric(vertical: 16),
+              //   ),
+              // ),
             ],
           ),
         ),

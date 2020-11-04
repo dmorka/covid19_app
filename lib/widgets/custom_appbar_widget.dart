@@ -19,17 +19,14 @@ class CustomAppBarWidget extends StatelessWidget {
           height: 50,
           margin: EdgeInsets.all(16),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
-            borderRadius: BorderRadius.all(
-              Radius.circular(100),
-            ),
-            image: DecorationImage(
-              image: AssetImage("assets/images/profile.jpg")
-            )
-          ),
+              border: Border.all(color: Colors.white),
+              borderRadius: BorderRadius.all(
+                Radius.circular(100),
+              ),
+              image: DecorationImage(
+                  image: AssetImage("assets/images/profile.jpg"))),
         )
       ],
     );
   }
-
 }
