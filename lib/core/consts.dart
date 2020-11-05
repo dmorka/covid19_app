@@ -6,26 +6,26 @@ const mainColor = Color(0XFF8d12fe);
 const ANNOUNCEMENT_DATA = [
   {
     "name":"Anna",
-    "description":"I need help with...",
+    "description":"Potrzebuję pomocy w...",
     "when":"05-11-2020 11:20",
-    "where":"New York, Queens"
+    "where":"Warszawa, Śródmieście"
   },
   {
-    "name":"George",
-    "description":"I need help with...",
+    "name":"Paweł",
+    "description":"Potrzebuję pomocy z...",
     "when":"07-11-2020 15:30",
-    "where":"New York, Manhattan"
+    "where":"Warszawa, Śródmieście"
   },
   {
-    "name":"Donald",
-    "description":"Can you help me with...",
+    "name":"Patryk",
+    "description":"Czy ktoś może mi pomóc w...",
     "when":"09-11-2020 09:10",
-    "where":"New York, Manhattan"
+    "where":"Warszawa, Ursynów"
   },
   {
-    "name":"Peter",
-    "description":"I am in need of...",
+    "name":"Piotr",
+    "description":"Bardzo potrzebuję...",
     "when":"ASAP",
-    "where":"New York, Bronx"
+    "where":"Warszawa, Żoliborz"
   }
 ];
