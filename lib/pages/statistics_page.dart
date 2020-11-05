@@ -1,3 +1,4 @@
+import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/core/flutter_icons.dart';
 import 'package:covid19_app/components/chart_widget.dart';
@@ -15,6 +16,7 @@ class _StatisticPageState extends State<StatisticPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      drawer: MenuDrawer(),
       body: Stack(
         children: <Widget>[
           Container(

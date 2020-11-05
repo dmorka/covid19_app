@@ -1,6 +1,7 @@
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/components/rounded_input_field.dart';
 import 'package:covid19_app/core/consts.dart';
+import 'package:covid19_app/pages/user_profile_page.dart';
 import 'package:flutter/material.dart';
 
 class UserPersonalInfoEditPage extends StatefulWidget {
@@ -114,7 +115,16 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                     RoundedButton(
                       text: "SAVE",
                       color: mainColor,
-                      press: () {},
+                      press: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return UserProfilePage();
+                            },
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),

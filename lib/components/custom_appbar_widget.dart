@@ -1,5 +1,6 @@
 import 'package:covid19_app/core/flutter_icons.dart';
 import 'package:covid19_app/pages/user_profile_page.dart';
+import 'package:covid19_app/components/menu.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
@@ -13,7 +14,9 @@ class CustomAppBarWidget extends StatelessWidget {
             FlutterIcons.menu,
             color: Colors.white,
           ),
-          onPressed: null,
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
         ),
         GestureDetector(
           onTap: () {

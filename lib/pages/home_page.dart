@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       // resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
+      drawer: MenuDrawer(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
