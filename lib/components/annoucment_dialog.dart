@@ -14,7 +14,7 @@ class AnnoucmentDialog extends StatelessWidget {
       backgroundColor: backgroundColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       child: Container(
-        height: 250,
+        height: 330,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
@@ -34,6 +34,11 @@ class AnnoucmentDialog extends StatelessWidget {
               RoundedInputField(
                 hintText: "Due date",
                 icon: Icons.date_range_rounded,
+              ),
+              SizedBox(height: 25),
+              RoundedButton(
+                text: "ADD",
+                press: () {},
               ),
             ],
           ),
