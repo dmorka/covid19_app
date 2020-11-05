@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:covid19_app/components/annoucment_dialog.dart';
 import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
@@ -329,27 +330,25 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               Expanded(
                   child: RoundedButton(
-                    text: "ADD AN ANNOUNCEMENT",
-                    color: Colors.blue,
-                    press: () {},
-                    padding: EdgeInsets.all(20),
-                    // press: () {
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(builder: (context) => AnnoucmentPage()),
-                    //   );
-                    // },
-                  )
-              ),
+                text: "ADD AN ANNOUNCEMENT",
+                color: Colors.blue,
+                press: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AnnoucmentDialog();
+                      });
+                },
+                padding: EdgeInsets.all(20),
+              )),
               SizedBox(width: 16),
               Expanded(
                 child: RoundedButton(
                   text: "BROWSE ANNOUNCEMENTS",
                   color: Colors.blue,
                   press: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => AnnouncementsPage())
-                    );
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AnnouncementsPage()));
                   },
                   padding: EdgeInsets.all(20),
                 ),
