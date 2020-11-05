@@ -4,6 +4,7 @@ import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
+import 'package:covid19_app/pages/announcements_page.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -322,19 +323,40 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         SizedBox(height: 25),
-        Center(
-          child: RoundedButton(
-            text: "ADD AN ANNOUCMENT",
-            color: Colors.blue,
-            press: () {},
-            // press: () {
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => AnnoucmentPage()),
-            //   );
-            // },
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                  child: RoundedButton(
+                    text: "ADD AN ANNOUNCEMENT",
+                    color: Colors.blue,
+                    press: () {},
+                    padding: EdgeInsets.all(20),
+                    // press: () {
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(builder: (context) => AnnoucmentPage()),
+                    //   );
+                    // },
+                  )
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: RoundedButton(
+                  text: "BROWSE ANNOUNCEMENTS",
+                  color: Colors.blue,
+                  press: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => AnnouncementsPage())
+                    );
+                  },
+                  padding: EdgeInsets.all(20),
+                ),
+              )
+            ],
           ),
-        ),
+        )
       ],
     );
   }
