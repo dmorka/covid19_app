@@ -33,49 +33,36 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
       drawer: MenuDrawer(),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: 275,
-            decoration: BoxDecoration(
-              color: mainColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: mainColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                ),
+              ),
+              padding: EdgeInsets.only(top: 25),
+              child: Stack(
+                children: <Widget>[
+                  Image.asset("assets/images/virus2.png"),
+                  _buildHeader(),
+                ],
               ),
             ),
-            padding: EdgeInsets.only(top: 25, bottom: 30),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Image.asset("assets/images/virus2.png"),
-            ),
-          ),
-          Container(
-            child: ListView(
-              children: <Widget>[
-                CustomAppBarWidget(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    "ANNOUNCEMENTS",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 25),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: _buildAnnouncements(),
-                )
-              ],
-            ),
-          )
-        ],
+            // SizedBox(height: 10),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: _buildAnnouncements(),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -89,5 +76,25 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
         itemBuilder: (context, index) {
           return itemsData[index];
         });
+  }
+
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        CustomAppBarWidget(),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            "ANNOUNCEMENTS",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 32,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

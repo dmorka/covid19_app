@@ -15,90 +15,51 @@ class _StatisticPageState extends State<StatisticPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
       drawer: MenuDrawer(),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            // height: 275,
-            decoration: BoxDecoration(
-              color: mainColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: mainColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                ),
+              ),
+              padding: EdgeInsets.only(top: 25, bottom: 30),
+              child: Stack(
+                children: <Widget>[
+                  Image.asset("assets/images/virus2.png"),
+                  _buildHeader(),
+                ],
               ),
             ),
-            padding: EdgeInsets.only(top: 25, bottom: 30),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Image.asset("assets/images/virus2.png"),
+            SizedBox(height: 10),
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: _buildGender(FlutterIcons.male,
+                        Colors.orangeAccent, "MALE", "59.5%"),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: _buildGender(FlutterIcons.female,
+                        Colors.pinkAccent, "FEMALE", "40.5%"),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Container(
-            child: ListView(
-              children: <Widget>[
-                CustomAppBarWidget(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    "STATISTICS",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 25),
-                _buildStatistic(),
-                Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: _buildGender(FlutterIcons.male,
-                            Colors.orangeAccent, "MALE", "59.5%"),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: _buildGender(FlutterIcons.female,
-                            Colors.pinkAccent, "FEMALE", "40.5%"),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 16),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: RichText(
-                    text: TextSpan(
-                        text: "Global Cases of ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                          color: Colors.black87,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "COVID 19",
-                            style: TextStyle(
-                              color: mainColor,
-                            ),
-                          ),
-                        ]),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Container(
-                    height: 130,
-                    child: Center(child: Image.asset("assets/images/map.png")),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
+            Padding(padding: EdgeInsets.only(top: 25)),
+            _buildOverview(),
+            Padding(padding: EdgeInsets.only(top: 10)),
+          ],
+        ),
       ),
     );
   }
@@ -230,6 +191,61 @@ class _StatisticPageState extends State<StatisticPage> {
             Text(value),
           ],
         ),
+      ],
+    );
+  }
+
+  Widget _buildOverview() {
+    return  Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          RichText(
+            text: TextSpan(
+                text: "Cases of ",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  color: Colors.black87,
+                ),
+                children: [
+                  TextSpan(
+                    text: "COVID 19",
+                    style: TextStyle(
+                      color: mainColor,
+                    ),
+                  ),
+                ]),
+          ),
+          Padding(padding: EdgeInsets.only(top: 15)),
+          Container(
+            height: 320,
+            child: Center(child: Image.asset("assets/images/poland_map.png")),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        CustomAppBarWidget(),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            "STATISTICS",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 32,
+            ),
+          ),
+        ),
+        SizedBox(height: 25),
+        _buildStatistic(),
       ],
     );
   }

@@ -12,49 +12,52 @@ class _UserProfileState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomPadding: false,
       backgroundColor: backgroundColor,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: mainColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25),
-              ),
-            ),
-            padding: EdgeInsets.only(top: 25, bottom: 30),
-            child: Stack(
-              children: <Widget>[
-                Image.asset("assets/images/virus2.png"),
-                _buildHeader(),
-              ],
-            ),
-          ),
-          SizedBox(height: 15),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: RichText(
-              text: TextSpan(
-                text: "List of ",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  color: Colors.black87,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: mainColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
                 ),
-                children: [
-                  TextSpan(
-                    text: "Active Orders:",
-                    style: TextStyle(
-                      color: mainColor,
-                    ),
-                  ),
+              ),
+              padding: EdgeInsets.only(top: 25, bottom: 30),
+              child: Stack(
+                children: <Widget>[
+                  Image.asset("assets/images/virus2.png"),
+                  _buildHeader(),
                 ],
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 15),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: RichText(
+                text: TextSpan(
+                  text: "List of ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Active Orders:",
+                      style: TextStyle(
+                        color: mainColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

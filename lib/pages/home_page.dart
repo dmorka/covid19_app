@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset("assets/images/map.png"),
+                    Image.asset("assets/images/poland_map.png"),
                     SizedBox(width: 25),
                     RichText(
                       text: TextSpan(
@@ -148,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         children: [
                           TextSpan(
-                            text: "Overview Worldwide\n",
+                            text: "Overview Poland\n",
                             style: TextStyle(
                               color: Colors.black87,
                               fontWeight: FontWeight.normal,
