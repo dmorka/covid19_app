@@ -1,3 +1,4 @@
+import 'package:covid19_app/components/poland_map.dart';
 import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/core/flutter_icons.dart';
@@ -44,13 +45,13 @@ class _StatisticPageState extends State<StatisticPage> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: _buildGender(FlutterIcons.male,
-                        Colors.orangeAccent, "MALE", "59.5%"),
+                    child: _buildGender(FlutterIcons.male, Colors.orangeAccent,
+                        "MALE", "59.5%"),
                   ),
                   SizedBox(width: 16),
                   Expanded(
-                    child: _buildGender(FlutterIcons.female,
-                        Colors.pinkAccent, "FEMALE", "40.5%"),
+                    child: _buildGender(FlutterIcons.female, Colors.pinkAccent,
+                        "FEMALE", "40.5%"),
                   ),
                 ],
               ),
@@ -196,7 +197,7 @@ class _StatisticPageState extends State<StatisticPage> {
   }
 
   Widget _buildOverview() {
-    return  Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,10 +220,7 @@ class _StatisticPageState extends State<StatisticPage> {
                 ]),
           ),
           Padding(padding: EdgeInsets.only(top: 15)),
-          Container(
-            height: 320,
-            child: Center(child: Image.asset("assets/images/poland_map.png")),
-          ),
+          PolandMap(),
         ],
       ),
     );
