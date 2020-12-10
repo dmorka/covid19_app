@@ -14,12 +14,12 @@ class PolandMap extends StatefulWidget {
 
 class _PolandMapState extends State<PolandMap> {
   _PolandMapState();
-  Future<List<Model>> futureModel;
+  Future<List<ProvinceStatisticsModel>> futureModel;
 
   @override
   void initState() {
     super.initState();
-    futureModel = fetchModels();
+    futureModel = fetchProvinceStatistics();
   }
 
   @override
@@ -27,8 +27,8 @@ class _PolandMapState extends State<PolandMap> {
     return Container(
       height: 520,
       child: Center(
-        child: FutureBuilder<List<Model>>(
-            future: fetchModels(),
+        child: FutureBuilder<List<ProvinceStatisticsModel>>(
+            future: fetchProvinceStatistics(),
             builder: (context, snapshot) {
               if (snapshot.hasError) print(snapshot.error);
 
@@ -106,29 +106,30 @@ class _PolandMapState extends State<PolandMap> {
   }
 }
 
-Future<List<Model>> fetchModels() async {
+Future<List<ProvinceStatisticsModel>> fetchProvinceStatistics() async {
   final response = await http.get(
       'https://api.apify.com/v2/key-value-stores/3Po6TV7wTht4vIEid/records/LATEST?disableRedirect=true');
 
   if (response.statusCode == 200) {
     var responseJson = json.decode(response.body);
     return (responseJson['infectedByRegion'] as List)
-        .map((p) => Model.fromJson(p))
+        .map((p) => ProvinceStatisticsModel.fromJson(p))
         .toList();
   } else {
-    throw Exception('Failed to load model');
+    throw Exception('Failed to load data');
   }
 }
 
-class Model {
+class ProvinceStatisticsModel {
   final String stateName;
   final int infectedCount;
   final int deceasedCount;
 
-  Model({this.stateName, this.infectedCount, this.deceasedCount});
+  ProvinceStatisticsModel(
+      {this.stateName, this.infectedCount, this.deceasedCount});
 
-  factory Model.fromJson(Map<String, dynamic> json) {
-    return Model(
+  factory ProvinceStatisticsModel.fromJson(Map<String, dynamic> json) {
+    return ProvinceStatisticsModel(
       stateName: json['region'] as String,
       infectedCount: json['infectedCount'] as int,
       deceasedCount: json['deceasedCount'] as int,

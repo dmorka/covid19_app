@@ -16,21 +16,30 @@ class DonutPieChart extends StatelessWidget {
     );
   }
 
+  factory DonutPieChart.createChart(data) {
+    return new DonutPieChart(
+      _createChart(data),
+      // Disable animations for image tests.
+      animate: false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new charts.PieChart(seriesList,
         animate: animate,
         // Configure the width of the pie slices to 60px. The remaining space in
         // the chart will be left as a hole in the center.
-        defaultRenderer: new charts.ArcRendererConfig(arcWidth: 20));
+        defaultRenderer:
+            new charts.ArcRendererConfig(arcWidth: 25, strokeWidthPx: 1));
   }
 
   /// Create one series with sample hard coded data.
   static List<charts.Series<Statistics, int>> _createSampleData() {
     final data = [
-      new Statistics(0, 25, Colors.redAccent),
-      new Statistics(1, 75, Colors.yellowAccent),
-      new Statistics(2, 150, Colors.blueAccent),
+      new Statistics(0, 21630, Colors.redAccent),
+      new Statistics(1, 792118, Colors.yellowAccent),
+      new Statistics(2, 1102096, Colors.blueAccent),
     ];
 
     return [
@@ -43,6 +52,20 @@ class DonutPieChart extends StatelessWidget {
         data: data,
       )
     ];
+  }
+
+  static List<charts.Series<Statistics, int>> _createChart(data) {
+    if (data is List<Statistics>)
+      return [
+        new charts.Series<Statistics, int>(
+          id: 'CovidStatistics',
+          domainFn: (Statistics statistics, _) => statistics.id,
+          measureFn: (Statistics statistics, _) => statistics.value,
+          colorFn: (Statistics statistics, _) =>
+              charts.ColorUtil.fromDartColor(statistics.color),
+          data: data,
+        )
+      ];
   }
 }
 
