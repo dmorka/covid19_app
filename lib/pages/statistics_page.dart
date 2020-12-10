@@ -40,88 +40,11 @@ class _StatisticPageState extends State<StatisticPage> {
               ),
             ),
             SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: _buildGender(FlutterIcons.male, Colors.orangeAccent,
-                        "MALE", "59.5%"),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: _buildGender(FlutterIcons.female, Colors.pinkAccent,
-                        "FEMALE", "40.5%"),
-                  ),
-                ],
-              ),
-            ),
             Padding(padding: EdgeInsets.only(top: 25)),
             _buildOverview(),
             Padding(padding: EdgeInsets.only(top: 10)),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildGender(IconData icon, Color color, String title, String value) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        border: Border.all(color: Colors.white),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            offset: Offset(1, 1),
-            spreadRadius: 1,
-            blurRadius: 1,
-          )
-        ],
-      ),
-      padding: EdgeInsets.all(15),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Icon(
-                icon,
-                size: 50,
-                color: color,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                      fontSize: 24,
-                    ),
-                  ),
-                  Text(
-                    "Confirmed\nCase",
-                    style: TextStyle(
-                      color: Colors.black38,
-                      height: 1.5,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-          SizedBox(height: 10),
-          Text(
-            value,
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.bold,
-              fontSize: 32,
-            ),
-          )
-        ],
       ),
     );
   }
