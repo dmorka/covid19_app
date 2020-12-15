@@ -1,9 +1,7 @@
-import 'package:covid19_app/core/consts.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:covid19_app/models/labs.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/material.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LabsListItem extends StatelessWidget {
 
@@ -35,52 +33,50 @@ class LabsListItem extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    content.addressCity,
+                    content.fullAddress,
                     style: const TextStyle(
                       color: Colors.black87,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
                   SizedBox(height: 35),
-                  RichText(
-                    text: TextSpan(
-                      text: "\u{1F4DE}" + content.phoneNum,
-                      style: const TextStyle(
-                        color: mainColor,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          launch("tel://" + content.phoneNum.toString());
-                        }
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                            child: IconButton(
+                              icon: Icon(Icons.phone),
+                              color: Colors.blue,
+                              onPressed: () {
+                                launch("tel://" + content.phoneNum.toString());
+                              },
+                              padding: EdgeInsets.all(10),
+                            )),
+                        SizedBox(width: 4),
+                        Expanded(
+                          child: IconButton(
+                            icon: Icon(Icons.language),
+                            color: Colors.blue,
+                            onPressed: () {
+                              launch(content.website);
+                            },
+                            padding: EdgeInsets.all(10),
+                          ),
+                        ),
+                        SizedBox(width: 4),
+                        Expanded(
+                          child: IconButton(
+                            icon: Icon(Icons.map),
+                            color: Colors.blue,
+                            onPressed: () {
+                              MapsLauncher.launchQuery(content.fullAddress);
+                            },
+                            padding: EdgeInsets.all(10),
+                          ),
+                        )
+                      ],
                     ),
-                    textAlign: TextAlign.right,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: "\u{1F517} Strona internetowa",
-                      style: const TextStyle(
-                          color: mainColor,
-                          fontWeight: FontWeight.normal,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          launch(content.website);
-                        }
-                    ),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: "\u{1F4CC} Pokaż na mapie",
-                      style: const TextStyle(
-                        color: mainColor,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          MapsLauncher.launchQuery(content.fullAddress);
-                        }
-                    )
                   )
                 ],
               ),
