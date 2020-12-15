@@ -1,6 +1,7 @@
 import 'package:covid19_app/core/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/pages/home_page.dart';
+import 'package:covid19_app/pages/labs_page.dart';
 
 class MenuDrawer extends StatelessWidget {
   @override
@@ -42,12 +43,14 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Item 2'),
+            title: Text('Laboratoria COVID'),
             onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
               Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => LabsPage()
+                )
+              );
             },
           ),
         ],
