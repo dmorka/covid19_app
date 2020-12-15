@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
-import 'package:http/http.dart' as http;
+import 'package:covid19_app/utils/services/statistics.dart';
 
 class PolandMap extends StatefulWidget {
   const PolandMap({Key key}) : super(key: key);
@@ -19,7 +18,7 @@ class _PolandMapState extends State<PolandMap> {
   @override
   void initState() {
     super.initState();
-    futureModel = fetchProvinceStatistics();
+    futureModel = ProvinceStatistics().fetchProvinceStatistics();
   }
 
   @override
@@ -28,7 +27,7 @@ class _PolandMapState extends State<PolandMap> {
       height: 520,
       child: Center(
         child: FutureBuilder<List<ProvinceStatisticsModel>>(
-            future: fetchProvinceStatistics(),
+            future: ProvinceStatistics().fetchProvinceStatistics(),
             builder: (context, snapshot) {
               if (snapshot.hasError) print(snapshot.error);
 
@@ -106,33 +105,4 @@ class _PolandMapState extends State<PolandMap> {
   }
 }
 
-Future<List<ProvinceStatisticsModel>> fetchProvinceStatistics() async {
-  final response = await http.get(
-      'https://api.apify.com/v2/key-value-stores/3Po6TV7wTht4vIEid/records/LATEST?disableRedirect=true');
 
-  if (response.statusCode == 200) {
-    var responseJson = json.decode(response.body);
-    return (responseJson['infectedByRegion'] as List)
-        .map((p) => ProvinceStatisticsModel.fromJson(p))
-        .toList();
-  } else {
-    throw Exception('Failed to load data');
-  }
-}
-
-class ProvinceStatisticsModel {
-  final String stateName;
-  final int infectedCount;
-  final int deceasedCount;
-
-  ProvinceStatisticsModel(
-      {this.stateName, this.infectedCount, this.deceasedCount});
-
-  factory ProvinceStatisticsModel.fromJson(Map<String, dynamic> json) {
-    return ProvinceStatisticsModel(
-      stateName: json['region'] as String,
-      infectedCount: json['infectedCount'] as int,
-      deceasedCount: json['deceasedCount'] as int,
-    );
-  }
-}

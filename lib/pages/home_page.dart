@@ -7,6 +7,7 @@ import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
 import 'package:covid19_app/pages/announcements_page.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
+import 'package:covid19_app/utils/services/statistics.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +16,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  GeneralStatisticsModel _generalStatisticsModel = GeneralStatisticsModel(
+    cases: 0,
+    deaths: 0,
+    recovered: 0
+  );
+
+  _HomePageState() {
+    GeneralStatistics().fetchGeneralStatistics()
+                       .then((val) => setState(() {
+                         _generalStatisticsModel = val;
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           TextSpan(
-                            text: "21.118.594 confirmed",
+                            text: numFormatter.format(_generalStatisticsModel.cases) + " confirmed",
                             style: TextStyle(
                               color: Colors.black87,
                               fontWeight: FontWeight.normal,

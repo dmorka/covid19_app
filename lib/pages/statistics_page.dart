@@ -6,8 +6,8 @@ import 'package:covid19_app/components/chart_widget.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:covid19_app/utils/services/statistics.dart';
+
 
 class StatisticPage extends StatefulWidget {
   @override
@@ -78,7 +78,7 @@ class _StatisticPageState extends State<StatisticPage> {
           ),
           Center(
             child: FutureBuilder<GeneralStatisticsModel>(
-                future: fetchGeneralStatistics(),
+                future: GeneralStatistics().fetchGeneralStatistics(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) print(snapshot.error);
 
@@ -105,15 +105,15 @@ class _StatisticPageState extends State<StatisticPage> {
                                 _buildStatisticItem(
                                     Color.fromRGBO(150, 20, 208, 1),
                                     "Potwierdzonych",
-                                    snapshot.data.cases.toString()),
+                                    numFormatter.format(snapshot.data.cases)),
                                 _buildStatisticItem(
                                     Color.fromRGBO(209, 106, 255, 1),
                                     "Ozdrowienia",
-                                    snapshot.data.recovered.toString()),
+                                    numFormatter.format(snapshot.data.recovered)),
                                 _buildStatisticItem(
                                     Color.fromRGBO(49, 0, 71, 1),
                                     "Zgony",
-                                    snapshot.data.deaths.toString()),
+                                    numFormatter.format(snapshot.data.deaths)),
                               ],
                             ),
                           ],
@@ -209,29 +209,3 @@ class _StatisticPageState extends State<StatisticPage> {
   }
 }
 
-Future<GeneralStatisticsModel> fetchGeneralStatistics() async {
-  final response = await http
-      .get('https://coronavirus-19-api.herokuapp.com/countries/Poland');
-
-  if (response.statusCode == 200) {
-    return GeneralStatisticsModel.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to load data');
-  }
-}
-
-class GeneralStatisticsModel {
-  final int cases;
-  final int deaths;
-  final int recovered;
-
-  GeneralStatisticsModel({this.cases, this.deaths, this.recovered});
-
-  factory GeneralStatisticsModel.fromJson(Map<String, dynamic> json) {
-    return GeneralStatisticsModel(
-      cases: json['cases'] as int,
-      deaths: json['deaths'] as int,
-      recovered: json['recovered'] as int,
-    );
-  }
-}

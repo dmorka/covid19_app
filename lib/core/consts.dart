@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 const backgroundColor = Color(0XFFeffedf2);
 const mainColor = Color(0XFF8d12fe);
+var numFormatter = NumberFormat("###,000", "en_US");
 
 const ANNOUNCEMENT_DATA = [
   {
