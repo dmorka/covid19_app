@@ -6,7 +6,8 @@ import 'package:covid19_app/components/chart_widget.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:covid19_app/utils/services/statistics.dart';
+import 'package:covid19_app/utils/services/rest_api_service.dart';
+import 'package:covid19_app/models/statistics.dart';
 
 
 class StatisticPage extends StatefulWidget {
@@ -78,7 +79,7 @@ class _StatisticPageState extends State<StatisticPage> {
           ),
           Center(
             child: FutureBuilder<GeneralStatisticsModel>(
-                future: GeneralStatistics().fetchGeneralStatistics(),
+                future: ApiDataProvider().fetchGeneralStatistics(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) print(snapshot.error);
 

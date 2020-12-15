@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
-import 'package:covid19_app/utils/services/statistics.dart';
+import 'package:covid19_app/utils/services/rest_api_service.dart';
+import 'package:covid19_app/models/statistics.dart';
 
 class PolandMap extends StatefulWidget {
   const PolandMap({Key key}) : super(key: key);
@@ -18,7 +19,7 @@ class _PolandMapState extends State<PolandMap> {
   @override
   void initState() {
     super.initState();
-    futureModel = ProvinceStatistics().fetchProvinceStatistics();
+    futureModel = ApiDataProvider().fetchProvinceStatistics();
   }
 
   @override
@@ -27,7 +28,7 @@ class _PolandMapState extends State<PolandMap> {
       height: 520,
       child: Center(
         child: FutureBuilder<List<ProvinceStatisticsModel>>(
-            future: ProvinceStatistics().fetchProvinceStatistics(),
+            future: ApiDataProvider().fetchProvinceStatistics(),
             builder: (context, snapshot) {
               if (snapshot.hasError) print(snapshot.error);
 

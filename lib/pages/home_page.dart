@@ -7,7 +7,8 @@ import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
 import 'package:covid19_app/pages/announcements_page.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
-import 'package:covid19_app/utils/services/statistics.dart';
+import 'package:covid19_app/utils/services/rest_api_service.dart';
+import 'package:covid19_app/models/statistics.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   );
 
   _HomePageState() {
-    GeneralStatistics().fetchGeneralStatistics()
+    ApiDataProvider().fetchGeneralStatistics()
                        .then((val) => setState(() {
                          _generalStatisticsModel = val;
     }));
