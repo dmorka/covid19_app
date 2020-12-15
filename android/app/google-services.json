@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "220940729277",
+    "project_id": "covidapp-dbee6",
+    "storage_bucket": "covidapp-dbee6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220940729277:android:77e12522ac091a5b4f30d4",
+        "android_client_info": {
+          "package_name": "com.example.covid19_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "220940729277-s3v73avallquk4ifid1hbgas5eikckns.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.covid19_app",
+            "certificate_hash": "bd3aa4b265908d542b376e65d859e9756ba1ae4d"
+          }
+        },
+        {
+          "client_id": "220940729277-81q7cc0ae9cuf9fagq1d7vbhm9g7u8vd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALuvQboUCOF0Hsav7s6TWK2MoZQ_74q94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "220940729277-81q7cc0ae9cuf9fagq1d7vbhm9g7u8vd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
