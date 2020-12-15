@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:covid19_app/components/annoucment_dialog.dart';
 import 'package:covid19_app/components/menu.dart';
+import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
@@ -17,182 +18,181 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  GeneralStatisticsModel _generalStatisticsModel = GeneralStatisticsModel(
-    cases: 0,
-    deaths: 0,
-    recovered: 0
-  );
+  GeneralStatisticsModel _generalStatisticsModel =
+      GeneralStatisticsModel(cases: 0, deaths: 0, recovered: 0);
 
   _HomePageState() {
-    ApiDataProvider().fetchGeneralStatistics()
-                       .then((val) => setState(() {
-                         _generalStatisticsModel = val;
-    }));
+    ApiDataProvider().fetchGeneralStatistics().then((val) => setState(() {
+          _generalStatisticsModel = val;
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // resizeToAvoidBottomPadding: false,
-      backgroundColor: backgroundColor,
-      drawer: MenuDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: mainColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
+    return ProtectedContainer(
+      body: Scaffold(
+        // resizeToAvoidBottomPadding: false,
+        backgroundColor: backgroundColor,
+        drawer: MenuDrawer(),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: mainColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
+                  ),
+                ),
+                padding: EdgeInsets.only(top: 25, bottom: 30),
+                child: Stack(
+                  children: <Widget>[
+                    Image.asset("assets/images/virus2.png"),
+                    _buildHeader(),
+                  ],
                 ),
               ),
-              padding: EdgeInsets.only(top: 25, bottom: 30),
-              child: Stack(
-                children: <Widget>[
-                  Image.asset("assets/images/virus2.png"),
-                  _buildHeader(),
-                ],
+              SizedBox(height: 15),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: RichText(
+                  text: TextSpan(
+                    text: "Symptoms of ",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: Colors.black87,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "COVID 19",
+                        style: TextStyle(
+                          color: mainColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 15),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: RichText(
-                text: TextSpan(
-                  text: "Symptoms of ",
+              SizedBox(height: 15),
+              Container(
+                height: 130,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.only(left: 16),
+                  physics: BouncingScrollPhysics(),
+                  children: <Widget>[
+                    _buildSymptomItem("assets/images/1.png", "Fever"),
+                    _buildSymptomItem("assets/images/2.png", "Dry Cough"),
+                    _buildSymptomItem("assets/images/3.png", "Headache"),
+                    _buildSymptomItem("assets/images/4.png", "Breathless"),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  "Prevention",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 24,
                     color: Colors.black87,
                   ),
-                  children: [
-                    TextSpan(
-                      text: "COVID 19",
-                      style: TextStyle(
-                        color: mainColor,
-                      ),
-                    ),
-                  ],
                 ),
               ),
-            ),
-            SizedBox(height: 15),
-            Container(
-              height: 130,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 16),
-                physics: BouncingScrollPhysics(),
-                children: <Widget>[
-                  _buildSymptomItem("assets/images/1.png", "Fever"),
-                  _buildSymptomItem("assets/images/2.png", "Dry Cough"),
-                  _buildSymptomItem("assets/images/3.png", "Headache"),
-                  _buildSymptomItem("assets/images/4.png", "Breathless"),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                "Prevention",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              height: 100,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 16),
-                physics: BouncingScrollPhysics(),
-                children: <Widget>[
-                  _buildPrevention(
-                      "assets/images/a10.png", "WASH", "hands often"),
-                  _buildPrevention(
-                      "assets/images/a4.png", "COVER", "your cough."),
-                  _buildPrevention("assets/images/a6.png", "ALWAYS", "clean"),
-                  _buildPrevention("assets/images/a8.png", "USE", "mask"),
-                ],
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => StatisticPage(),
-                  ),
-                );
-              },
-              child: Container(
-                height: 90,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15),
-                  ),
-                  border: Border.all(color: Colors.white),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      offset: Offset(1, 1),
-                      spreadRadius: 1,
-                      blurRadius: 1,
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.all(12),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+              SizedBox(height: 20),
+              Container(
+                height: 100,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.only(left: 16),
+                  physics: BouncingScrollPhysics(),
                   children: <Widget>[
-                    Image.asset("assets/images/poland_map.png"),
-                    SizedBox(width: 25),
-                    RichText(
-                      text: TextSpan(
-                        text: "CASES\n",
-                        style: TextStyle(
-                          color: mainColor,
-                          fontWeight: FontWeight.bold,
-                          height: 1.3,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Overview Poland\n",
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          TextSpan(
-                            text: numFormatter.format(_generalStatisticsModel.cases) + " confirmed",
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 10,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(child: SizedBox()),
-                    IconButton(
-                      icon: Icon(Icons.arrow_forward_ios),
-                      onPressed: null,
-                    ),
+                    _buildPrevention(
+                        "assets/images/a10.png", "WASH", "hands often"),
+                    _buildPrevention(
+                        "assets/images/a4.png", "COVER", "your cough."),
+                    _buildPrevention("assets/images/a6.png", "ALWAYS", "clean"),
+                    _buildPrevention("assets/images/a8.png", "USE", "mask"),
                   ],
                 ),
-                margin: EdgeInsets.symmetric(horizontal: 16),
               ),
-            ),
-            SizedBox(height: 10),
-          ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => StatisticPage(),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 90,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                    border: Border.all(color: Colors.white),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(1, 1),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.all(12),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset("assets/images/poland_map.png"),
+                      SizedBox(width: 25),
+                      RichText(
+                        text: TextSpan(
+                          text: "CASES\n",
+                          style: TextStyle(
+                            color: mainColor,
+                            fontWeight: FontWeight.bold,
+                            height: 1.3,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Overview Poland\n",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            TextSpan(
+                              text: numFormatter
+                                      .format(_generalStatisticsModel.cases) +
+                                  " confirmed",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 10,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(child: SizedBox()),
+                      IconButton(
+                        icon: Icon(Icons.arrow_forward_ios),
+                        onPressed: null,
+                      ),
+                    ],
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                ),
+              ),
+              SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );

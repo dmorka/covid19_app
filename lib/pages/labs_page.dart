@@ -1,4 +1,5 @@
 import 'package:covid19_app/components/labs_list_item.dart';
+import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/models/labs.dart';
 import 'package:covid19_app/utils/services/rest_api_service.dart';
 import 'package:covid19_app/components/menu.dart';
@@ -9,47 +10,47 @@ import 'package:covid19_app/components/custom_appbar_widget.dart';
 class LabsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _LabsPage();
-
 }
 
 class _LabsPage extends State<LabsPage> {
-
   List<Widget> itemsData = [];
 
   ScrollController controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // resizeToAvoidBottomPadding: false,
-      backgroundColor: backgroundColor,
-      drawer: MenuDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: mainColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
+    return ProtectedContainer(
+      body: Scaffold(
+        // resizeToAvoidBottomPadding: false,
+        backgroundColor: backgroundColor,
+        drawer: MenuDrawer(),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: mainColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
+                  ),
+                ),
+                padding: EdgeInsets.only(top: 25),
+                child: Stack(
+                  children: <Widget>[
+                    Image.asset("assets/images/virus2.png"),
+                    _buildHeader(),
+                  ],
                 ),
               ),
-              padding: EdgeInsets.only(top: 25),
-              child: Stack(
-                children: <Widget>[
-                  Image.asset("assets/images/virus2.png"),
-                  _buildHeader(),
-                ],
-              ),
-            ),
-            // SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: _buildLabsList(),
-            )
-          ],
+              // SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: _buildLabsList(),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -69,10 +70,10 @@ class _LabsPage extends State<LabsPage> {
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return LabsListItem(snapshot.data[index]);
-              })
+                })
             : Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.purple),
+                valueColor: AlwaysStoppedAnimation(Colors.purple),
               ));
       },
     );
@@ -97,5 +98,4 @@ class _LabsPage extends State<LabsPage> {
       ],
     );
   }
-
 }

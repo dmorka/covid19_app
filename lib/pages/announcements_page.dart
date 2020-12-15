@@ -1,4 +1,5 @@
 import 'package:covid19_app/components/menu.dart';
+import 'package:covid19_app/components/protected_container.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/components/list_item.dart';
@@ -32,36 +33,38 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // resizeToAvoidBottomPadding: false,
-      backgroundColor: backgroundColor,
-      drawer: MenuDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: mainColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
+    return ProtectedContainer(
+      body: Scaffold(
+        // resizeToAvoidBottomPadding: false,
+        backgroundColor: backgroundColor,
+        drawer: MenuDrawer(),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: mainColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
+                  ),
+                ),
+                padding: EdgeInsets.only(top: 25),
+                child: Stack(
+                  children: <Widget>[
+                    Image.asset("assets/images/virus2.png"),
+                    _buildHeader(),
+                  ],
                 ),
               ),
-              padding: EdgeInsets.only(top: 25),
-              child: Stack(
-                children: <Widget>[
-                  Image.asset("assets/images/virus2.png"),
-                  _buildHeader(),
-                ],
-              ),
-            ),
-            // SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: _buildAnnouncements(),
-            )
-          ],
+              // SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: _buildAnnouncements(),
+              )
+            ],
+          ),
         ),
       ),
     );

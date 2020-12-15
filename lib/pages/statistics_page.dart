@@ -1,5 +1,6 @@
 import 'package:covid19_app/components/poland_map.dart';
 import 'package:covid19_app/components/menu.dart';
+import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/core/flutter_icons.dart';
 import 'package:covid19_app/components/chart_widget.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:covid19_app/utils/services/rest_api_service.dart';
 import 'package:covid19_app/models/statistics.dart';
 
-
 class StatisticPage extends StatefulWidget {
   @override
   _StatisticPageState createState() => _StatisticPageState();
@@ -18,35 +18,37 @@ class StatisticPage extends StatefulWidget {
 class _StatisticPageState extends State<StatisticPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // resizeToAvoidBottomPadding: false,
-      backgroundColor: backgroundColor,
-      drawer: MenuDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: mainColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
+    return ProtectedContainer(
+      body: Scaffold(
+        // resizeToAvoidBottomPadding: false,
+        backgroundColor: backgroundColor,
+        drawer: MenuDrawer(),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  color: mainColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25),
+                  ),
+                ),
+                padding: EdgeInsets.only(top: 25, bottom: 30),
+                child: Stack(
+                  children: <Widget>[
+                    Image.asset("assets/images/virus2.png"),
+                    _buildHeader(),
+                  ],
                 ),
               ),
-              padding: EdgeInsets.only(top: 25, bottom: 30),
-              child: Stack(
-                children: <Widget>[
-                  Image.asset("assets/images/virus2.png"),
-                  _buildHeader(),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-            Padding(padding: EdgeInsets.only(top: 25)),
-            _buildOverview(),
-            Padding(padding: EdgeInsets.only(top: 10)),
-          ],
+              SizedBox(height: 10),
+              Padding(padding: EdgeInsets.only(top: 25)),
+              _buildOverview(),
+              Padding(padding: EdgeInsets.only(top: 10)),
+            ],
+          ),
         ),
       ),
     );
@@ -110,7 +112,8 @@ class _StatisticPageState extends State<StatisticPage> {
                                 _buildStatisticItem(
                                     Color.fromRGBO(209, 106, 255, 1),
                                     "Ozdrowienia",
-                                    numFormatter.format(snapshot.data.recovered)),
+                                    numFormatter
+                                        .format(snapshot.data.recovered)),
                                 _buildStatisticItem(
                                     Color.fromRGBO(49, 0, 71, 1),
                                     "Zgony",
@@ -209,4 +212,3 @@ class _StatisticPageState extends State<StatisticPage> {
     );
   }
 }
-
