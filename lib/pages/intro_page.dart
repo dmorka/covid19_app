@@ -1,8 +1,8 @@
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
+import 'package:covid19_app/pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
 import 'login_page.dart';
 
 class IntroPage extends StatefulWidget {
@@ -102,7 +102,7 @@ class _IntroPageState extends State<IntroPage> {
               press: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => SignUpPage()),
                 );
               },
             ),

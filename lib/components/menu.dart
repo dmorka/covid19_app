@@ -1,7 +1,10 @@
 import 'package:covid19_app/core/consts.dart';
+import 'package:covid19_app/pages/intro_page.dart';
+import 'package:covid19_app/pages/labs_page.dart';
+import 'package:covid19_app/utils/services/authentication_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/pages/home_page.dart';
-import 'package:covid19_app/pages/labs_page.dart';
+import 'package:provider/provider.dart';
 
 class MenuDrawer extends StatelessWidget {
   @override
@@ -35,22 +38,25 @@ class MenuDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
-              Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (_) => HomePage()
-                  )
-              );
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => HomePage()));
             },
           ),
           ListTile(
             title: Text('Laboratoria COVID'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => LabsPage()
-                )
-              );
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => LabsPage()));
+            },
+          ),
+          ListTile(
+            title: Text('Sign out'),
+            onTap: () {
+              Navigator.pop(context);
+              context.read<AuthenticationProvider>().signOut();
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => IntroPage()));
             },
           ),
         ],
