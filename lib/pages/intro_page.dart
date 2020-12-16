@@ -69,7 +69,7 @@ class _IntroPageState extends State<IntroPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Coronavirus disease (COVID 19)",
+              "Koronawirus (COVID 19)",
               style: TextStyle(
                 fontSize: 24,
                 color: Colors.white,
@@ -77,7 +77,7 @@ class _IntroPageState extends State<IntroPage> {
               ),
             ),
             Text(
-              "is an infectianus disease caused by a new\nvirus. ",
+              "jest chorobą zakaźną wywołaną przez nowy \ wirus.",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white,
@@ -87,7 +87,7 @@ class _IntroPageState extends State<IntroPage> {
             ),
             SizedBox(height: 20),
             RoundedButton(
-              text: "LOGIN",
+              text: "ZALOGUJ",
               press: () {
                 Navigator.push(
                   context,
@@ -97,7 +97,7 @@ class _IntroPageState extends State<IntroPage> {
             ),
             SizedBox(height: 15),
             RoundedButton(
-              text: "SIGNUP",
+              text: "ZAREJESTRUJ SIĘ",
               color: Colors.red,
               press: () {
                 Navigator.push(

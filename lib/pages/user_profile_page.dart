@@ -41,7 +41,7 @@ class _UserProfileState extends State<UserProfilePage> {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: RichText(
                   text: TextSpan(
-                    text: "List of ",
+                    text: "Lista Aktywnych ",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -49,7 +49,7 @@ class _UserProfileState extends State<UserProfilePage> {
                     ),
                     children: [
                       TextSpan(
-                        text: "Active Orders:",
+                        text: "Zamówień:",
                         style: TextStyle(
                           color: mainColor,
                         ),
@@ -73,9 +73,9 @@ class _UserProfileState extends State<UserProfilePage> {
           alignment: Alignment.centerRight,
           margin: const EdgeInsets.only(top: 10, right: 10, bottom: 15),
           child: RoundedButton(
-            text: "EDIT",
+            text: "Edytuj",
             color: Colors.white30,
-            size: const Size(70, 30),
+            size: const Size(80, 30),
             padding: null,
             press: () {
               Navigator.push(

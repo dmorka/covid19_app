@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: RichText(
                   text: TextSpan(
-                    text: "Symptoms of ",
+                    text: "Objawy ",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -84,10 +84,10 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.only(left: 16),
                   physics: BouncingScrollPhysics(),
                   children: <Widget>[
-                    _buildSymptomItem("assets/images/1.png", "Fever"),
-                    _buildSymptomItem("assets/images/2.png", "Dry Cough"),
-                    _buildSymptomItem("assets/images/3.png", "Headache"),
-                    _buildSymptomItem("assets/images/4.png", "Breathless"),
+                    _buildSymptomItem("assets/images/1.png", "Gorączka"),
+                    _buildSymptomItem("assets/images/2.png", "Suchy kaszel"),
+                    _buildSymptomItem("assets/images/3.png", "Ból głowy"),
+                    _buildSymptomItem("assets/images/4.png", "Bez tchu"),
                   ],
                 ),
               ),
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  "Prevention",
+                  "Zapobieganie",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 24,
@@ -112,11 +112,13 @@ class _HomePageState extends State<HomePage> {
                   physics: BouncingScrollPhysics(),
                   children: <Widget>[
                     _buildPrevention(
-                        "assets/images/a10.png", "WASH", "hands often"),
+                        "assets/images/a10.png", "MYJ", "często ręce", 160),
+                    _buildPrevention("assets/images/a4.png", "ZAKRYWAJ",
+                        "buzie gdy kaszlesz", 190),
                     _buildPrevention(
-                        "assets/images/a4.png", "COVER", "your cough."),
-                    _buildPrevention("assets/images/a6.png", "ALWAYS", "clean"),
-                    _buildPrevention("assets/images/a8.png", "USE", "mask"),
+                        "assets/images/a6.png", "ZAWSZE", "wyczyść", 160),
+                    _buildPrevention(
+                        "assets/images/a8.png", "UTRZYMUJ", "ODSTĘP", 180),
                   ],
                 ),
               ),
@@ -153,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(width: 25),
                       RichText(
                         text: TextSpan(
-                          text: "CASES\n",
+                          text: "STATYSTYKI\n",
                           style: TextStyle(
                             color: mainColor,
                             fontWeight: FontWeight.bold,
@@ -161,7 +163,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           children: [
                             TextSpan(
-                              text: "Overview Poland\n",
+                              text: "Przegląd Polski\n",
                               style: TextStyle(
                                 color: Colors.black87,
                                 fontWeight: FontWeight.normal,
@@ -170,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                             TextSpan(
                               text: numFormatter
                                       .format(_generalStatisticsModel.cases) +
-                                  " confirmed",
+                                  " potwierdzonych",
                               style: TextStyle(
                                 color: Colors.black87,
                                 fontWeight: FontWeight.normal,
@@ -198,11 +200,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildPrevention(String path, String text1, String text2) {
+  Widget _buildPrevention(
+      String path, String text1, String text2, double width) {
     return Column(
       children: <Widget>[
         Container(
-          width: 160,
+          width: width,
           height: 80,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -320,7 +323,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            "Mutual assistance system",
+            "System wzajemnej pomocy",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -331,8 +334,8 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            "This application was created to help people suffering from "
-            "coronavirus, you can add your own ad for any help you may need.",
+            "Ta aplikacja została stworzona, aby pomóc osobom cierpiącym "
+            "koronawirusa, możesz dodać własne ogłoszenie, aby uzyskać pomoc, której możesz potrzebować.",
             style: TextStyle(
               color: Colors.white,
               height: 1.3,
@@ -346,7 +349,7 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               Expanded(
                   child: RoundedButton(
-                text: "ADD AN ANNOUNCEMENT",
+                text: "DODAJ OGŁOSZENIE",
                 color: Colors.blue,
                 press: () {
                   showDialog(
@@ -360,7 +363,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(width: 16),
               Expanded(
                 child: RoundedButton(
-                  text: "BROWSE ANNOUNCEMENTS",
+                  text: "PRZEGLĄDAJ OGŁOSZENIA",
                   color: Colors.blue,
                   press: () {
                     Navigator.of(context).push(MaterialPageRoute(

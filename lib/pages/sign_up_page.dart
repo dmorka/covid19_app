@@ -3,6 +3,7 @@ import 'package:covid19_app/components/background.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/components/rounded_input_field.dart';
 import 'package:covid19_app/components/rounded_password_field.dart';
+import 'package:covid19_app/pages/user_personal_info_edit_page.dart';
 import 'package:covid19_app/utils/services/authentication_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return HomePage();
+                        // return UserPersonalInfoEditPage();
                       }));
                     } else {
                       setState(() {

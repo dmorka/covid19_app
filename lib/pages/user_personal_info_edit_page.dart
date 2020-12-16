@@ -91,7 +91,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                             width: MediaQuery.of(context).size.width * 0.6,
                             padding: EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              "Edit Personal Information",
+                              "Edytowanie danych osobowych",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/pages/intro_page.dart';
 import 'package:covid19_app/pages/labs_page.dart';
+import 'package:covid19_app/pages/statistics_page.dart';
 import 'package:covid19_app/utils/services/authentication_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/pages/home_page.dart';
@@ -40,6 +41,14 @@ class MenuDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (_) => HomePage()));
+            },
+          ),
+          ListTile(
+            title: Text('Statystki'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => StatisticPage()));
             },
           ),
           ListTile(
