@@ -10,11 +10,11 @@ final CollectionReference annoucementCollection =
 
 class FirebaseFirestoreService {
   static final FirebaseFirestoreService _instance =
-      new FirebaseFirestoreService.internal();
+      new FirebaseFirestoreService._internal();
 
   factory FirebaseFirestoreService() => _instance;
 
-  FirebaseFirestoreService.internal();
+  FirebaseFirestoreService._internal();
 
   Future<UserModel> createUser(UserModel user) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
@@ -56,6 +56,23 @@ class FirebaseFirestoreService {
       print('error: $error');
       return null;
     });
+  }
+
+  Future<dynamic> getAllAnnoucements() async {
+    List<Annoucement> annoucements = new List<Annoucement>();
+
+    await annoucementCollection
+        .get()
+        .then((value) {
+      if (value.size > 0) {
+        value.docs
+            .forEach((element) => annoucements.add(Annoucement.map(element)));
+      } else {
+        print("Empty query!");
+      }
+    });
+
+    return annoucements;
   }
 
   Future<dynamic> getAnnoucements(String field, String equalTo) async {

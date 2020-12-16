@@ -10,16 +10,16 @@ class SearchWidget extends StatefulWidget {
   final void Function(String query) searchQueryListener;
 
   @override
-  State<StatefulWidget> createState() => SearchWidgetState(searchQueryListener);
+  State<StatefulWidget> createState() => _SearchWidgetState(searchQueryListener);
 }
 
-class SearchWidgetState extends State<SearchWidget> {
+class _SearchWidgetState extends State<SearchWidget> {
   TextEditingController _textEditingController = TextEditingController();
   bool _isSearching = false;
   String _searchQuery = "";
   void Function(String query) _searchQueryListener;
 
-  SearchWidgetState(void Function(String query) listener) {
+  _SearchWidgetState(void Function(String query) listener) {
     _searchQueryListener = listener;
   }
 

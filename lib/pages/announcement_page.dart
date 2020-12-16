@@ -1,36 +1,29 @@
 import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/protected_container.dart';
-import 'package:covid19_app/models/annoucement.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/core/consts.dart';
-import 'package:covid19_app/components/announcements_list_item.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
-import 'package:covid19_app/utils/services/firestore_service.dart';
+import 'package:covid19_app/components/content_header.dart';
+import 'package:covid19_app/models/annoucement.dart';
 
-class AnnouncementsPage extends StatefulWidget {
+class AnnouncementPage extends StatefulWidget {
+  const AnnouncementPage({
+    Key key,
+    this.announcement
+  }) : super(key: key);
+
+  final Annoucement announcement;
+
   @override
-  State<StatefulWidget> createState() => _AnnouncementsPageState();
+  State<StatefulWidget> createState() => _AnnouncementPage(announcement);
 }
 
-class _AnnouncementsPageState extends State<AnnouncementsPage> {
-  List<Annoucement> announcementsList = [];
-  ScrollController controller = ScrollController();
+class _AnnouncementPage extends State<AnnouncementPage> {
 
-  void getPostsData() {
-    FirebaseFirestoreService()
-        .getAllAnnoucements()
-        .then((value) {
-      setState(() {
-        announcementsList = value;
-      });
-    });
-  }
+  Annoucement _announcement;
 
-  @override
-  void initState() {
-    super.initState();
-
-    getPostsData();
+  _AnnouncementPage(Annoucement announcement) {
+    _announcement = announcement;
   }
 
   @override
@@ -60,11 +53,8 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                   ],
                 ),
               ),
-              // SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: _buildAnnouncements(),
-              )
+              SizedBox(height: 10),
+              _buildAnnouncement(),
             ],
           ),
         ),
@@ -72,22 +62,37 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     );
   }
 
-  Widget _buildAnnouncements() {
-    if (announcementsList.isEmpty) {
-      return Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation(Colors.purple),
-          ));
-    } else {
-      return ListView.builder(
-          shrinkWrap: true,
-          controller: controller,
-          itemCount: announcementsList.length,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, index) {
-            return AnnouncementsListItem(announcementsList[index]);
-          });
-    }
+  Widget _buildAnnouncement()
+  {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ContentHeader(name: "Opis"),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                _announcement.description
+              ),
+            ),
+            ContentHeader(name: "Czas dostarczenia"),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                  _announcement.dueDate.toString()
+              ),
+            ),
+            ContentHeader(name: "Gdzie"),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                  ""
+              ),
+            )
+          ]
+      ),
+    );
   }
 
   Widget _buildHeader() {
@@ -98,7 +103,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            "OGŁOSZENIA",
+            _announcement.title,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,

@@ -2,11 +2,19 @@ import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/components/rounded_input_field.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:flutter/material.dart';
+import 'package:covid19_app/models/annoucement.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 class AnnoucmentDialog extends StatelessWidget {
-  const AnnoucmentDialog({
+  AnnoucmentDialog({
     Key key,
   }) : super(key: key);
+
+  final titleController = new TextEditingController();
+  final descriptionController = new TextEditingController();
+  final locationController = new TextEditingController();
+  final dueDateController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,23 +30,34 @@ class AnnoucmentDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               RoundedInputField(
-                hintText: "Description",
+                hintText: "Tytuł",
+                controller: titleController,
+                icon: Icons.title,
+              ),
+              SizedBox(height: 20),
+              RoundedInputField(
+                hintText: "Opis",
+                controller: descriptionController,
                 icon: Icons.topic,
               ),
               SizedBox(height: 20),
               RoundedInputField(
-                hintText: "Location",
-                icon: Icons.add_location,
-              ),
-              SizedBox(height: 20),
-              RoundedInputField(
-                hintText: "Due date",
+                hintText: "Czas dostarczenia",
+                controller: dueDateController,
                 icon: Icons.date_range_rounded,
               ),
               SizedBox(height: 25),
               RoundedButton(
                 text: "ADD",
-                press: () {},
+                press: () {
+                  /*final announcement = new Annoucement(
+                      "",
+                      context.read<User>().uid,
+                      titleController.text,
+                      descriptionController.text,
+                      dueDateController.text
+                  );*/
+                },
               ),
             ],
           ),

@@ -15,7 +15,6 @@ class UserPersonalInfoEditPage extends StatefulWidget {
 }
 
 class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
-  FirebaseFirestoreService fireStoreService = new FirebaseFirestoreService();
   String id;
   final firstNameController = new TextEditingController();
   final lastNameController = new TextEditingController();
@@ -27,7 +26,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
   @override
   Widget build(BuildContext context) {
     if (!areValuesInitialized) {
-      fireStoreService
+      FirebaseFirestoreService()
           .getUser(context.watch<User>().uid)
           .then((value) => setTextFieldInitValues(value));
       areValuesInitialized = true;
@@ -152,7 +151,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                             streetController.text,
                             apartmentNumberController.text,
                           );
-                          fireStoreService.createUser(user);
+                          FirebaseFirestoreService().createUser(user);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
