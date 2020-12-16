@@ -17,7 +17,6 @@ class _LabsPage extends State<LabsPage> {
   List<CovidLaboratoriesModel> allLabsList = [];
   List<CovidLaboratoriesModel> filteredLabsList = [];
   SearchWidget _searchWidget;
-  final searchWidgetKey = new GlobalKey<SearchWidgetState>();
   ScrollController controller = ScrollController();
 
   @override
@@ -27,18 +26,22 @@ class _LabsPage extends State<LabsPage> {
     ApiDataProvider().fetchCovidLaboratories().then((value) {
       setState(() {
         allLabsList = value;
+        allLabsList.sort((CovidLaboratoriesModel a, CovidLaboratoriesModel b) {
+          return a.addressCity.compareTo(b.addressCity);
+        });
         filteredLabsList = List.from(allLabsList);
       });
     });
 
     _searchWidget = SearchWidget(
-      key: searchWidgetKey,
-      listener: () {
+      searchQueryListener: (query) {
         setState(() {
-          filteredLabsList = List.from(allLabsList.where(
-                  (item) => item.fullAddress.toLowerCase().trim().contains(
-                  searchWidgetKey.currentState.searchQuery.toLowerCase().trim()))
-          );
+          filteredLabsList = List.from(allLabsList.where((item) {
+              String itemContent = item.fullAddress.toLowerCase().trim() + ' ' + item.name.toLowerCase().trim();
+              return itemContent.contains(
+                  query.toLowerCase().trim());
+            }
+          ));
         });
       },
     );
@@ -118,7 +121,7 @@ class _LabsPage extends State<LabsPage> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           child: _searchWidget,
         )
       ],

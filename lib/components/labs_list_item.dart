@@ -37,9 +37,10 @@ class LabsListItem extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.black87,
                       fontWeight: FontWeight.normal,
+                      fontSize: 16
                     ),
                   ),
-                  SizedBox(height: 35),
+                  SizedBox(height: 10),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 0),
                     child: Row(

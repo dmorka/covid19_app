@@ -4,23 +4,23 @@ import 'package:flutter/material.dart';
 class SearchWidget extends StatefulWidget {
   const SearchWidget({
     Key key,
-    this.listener
+    this.searchQueryListener
   }) : super(key: key);
 
-  final void Function() listener;
+  final void Function(String query) searchQueryListener;
 
   @override
-  State<StatefulWidget> createState() => SearchWidgetState(listener);
+  State<StatefulWidget> createState() => SearchWidgetState(searchQueryListener);
 }
 
 class SearchWidgetState extends State<SearchWidget> {
   TextEditingController _textEditingController = TextEditingController();
   bool _isSearching = false;
   String _searchQuery = "";
-  String get searchQuery => _searchQuery;
+  void Function(String query) _searchQueryListener;
 
-  SearchWidgetState(void Function() listener) {
-    _textEditingController.addListener(listener);
+  SearchWidgetState(void Function(String query) listener) {
+    _searchQueryListener = listener;
   }
 
   @override
@@ -30,9 +30,17 @@ class SearchWidgetState extends State<SearchWidget> {
       autofocus: false,
       decoration: InputDecoration(
         hintText: "Wyszukaj",
-        border: InputBorder.none,
         hintStyle: TextStyle(
-            color: Colors.white30
+            color: Colors.white54
+        ),
+        icon: Icon(Icons.search),
+        suffixIcon: IconButton(
+          onPressed: () {
+            _textEditingController.clear();
+            _searchQuery = "";
+            _searchQueryListener(_searchQuery);
+          },
+          icon: Icon(Icons.clear)
         )
       ),
       style: TextStyle(
@@ -41,6 +49,7 @@ class SearchWidgetState extends State<SearchWidget> {
       ),
       onChanged: (query) => setState(() {
         _searchQuery = query;
+        _searchQueryListener(_searchQuery);
       }),
     );
   }
