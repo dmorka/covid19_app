@@ -1,8 +1,10 @@
 import 'package:covid19_app/core/consts.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
   final String text;
+  final TextAlign textAlign;
   final Function press;
   final Color color, textColor;
   final Size size;
@@ -11,6 +13,7 @@ class RoundedButton extends StatelessWidget {
   const RoundedButton(
       {Key key,
       this.text,
+      this.textAlign,
       this.press,
       this.color = mainColor,
       this.textColor = Colors.white,
@@ -34,6 +37,7 @@ class RoundedButton extends StatelessWidget {
           onPressed: press,
           child: Text(
             text,
+            textAlign: textAlign,
             style: TextStyle(color: textColor),
           ),
         ),

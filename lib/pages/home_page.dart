@@ -350,6 +350,7 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                   child: RoundedButton(
                 text: "DODAJ OGŁOSZENIE",
+                textAlign: TextAlign.center,
                 color: Colors.blue,
                 press: () {
                   showDialog(
@@ -364,6 +365,7 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: RoundedButton(
                   text: "PRZEGLĄDAJ OGŁOSZENIA",
+                  textAlign: TextAlign.center,
                   color: Colors.blue,
                   press: () {
                     Navigator.of(context).push(MaterialPageRoute(
