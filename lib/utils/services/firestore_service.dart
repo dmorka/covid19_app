@@ -39,7 +39,7 @@ class FirebaseFirestoreService {
 
       final Map<String, dynamic> data = annoucement.toMap();
 
-      await tx.set(ds.reference, data);
+      await tx.set(ds.reference, data, SetOptions(merge: true));
 
       return data;
     };
@@ -68,6 +68,11 @@ class FirebaseFirestoreService {
       });
 
     return annoucements;
+  }
+
+  Future<User> getUser(String userId) async {
+    final DocumentSnapshot ds = await userCollection.doc(userId).get();
+    return User.map(ds);
   }
 
   Future<dynamic> updateUser(User user) async {
