@@ -3,18 +3,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/models/user.dart';
 
-final CollectionReference userCollection = FirebaseFirestore.instance.collection("users");
-final CollectionReference annoucementCollection = FirebaseFirestore.instance.collection("annoucements");
+final CollectionReference userCollection =
+    FirebaseFirestore.instance.collection('users');
+final CollectionReference annoucementCollection =
+    FirebaseFirestore.instance.collection('annoucements');
 
 class FirebaseFirestoreService {
-
-  static final FirebaseFirestoreService _instance = new FirebaseFirestoreService.internal();
+  static final FirebaseFirestoreService _instance =
+      new FirebaseFirestoreService.internal();
 
   factory FirebaseFirestoreService() => _instance;
 
   FirebaseFirestoreService.internal();
 
-  Future<User> createUser(User user) async {
+  Future<UserModel> createUser(UserModel user) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
       final DocumentSnapshot ds = await tx.get(userCollection.doc(user.id));
 
@@ -25,8 +27,10 @@ class FirebaseFirestoreService {
       return data;
     };
 
-    return FirebaseFirestore.instance.runTransaction(createTransaction).then((mapData) {
-      return User.fromMap(mapData);
+    return FirebaseFirestore.instance
+        .runTransaction(createTransaction)
+        .then((mapData) {
+      return UserModel.fromMap(mapData);
     }).catchError((error) {
       print('error: $error');
       return null;
@@ -44,7 +48,9 @@ class FirebaseFirestoreService {
       return data;
     };
 
-    return FirebaseFirestore.instance.runTransaction(createTransaction).then((mapData) {
+    return FirebaseFirestore.instance
+        .runTransaction(createTransaction)
+        .then((mapData) {
       return Annoucement.fromMap(mapData);
     }).catchError((error) {
       print('error: $error');
@@ -56,26 +62,26 @@ class FirebaseFirestoreService {
     List<Annoucement> annoucements = new List<Annoucement>();
 
     await annoucementCollection
-      .where(field, isEqualTo: equalTo)
-      .get()
-      .then((value) {
-       if(value.size > 0){
-         value.docs.forEach((element) =>
-             annoucements.add(Annoucement.map(element)));
-        } else {
-         print("Empty query!");
-        }
-      });
+        .where(field, isEqualTo: equalTo)
+        .get()
+        .then((value) {
+      if (value.size > 0) {
+        value.docs
+            .forEach((element) => annoucements.add(Annoucement.map(element)));
+      } else {
+        print("Empty query!");
+      }
+    });
 
     return annoucements;
   }
 
-  Future<User> getUser(String userId) async {
+  Future<UserModel> getUser(String userId) async {
     final DocumentSnapshot ds = await userCollection.doc(userId).get();
-    return User.map(ds);
+    return UserModel.map(ds);
   }
 
-  Future<dynamic> updateUser(User user) async {
+  Future<dynamic> updateUser(UserModel user) async {
     final TransactionHandler updateTransaction = (Transaction tx) async {
       final DocumentSnapshot ds = await tx.get(userCollection.doc(user.id));
 
@@ -94,7 +100,8 @@ class FirebaseFirestoreService {
 
   Future<dynamic> updateAnnoucement(Annoucement annoucement) async {
     final TransactionHandler updateTransaction = (Transaction tx) async {
-      final DocumentSnapshot ds = await tx.get(annoucementCollection.doc(annoucement.id));
+      final DocumentSnapshot ds =
+          await tx.get(annoucementCollection.doc(annoucement.id));
 
       await tx.update(ds.reference, annoucement.toMap());
       return {'updated': true};

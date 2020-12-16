@@ -18,8 +18,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String errorMessage = '';
-  String emailAddress = '';
-  String password = '';
+  final emailAddressController = new TextEditingController();
+  final passwordController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -48,15 +48,11 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 15),
               RoundedInputField(
                 hintText: "Adres email",
-                onChanged: (value) {
-                  emailAddress = value;
-                },
+                controller: emailAddressController,
               ),
               SizedBox(height: size.height * 0.02),
               RoundedPasswordField(
-                onChanged: (value) {
-                  password = value;
-                },
+                controller: passwordController,
               ),
               SizedBox(height: size.height * 0.04),
               RoundedButton(
@@ -65,7 +61,8 @@ class _LoginPageState extends State<LoginPage> {
                   context
                       .read<AuthenticationProvider>()
                       .signIn(
-                          email: emailAddress.trim(), password: password.trim())
+                          email: emailAddressController.value.text.trim(),
+                          password: passwordController.value.text.trim())
                       .then((String result) {
                     if (context.read<User>() != null) {
                       Navigator.push(context,
@@ -98,5 +95,12 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    emailAddressController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

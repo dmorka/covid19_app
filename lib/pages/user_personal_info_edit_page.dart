@@ -2,8 +2,12 @@ import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/components/rounded_input_field.dart';
 import 'package:covid19_app/core/consts.dart';
+import 'package:covid19_app/models/user.dart';
 import 'package:covid19_app/pages/user_profile_page.dart';
+import 'package:covid19_app/utils/services/firestore_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UserPersonalInfoEditPage extends StatefulWidget {
   @override
@@ -11,6 +15,14 @@ class UserPersonalInfoEditPage extends StatefulWidget {
 }
 
 class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
+  FirebaseFirestoreService firestoreService = new FirebaseFirestoreService();
+  String id;
+  final firstNameController = new TextEditingController();
+  final lastNameController = new TextEditingController();
+  final streetController = new TextEditingController();
+  final apartmentNumberController = new TextEditingController();
+  final zipCodeController = new TextEditingController();
+  final cityController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return ProtectedContainer(
@@ -91,33 +103,48 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       RoundedInputField(
-                        hintText: "Jan",
-                        onChanged: (value) {},
+                        hintText: "Imię",
+                        controller: firstNameController,
                       ),
                       RoundedInputField(
-                        hintText: "Kowalski",
-                        onChanged: (value) {},
+                        hintText: "Nazwisko",
+                        controller: lastNameController,
                       ),
                       RoundedInputField(
-                        hintText: "023 622 253",
-                        icon: Icons.phone,
-                        onChanged: (value) {},
-                      ),
-                      RoundedInputField(
-                        hintText: "jkowalski@example.com",
-                        icon: Icons.email_outlined,
-                        onChanged: (value) {},
-                      ),
-                      RoundedInputField(
-                        hintText: "ul. Kościelna 67 m.106, 00-001 Warszawa",
+                        hintText: "Ulica",
+                        controller: streetController,
                         icon: Icons.location_pin,
-                        onChanged: (value) {},
+                      ),
+                      RoundedInputField(
+                        hintText: "Numer budynku/mieszkania",
+                        controller: apartmentNumberController,
+                        icon: Icons.location_pin,
+                      ),
+                      RoundedInputField(
+                        hintText: "Kod pocztowy",
+                        controller: zipCodeController,
+                        icon: Icons.location_pin,
+                      ),
+                      RoundedInputField(
+                        hintText: "Miasto",
+                        controller: cityController,
+                        icon: Icons.location_pin,
                       ),
                       SizedBox(height: 15),
                       RoundedButton(
                         text: "SAVE",
                         color: mainColor,
                         press: () {
+                          final UserModel user = new UserModel(
+                            context.read<User>().uid,
+                            firstNameController.value.text,
+                            lastNameController.value.text,
+                            cityController.value.text,
+                            zipCodeController.value.text,
+                            streetController.value.text,
+                            apartmentNumberController.value.text,
+                          );
+                          firestoreService.createUser(user);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -137,5 +164,16 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    streetController.dispose();
+    apartmentNumberController.dispose();
+    zipCodeController.dispose();
+    cityController.dispose();
+    super.dispose();
   }
 }

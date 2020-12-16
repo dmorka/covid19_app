@@ -18,8 +18,8 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   String errorMessage = '';
-  String emailAddress = '';
-  String password = '';
+  final emailAddressController = new TextEditingController();
+  final passwordController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +49,11 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: 15),
               RoundedInputField(
                 hintText: "Adres email",
-                onChanged: (value) {
-                  emailAddress = value;
-                },
+                controller: emailAddressController,
               ),
               SizedBox(height: size.height * 0.02),
               RoundedPasswordField(
-                onChanged: (value) {
-                  password = value;
-                },
+                controller: passwordController,
               ),
               SizedBox(height: size.height * 0.04),
               RoundedButton(
@@ -66,7 +62,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   context
                       .read<AuthenticationProvider>()
                       .signUp(
-                          email: emailAddress.trim(), password: password.trim())
+                          email: emailAddressController.value.text.trim(),
+                          password: passwordController.value.text.trim())
                       .then((String result) {
                     if (context.read<User>() != null) {
                       Navigator.push(context,
@@ -100,5 +97,12 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    emailAddressController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

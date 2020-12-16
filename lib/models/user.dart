@@ -1,4 +1,4 @@
-class User {
+class UserModel {
   static final RegExp isValidZip = new RegExp(r"^$|\d{2}-\d{3}");
   String _id;
   String _firstName;
@@ -8,9 +8,10 @@ class User {
   String _street;
   String _apartmentNumber;
 
-  User(this._id, this._firstName, this._lastName, this._city, this._zipCode, this._street, this._apartmentNumber);
+  UserModel(this._id, this._firstName, this._lastName, this._city,
+      this._zipCode, this._street, this._apartmentNumber);
 
-  User.map(dynamic obj) {
+  UserModel.map(dynamic obj) {
     this._zipCode = obj['zipCode'];
     this._id = obj['id'];
     this._firstName = obj['firstName'];
@@ -43,7 +44,7 @@ class User {
     return map;
   }
 
-  User.fromMap(Map<String, dynamic> map) {
+  UserModel.fromMap(Map<String, dynamic> map) {
     if (!isValidZip.hasMatch(map['zipCode'])) {
       throw new ArgumentError("Zip code invalid format!");
     }

@@ -3,11 +3,13 @@ import 'package:covid19_app/core/consts.dart';
 import 'package:flutter/material.dart';
 
 class RoundedInputField extends StatelessWidget {
+  final TextEditingController controller;
   final String hintText;
   final IconData icon;
   final ValueChanged<String> onChanged;
   const RoundedInputField({
     Key key,
+    this.controller,
     this.hintText,
     this.icon = Icons.person,
     this.onChanged,
@@ -18,6 +20,7 @@ class RoundedInputField extends StatelessWidget {
     return TextFieldContainer(
       child: TextField(
         onChanged: onChanged,
+        controller: controller,
         style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           icon: Icon(
