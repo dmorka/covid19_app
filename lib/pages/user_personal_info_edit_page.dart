@@ -15,7 +15,7 @@ class UserPersonalInfoEditPage extends StatefulWidget {
 }
 
 class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
-  FirebaseFirestoreService firestoreService = new FirebaseFirestoreService();
+  FirebaseFirestoreService fireStoreService = new FirebaseFirestoreService();
   String id;
   final firstNameController = new TextEditingController();
   final lastNameController = new TextEditingController();
@@ -23,8 +23,16 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
   final apartmentNumberController = new TextEditingController();
   final zipCodeController = new TextEditingController();
   final cityController = new TextEditingController();
+  bool areValuesInitialized = false;
   @override
   Widget build(BuildContext context) {
+    if (!areValuesInitialized) {
+      fireStoreService
+          .getUser(context.watch<User>().uid)
+          .then((value) => setTextFieldInitValues(value));
+      areValuesInitialized = true;
+    }
+
     return ProtectedContainer(
       body: Scaffold(
         backgroundColor: backgroundColor,
@@ -137,14 +145,14 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                         press: () {
                           final UserModel user = new UserModel(
                             context.read<User>().uid,
-                            firstNameController.value.text,
-                            lastNameController.value.text,
-                            cityController.value.text,
-                            zipCodeController.value.text,
-                            streetController.value.text,
-                            apartmentNumberController.value.text,
+                            firstNameController.text,
+                            lastNameController.text,
+                            cityController.text,
+                            zipCodeController.text,
+                            streetController.text,
+                            apartmentNumberController.text,
                           );
-                          firestoreService.createUser(user);
+                          fireStoreService.createUser(user);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -175,5 +183,16 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
     zipCodeController.dispose();
     cityController.dispose();
     super.dispose();
+  }
+
+  void setTextFieldInitValues(UserModel value) {
+    if (value != null) {
+      firstNameController.text = value.firstName;
+      lastNameController.text = value.lastName;
+      streetController.text = value.street;
+      apartmentNumberController.text = value.apartmentNumber;
+      zipCodeController.text = value.zipCode;
+      cityController.text = value.city;
+    }
   }
 }
