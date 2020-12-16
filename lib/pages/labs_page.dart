@@ -6,6 +6,7 @@ import 'package:covid19_app/components/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
+import 'package:covid19_app/components/search_widget.dart';
 
 class LabsPage extends StatefulWidget {
   @override
@@ -13,9 +14,35 @@ class LabsPage extends StatefulWidget {
 }
 
 class _LabsPage extends State<LabsPage> {
-  List<Widget> itemsData = [];
-
+  List<CovidLaboratoriesModel> allLabsList = [];
+  List<CovidLaboratoriesModel> filteredLabsList = [];
+  SearchWidget _searchWidget;
+  final searchWidgetKey = new GlobalKey<SearchWidgetState>();
   ScrollController controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    ApiDataProvider().fetchCovidLaboratories().then((value) {
+      setState(() {
+        allLabsList = value;
+        filteredLabsList = List.from(allLabsList);
+      });
+    });
+
+    _searchWidget = SearchWidget(
+      key: searchWidgetKey,
+      listener: () {
+        setState(() {
+          filteredLabsList = List.from(allLabsList.where(
+                  (item) => item.fullAddress.toLowerCase().trim().contains(
+                  searchWidgetKey.currentState.searchQuery.toLowerCase().trim()))
+          );
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,26 +84,21 @@ class _LabsPage extends State<LabsPage> {
   }
 
   Widget _buildLabsList() {
-    return FutureBuilder<List<CovidLaboratoriesModel>>(
-      future: ApiDataProvider().fetchCovidLaboratories(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) print(snapshot.error);
-
-        return snapshot.hasData
-            ? ListView.builder(
-                shrinkWrap: true,
-                controller: controller,
-                itemCount: snapshot.data.length,
-                physics: BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return LabsListItem(snapshot.data[index]);
-                })
-            : Center(
-                child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Colors.purple),
-              ));
-      },
-    );
+    if (allLabsList.isEmpty) {
+      return Center(
+          child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(Colors.purple),
+      ));
+    } else {
+      return ListView.builder(
+          shrinkWrap: true,
+          controller: controller,
+          itemCount: filteredLabsList.length,
+          physics: BouncingScrollPhysics(),
+          itemBuilder: (context, index) {
+            return LabsListItem(filteredLabsList[index]);
+      });
+    }
   }
 
   Widget _buildHeader() {
@@ -95,6 +117,10 @@ class _LabsPage extends State<LabsPage> {
             ),
           ),
         ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: _searchWidget,
+        )
       ],
     );
   }
