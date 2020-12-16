@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/models/user.dart';
 
-final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
-final CollectionReference annoucementCollection = FirebaseFirestore.instance.collection('annoucements');
+final CollectionReference userCollection = FirebaseFirestore.instance.collection("users");
+final CollectionReference annoucementCollection = FirebaseFirestore.instance.collection("annoucements");
 
 class FirebaseFirestoreService {
 
@@ -50,6 +50,24 @@ class FirebaseFirestoreService {
       print('error: $error');
       return null;
     });
+  }
+
+  Future<dynamic> getAnnoucements(String field, String equalTo) async {
+    List<Annoucement> annoucements = new List<Annoucement>();
+
+    await annoucementCollection
+      .where(field, isEqualTo: equalTo)
+      .get()
+      .then((value) {
+       if(value.size > 0){
+         value.docs.forEach((element) =>
+             annoucements.add(Annoucement.map(element)));
+        } else {
+         print("Empty query!");
+        }
+      });
+
+    return annoucements;
   }
 
   Future<dynamic> updateUser(User user) async {

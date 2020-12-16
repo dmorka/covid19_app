@@ -4,6 +4,7 @@ class Annoucement {
   String _title;
   String _description;
   DateTime _dueDate;
+  // String _dueDate;
 
   Annoucement(this._id, this._userId, this._title, this._description, this._dueDate);
 
@@ -12,14 +13,14 @@ class Annoucement {
     this._userId = obj['userId'];
     this._title = obj['title'];
     this._description = obj['description'];
-    this._dueDate = DateTime.parse(obj['dueDate'].toDate().toString());
+    this._dueDate = obj['dueDate'].toDate();
     // this._dueDate = obj['dueDate'];
   }
 
   String get id => _id;
   String get title => _title;
   String get description => _description;
-  // DateTime get dueDate => _dueDate;
+  // String get dueDate => _dueDate;
   DateTime get dueDate => _dueDate;
 
   Map<String, dynamic> toMap() {
