@@ -16,7 +16,8 @@ class UserPersonalInfoEditPage extends StatefulWidget {
 
 class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
   String id;
-  final RegExp phoneRegExp = new RegExp(r"^[\+]?[(]?[0-9]{2}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$");
+  final RegExp phoneRegExp =
+      new RegExp(r"^[\+]?[(]?[0-9]{2}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$");
   final RegExp zipCodeRegExp = new RegExp(r"^$|\d{2}-\d{3}");
   final firstNameController = new TextEditingController();
   final lastNameController = new TextEditingController();
@@ -141,7 +142,6 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                         icon: Icons.location_pin,
                       ),
                       RoundedInputField(
-                        regExp: r"^[\+]?[(]?[0-9]{2}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$",
                         hintText: "Numer telefonu",
                         controller: phoneNumberController,
                         icon: Icons.smartphone,
@@ -151,26 +151,24 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                         text: "SAVE",
                         color: mainColor,
                         press: () {
-                          if(!phoneRegExp.hasMatch(phoneNumberController.text)) {
-                            phoneNumberController.text =
-                            "Invalid format!";
+                          if (!phoneRegExp
+                              .hasMatch(phoneNumberController.text)) {
+                            phoneNumberController.text = "Invalid format!";
                             return;
                           }
-                          if(!zipCodeRegExp.hasMatch(zipCodeController.text)) {
-                            zipCodeController.text =
-                            "Invalid format!";
+                          if (!zipCodeRegExp.hasMatch(zipCodeController.text)) {
+                            zipCodeController.text = "Invalid format!";
                             return;
                           }
                           final UserModel user = new UserModel(
-                            context.read<User>().uid,
-                            firstNameController.text,
-                            lastNameController.text,
-                            cityController.text,
-                            zipCodeController.text,
-                            streetController.text,
-                            apartmentNumberController.text,
-                            phoneNumberController.text
-                          );
+                              context.read<User>().uid,
+                              firstNameController.text,
+                              lastNameController.text,
+                              cityController.text,
+                              zipCodeController.text,
+                              streetController.text,
+                              apartmentNumberController.text,
+                              phoneNumberController.text);
                           FirebaseFirestoreService().updateUser(user);
                           Navigator.push(
                             context,

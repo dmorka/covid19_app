@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_maps/maps.dart';
 import 'package:covid19_app/utils/services/rest_api_service.dart';
 import 'package:covid19_app/models/statistics.dart';
+import 'package:syncfusion_flutter_maps/maps.dart';
 
 class PolandMap extends StatefulWidget {
   const PolandMap({Key key}) : super(key: key);
@@ -36,8 +36,8 @@ class _PolandMapState extends State<PolandMap> {
                   ? SfMaps(
                       layers: <MapShapeLayer>[
                         MapShapeLayer(
-                          delegate: MapShapeLayerDelegate(
-                            shapeFile: 'assets/maps/poland-map.json',
+                          source: MapShapeSource.asset(
+                            'assets/maps/poland-map.json',
                             shapeDataField: 'STATE_NAME',
                             dataCount: snapshot.data.length,
                             primaryValueMapper: (int index) =>
@@ -73,12 +73,19 @@ class _PolandMapState extends State<PolandMap> {
                                   color: Color.fromRGBO(49, 0, 71, 1),
                                   text: '1000 <'),
                             ],
-                            shapeTooltipTextMapper: (int index) =>
-                                snapshot.data[index].infectedCount.toString(),
                           ),
+                          shapeTooltipBuilder:
+                              (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                snapshot.data[index].infectedCount.toString(),
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            );
+                          },
                           showDataLabels: true,
-                          legendSource: MapElement.shape,
-                          enableShapeTooltip: true,
+                          legend: MapLegend(MapElement.shape),
                           tooltipSettings: MapTooltipSettings(
                               color: Colors.purple,
                               strokeColor: Colors.white,
@@ -105,5 +112,3 @@ class _PolandMapState extends State<PolandMap> {
     );
   }
 }
-
-

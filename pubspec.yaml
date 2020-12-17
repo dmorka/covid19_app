@@ -27,12 +27,9 @@ dependencies:
   firebase_auth: ^0.18.4
   provider: ^4.3.2+3
   cloud_firestore: ^0.14.4
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   charts_flutter: ^0.9.0
-  syncfusion_flutter_maps: ^18.3.52-beta
+  syncfusion_flutter_maps: ^18.4.30-beta
   http: ^0.12.2
   url_launcher: ^5.0.2
   maps_launcher: ^1.2.2+2
