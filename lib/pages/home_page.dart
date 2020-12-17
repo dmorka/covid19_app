@@ -30,8 +30,6 @@ class _HomePageState extends State<HomePage> {
         }));
   }
 
-  FirebaseFirestoreService db = new FirebaseFirestoreService();
-
   @override
   Widget build(BuildContext context) {
     return ProtectedContainer(
@@ -358,17 +356,11 @@ class _HomePageState extends State<HomePage> {
                 textAlign: TextAlign.center,
                 color: Colors.blue,
                 press: () {
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (BuildContext context) {
-                  //       return AnnoucmentDialog();
-                  //     });
-                  String userId = FirebaseAuth.instance.currentUser.uid;
-                  String title = "test3";
-                  String description = "abc abc abc abc";
-                  DateTime dueDate = new DateTime.now();
-                  Annoucement a = new Annoucement(userId, title, description, dueDate);
-                  db.createAnnoucement(a);
+                  showDialog(
+                     context: context,
+                     builder: (BuildContext context) {
+                     return AnnouncementDialog();
+                  });
                 },
                 padding: EdgeInsets.all(20),
               )),

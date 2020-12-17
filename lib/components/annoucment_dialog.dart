@@ -1,20 +1,32 @@
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/components/rounded_input_field.dart';
 import 'package:covid19_app/core/consts.dart';
+import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/models/annoucement.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:intl/intl.dart';
+import 'package:covid19_app/components/rounded_datetime_input_field.dart';
 
-class AnnoucmentDialog extends StatelessWidget {
-  AnnoucmentDialog({
+class AnnouncementDialog extends StatefulWidget {
+  AnnouncementDialog({
     Key key,
   }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _AnnouncementDialog();
+}
+
+class _AnnouncementDialog extends State<AnnouncementDialog> {
+
+  _AnnouncementDialog();
 
   final titleController = new TextEditingController();
   final descriptionController = new TextEditingController();
   final locationController = new TextEditingController();
-  final dueDateController = new TextEditingController();
+  var dueDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +53,25 @@ class AnnoucmentDialog extends StatelessWidget {
                 icon: Icons.topic,
               ),
               SizedBox(height: 20),
-              RoundedInputField(
+              RoundedDatetimeInputField(
                 hintText: "Czas dostarczenia",
-                controller: dueDateController,
-                icon: Icons.date_range_rounded,
+                icon: Icons.date_range,
+                onSaved: (date) => setState(() {
+                  dueDate = date;
+                }),
               ),
               SizedBox(height: 25),
               RoundedButton(
-                text: "ADD",
+                text: "Dodaj",
                 press: () {
-                  /*final announcement = new Annoucement(
-                      "",
+                  final announcement = new Annoucement(
                       context.read<User>().uid,
                       titleController.text,
                       descriptionController.text,
-                      dueDateController.text
-                  );*/
+                      dueDate
+                  );
+                  FirebaseFirestoreService().createAnnoucement(announcement);
+                  Navigator.pop(context);
                 },
               ),
             ],
