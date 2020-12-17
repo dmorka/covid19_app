@@ -1,6 +1,9 @@
+import 'package:covid19_app/components/custom_appbar_widget.dart';
+import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
+import 'package:covid19_app/core/flutter_icons.dart';
 import 'package:covid19_app/pages/user_personal_info_edit_page.dart';
 import 'package:flutter/material.dart';
 
@@ -16,78 +19,95 @@ class _UserProfileState extends State<UserProfilePage> {
       body: Scaffold(
         // resizeToAvoidBottomPadding: false,
         backgroundColor: backgroundColor,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: mainColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25),
-                  ),
+        drawer: MenuDrawer(),
+        body: Builder( builder: (context) =>
+        SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: mainColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
                 ),
-                padding: EdgeInsets.only(top: 25, bottom: 30),
-                child: Stack(
-                  children: <Widget>[
-                    Image.asset("assets/images/virus2.png"),
-                    _buildHeader(),
+              ),
+              padding: EdgeInsets.only(top: 25, bottom: 30),
+              child: Stack(
+                children: <Widget>[
+                  Image.asset("assets/images/virus2.png"),
+                  _buildHeader(context),
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: RichText(
+                text: TextSpan(
+                  text: "Lista Aktywnych ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: "Zamówień:",
+                      style: TextStyle(
+                        color: mainColor,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 15),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: RichText(
-                  text: TextSpan(
-                    text: "Lista Aktywnych ",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                      color: Colors.black87,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "Zamówień:",
-                        style: TextStyle(
-                          color: mainColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
+        ),
+      ),
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          alignment: Alignment.centerRight,
-          margin: const EdgeInsets.only(top: 10, right: 10, bottom: 15),
-          child: RoundedButton(
-            text: "Edytuj",
-            color: Colors.white30,
-            size: const Size(80, 30),
-            padding: null,
-            press: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UserPersonalInfoEditPage()),
-              );
-            },
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                FlutterIcons.menu,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+                },
+            ),
+            Container(
+              // alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 10, right: 10, bottom: 15),
+              child: RoundedButton(
+                text: "Edytuj",
+                color: Colors.white30,
+                size: const Size(80, 30),
+                padding: null,
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserPersonalInfoEditPage()),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
         Row(
-          children: [
+          children: <Widget>[
             Container(
               margin: const EdgeInsets.all(16),
               width: 120,
