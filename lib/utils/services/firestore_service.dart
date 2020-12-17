@@ -8,6 +8,7 @@ final CollectionReference userCollection =
 final CollectionReference annoucementCollection =
     FirebaseFirestore.instance.collection('annoucements');
 
+
 class FirebaseFirestoreService {
   static final FirebaseFirestoreService _instance =
       new FirebaseFirestoreService._internal();
@@ -41,6 +42,7 @@ class FirebaseFirestoreService {
     final TransactionHandler createTransaction = (Transaction tx) async {
       final DocumentSnapshot ds = await tx.get(annoucementCollection.doc());
 
+      annoucement.id = ds.id;
       final Map<String, dynamic> data = annoucement.toMap();
 
       await tx.set(ds.reference, data, SetOptions(merge: true));

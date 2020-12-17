@@ -5,11 +5,14 @@ import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
+import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
 import 'package:covid19_app/pages/announcements_page.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
+import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:covid19_app/utils/services/rest_api_service.dart';
 import 'package:covid19_app/models/statistics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,6 +29,8 @@ class _HomePageState extends State<HomePage> {
           _generalStatisticsModel = val;
         }));
   }
+
+  FirebaseFirestoreService db = new FirebaseFirestoreService();
 
   @override
   Widget build(BuildContext context) {
@@ -353,11 +358,17 @@ class _HomePageState extends State<HomePage> {
                 textAlign: TextAlign.center,
                 color: Colors.blue,
                 press: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AnnoucmentDialog();
-                      });
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (BuildContext context) {
+                  //       return AnnoucmentDialog();
+                  //     });
+                  String userId = FirebaseAuth.instance.currentUser.uid;
+                  String title = "test3";
+                  String description = "abc abc abc abc";
+                  DateTime dueDate = new DateTime.now();
+                  Annoucement a = new Annoucement(userId, title, description, dueDate);
+                  db.createAnnoucement(a);
                 },
                 padding: EdgeInsets.all(20),
               )),

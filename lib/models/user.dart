@@ -28,6 +28,13 @@ class UserModel {
   String get zipCode => _zipCode;
   String get street => _street;
   String get apartmentNumber => _apartmentNumber;
+  set id(id) => this._id = id;
+  set firstName(firstName) => this._firstName = firstName;
+  set lastName(lastName) => this._lastName = lastName;
+  set city(city) => this._city = city;
+  set zipCode(zipCode) => this._zipCode = zipCode;
+  set street(street) => this._street = street;
+  set apartmentNumber(apartmentNumber) => this._apartmentNumber = apartmentNumber;
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();

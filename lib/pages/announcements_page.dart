@@ -7,6 +7,7 @@ import 'package:covid19_app/components/announcements_list_item.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
 
+
 class AnnouncementsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _AnnouncementsPageState();

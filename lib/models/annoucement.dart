@@ -4,9 +4,8 @@ class Annoucement {
   String _title;
   String _description;
   DateTime _dueDate;
-  // String _dueDate;
 
-  Annoucement(this._id, this._userId, this._title, this._description, this._dueDate);
+  Annoucement(this._userId, this._title, this._description, this._dueDate);
 
   Annoucement.map(dynamic obj) {
     this._id = obj['id'];
@@ -14,14 +13,18 @@ class Annoucement {
     this._title = obj['title'];
     this._description = obj['description'];
     this._dueDate = obj['dueDate'].toDate();
-    // this._dueDate = obj['dueDate'];
   }
 
   String get id => _id;
+  String get userId => _userId;
   String get title => _title;
   String get description => _description;
-  // String get dueDate => _dueDate;
   DateTime get dueDate => _dueDate;
+  set id(String id) => this._id = id;
+  set userId(String userId) => this._userId = userId;
+  set title(String title) => this._title = title;
+  set description(String description) => this._description = description;
+  set dueDate(DateTime dueDate) => this._dueDate = dueDate;
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
@@ -31,7 +34,7 @@ class Annoucement {
     map['userId'] = _userId;
     map['title'] = _title;
     map['description'] = _description;
-    map['dueDate'] = _dueDate; //.toString();
+    map['dueDate'] = _dueDate;
 
     return map;
   }

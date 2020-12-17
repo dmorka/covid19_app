@@ -1,4 +1,5 @@
 import 'package:covid19_app/pages/home_page.dart';
+import 'package:covid19_app/pages/intro_page.dart';
 import 'package:covid19_app/utils/services/authentication_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           fontFamily: "Ubuntu",
         ),
-        home: HomePage(),
+        home: IntroPage(),
       ),
     );
   }
