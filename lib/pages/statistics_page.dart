@@ -95,7 +95,7 @@ class _StatisticPageState extends State<StatisticPage> {
                               child: DonutPieChart.createChart([
                                 new Statistics(0, snapshot.data.recovered,
                                     Color.fromRGBO(209, 106, 255, 1)),
-                                new Statistics(1, snapshot.data.cases,
+                                new Statistics(1, snapshot.data.cases - snapshot.data.recovered - snapshot.data.deaths,
                                     Color.fromRGBO(150, 20, 208, 1)),
                                 new Statistics(2, snapshot.data.deaths,
                                     Color.fromRGBO(49, 0, 71, 1)),
@@ -107,8 +107,8 @@ class _StatisticPageState extends State<StatisticPage> {
                               children: <Widget>[
                                 _buildStatisticItem(
                                     Color.fromRGBO(150, 20, 208, 1),
-                                    "Potwierdzonych",
-                                    numFormatter.format(snapshot.data.cases)),
+                                    "Chorych aktualnie",
+                                    numFormatter.format(snapshot.data.cases - snapshot.data.recovered - snapshot.data.deaths)),
                                 _buildStatisticItem(
                                     Color.fromRGBO(209, 106, 255, 1),
                                     "Ozdrowienia",

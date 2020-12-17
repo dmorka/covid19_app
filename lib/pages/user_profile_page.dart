@@ -8,6 +8,10 @@ import 'package:covid19_app/pages/user_personal_info_edit_page.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:covid19_app/models/annoucement.dart';
+import 'package:covid19_app/utils/services/firestore_service.dart';
+import 'package:covid19_app/components/announcements_list_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -16,8 +20,29 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfilePage> {
+
+  List<Annoucement> announcementsList = [];
+  ScrollController controller = ScrollController();
+
+  void getPostsData(String uid) {
+    FirebaseFirestoreService()
+        .getAnnoucements("userId", uid)
+        .then((value) {
+      setState(() {
+        announcementsList = value;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    getPostsData(context.watch<User>().uid);
+
     return ProtectedContainer(
       body: Scaffold(
         // resizeToAvoidBottomPadding: false,
@@ -49,7 +74,7 @@ class _UserProfileState extends State<UserProfilePage> {
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: RichText(
                     text: TextSpan(
-                      text: "Lista Aktywnych ",
+                      text: "Lista Wystawionych ",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -57,7 +82,7 @@ class _UserProfileState extends State<UserProfilePage> {
                       ),
                       children: [
                         TextSpan(
-                          text: "Zamówień:",
+                          text: "Ogłoszeń:",
                           style: TextStyle(
                             color: mainColor,
                           ),
@@ -66,12 +91,34 @@ class _UserProfileState extends State<UserProfilePage> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: _buildAnnouncements(),
+                )
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildAnnouncements() {
+    if (announcementsList.isEmpty) {
+      return Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(Colors.purple),
+          ));
+    } else {
+      return ListView.builder(
+          shrinkWrap: true,
+          controller: controller,
+          itemCount: announcementsList.length,
+          physics: BouncingScrollPhysics(),
+          itemBuilder: (context, index) {
+            return AnnouncementsListItem(announcementsList[index]);
+          });
+    }
   }
 
   Widget _buildHeader(BuildContext context) {

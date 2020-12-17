@@ -352,7 +352,7 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               Expanded(
                   child: RoundedButton(
-                text: "DODAJ OGŁOSZENIE",
+                text: "DODAJ\nOGŁOSZENIE",
                 textAlign: TextAlign.center,
                 color: Colors.blue,
                 press: () {

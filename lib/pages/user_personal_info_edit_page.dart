@@ -39,9 +39,8 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
     return ProtectedContainer(
       body: Scaffold(
         backgroundColor: backgroundColor,
-        body: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
+        body: Builder(
+          builder: (context) => SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -109,79 +108,79 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      RoundedInputField(
-                        hintText: "Imię",
-                        controller: firstNameController,
-                      ),
-                      RoundedInputField(
-                        hintText: "Nazwisko",
-                        controller: lastNameController,
-                      ),
-                      RoundedInputField(
-                        hintText: "Ulica",
-                        controller: streetController,
-                        icon: Icons.location_pin,
-                      ),
-                      RoundedInputField(
-                        hintText: "Numer budynku/mieszkania",
-                        controller: apartmentNumberController,
-                        icon: Icons.location_pin,
-                      ),
-                      RoundedInputField(
-                        hintText: "Kod pocztowy",
-                        controller: zipCodeController,
-                        icon: Icons.location_pin,
-                      ),
-                      RoundedInputField(
-                        hintText: "Miasto",
-                        controller: cityController,
-                        icon: Icons.location_pin,
-                      ),
-                      RoundedInputField(
-                        hintText: "Numer telefonu",
-                        controller: phoneNumberController,
-                        icon: Icons.smartphone,
-                      ),
-                      SizedBox(height: 15),
-                      RoundedButton(
-                        text: "SAVE",
-                        color: mainColor,
-                        press: () {
-                          if (!phoneRegExp
-                              .hasMatch(phoneNumberController.text)) {
-                            phoneNumberController.text = "Invalid format!";
-                            return;
-                          }
-                          if (!zipCodeRegExp.hasMatch(zipCodeController.text)) {
-                            zipCodeController.text = "Invalid format!";
-                            return;
-                          }
-                          final UserModel user = new UserModel(
-                              context.read<User>().uid,
-                              firstNameController.text,
-                              lastNameController.text,
-                              cityController.text,
-                              zipCodeController.text,
-                              streetController.text,
-                              apartmentNumberController.text,
-                              phoneNumberController.text);
-                          FirebaseFirestoreService().updateUser(user);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return UserProfilePage();
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    RoundedInputField(
+                      hintText: "Imię",
+                      controller: firstNameController,
+                    ),
+                    RoundedInputField(
+                      hintText: "Nazwisko",
+                      controller: lastNameController,
+                    ),
+                    RoundedInputField(
+                      hintText: "Ulica",
+                      controller: streetController,
+                      icon: Icons.location_pin,
+                    ),
+                    RoundedInputField(
+                      hintText: "Numer budynku/mieszkania",
+                      controller: apartmentNumberController,
+                      icon: Icons.location_pin,
+                    ),
+                    RoundedInputField(
+                      hintText: "Kod pocztowy",
+                      controller: zipCodeController,
+                      icon: Icons.location_pin,
+                    ),
+                    RoundedInputField(
+                      hintText: "Miasto",
+                      controller: cityController,
+                      icon: Icons.location_pin,
+                    ),
+                    RoundedInputField(
+                      hintText: "Numer telefonu",
+                      controller: phoneNumberController,
+                      icon: Icons.smartphone,
+                    ),
+                    SizedBox(height: 15),
+                    RoundedButton(
+                      text: "SAVE",
+                      color: mainColor,
+                      press: () {
+                        if(!phoneRegExp.hasMatch(phoneNumberController.text)) {
+                          phoneNumberController.text =
+                          "Invalid format!";
+                          return;
+                        }
+                        if(!zipCodeRegExp.hasMatch(zipCodeController.text)) {
+                          zipCodeController.text =
+                          "Invalid format!";
+                          return;
+                        }
+                        final UserModel user = new UserModel(
+                          context.read<User>().uid,
+                          firstNameController.text,
+                          lastNameController.text,
+                          cityController.text,
+                          zipCodeController.text,
+                          streetController.text,
+                          apartmentNumberController.text,
+                          phoneNumberController.text
+                        );
+                        FirebaseFirestoreService().updateUser(user);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return UserProfilePage();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 )
               ],
             ),
