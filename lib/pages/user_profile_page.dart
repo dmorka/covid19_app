@@ -21,16 +21,18 @@ class UserProfilePage extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfilePage> {
 
-  List<Annoucement> announcementsList = [];
+  List<Annoucement> announcementsList;
   ScrollController controller = ScrollController();
 
   void getPostsData(String uid) {
     FirebaseFirestoreService()
         .getAnnoucements("userId", uid)
         .then((value) {
-      setState(() {
-        announcementsList = value;
-      });
+          if (mounted){
+            setState(() {
+              announcementsList = value;
+            });
+          }
     });
   }
 
@@ -105,11 +107,9 @@ class _UserProfileState extends State<UserProfilePage> {
 
   Widget _buildAnnouncements() {
     if (announcementsList.isEmpty) {
-      return Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation(Colors.purple),
-          ));
-    } else {
+      return Column();
+    }
+    else {
       return ListView.builder(
           shrinkWrap: true,
           controller: controller,
@@ -160,12 +160,12 @@ class _UserProfileState extends State<UserProfilePage> {
           children: <Widget>[
             Container(
               margin: const EdgeInsets.all(16),
-              width: 120,
-              height: 120,
+              width: 80,
+              height: 80,
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.white, width: 5),
                   borderRadius: BorderRadius.all(
-                    Radius.circular(100),
+                    Radius.circular(70),
                   ),
                   image: DecorationImage(
                       fit: BoxFit.cover,
@@ -174,7 +174,7 @@ class _UserProfileState extends State<UserProfilePage> {
             FutureBuilder<UserModel>(
                 future: FirebaseFirestoreService().getUser(context.watch<User>().uid),
                 builder: (context, snapshot) {
-                  if (snapshot.hasError) print(snapshot.error);
+                  // if (snapshot.hasError) print(snapshot.error);
 
                   return snapshot.hasData
                       ? Column(

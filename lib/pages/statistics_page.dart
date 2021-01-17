@@ -70,7 +70,7 @@ class _StatisticPageState extends State<StatisticPage> {
         ],
       ),
       margin: EdgeInsets.symmetric(horizontal: 16),
-      padding: EdgeInsets.all(24),
+      padding: EdgeInsets.all(5),
       child: Column(
         children: [
           Text(
@@ -101,8 +101,8 @@ class _StatisticPageState extends State<StatisticPage> {
                                     Color.fromRGBO(49, 0, 71, 1)),
                               ]),
                             ),
-                            SizedBox(width: 5),
-                            Column(
+                            // SizedBox(width: 5),
+                            Flexible(child:Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 _buildStatisticItem(
@@ -119,7 +119,7 @@ class _StatisticPageState extends State<StatisticPage> {
                                     "Zgony",
                                     numFormatter.format(snapshot.data.deaths)),
                               ],
-                            ),
+                            )),
                           ],
                         )
                       : Center(

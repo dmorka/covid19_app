@@ -71,7 +71,7 @@ class FirebaseFirestoreService {
         value.docs
             .forEach((element) => annoucements.add(Annoucement.map(element)));
       } else {
-        print("Empty query!");
+        print("Empty query2!");
       }
     });
 
@@ -89,7 +89,7 @@ class FirebaseFirestoreService {
         value.docs
             .forEach((element) => annoucements.add(Annoucement.map(element)));
       } else {
-        print("Empty query!");
+        print("Empty query1!");
       }
     });
 
@@ -104,8 +104,7 @@ class FirebaseFirestoreService {
   Future<dynamic> updateUser(UserModel user) async {
     final TransactionHandler updateTransaction = (Transaction tx) async {
       final DocumentSnapshot ds = await tx.get(userCollection.doc(user.id));
-
-      await tx.update(ds.reference, user.toMap());
+      await tx.set(ds.reference, user.toMap(), SetOptions(merge: true));
       return {'updated': true};
     };
 
