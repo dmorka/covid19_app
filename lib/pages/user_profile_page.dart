@@ -20,19 +20,16 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfilePage> {
-
   List<Annoucement> announcementsList;
   ScrollController controller = ScrollController();
 
   void getPostsData(String uid) {
-    FirebaseFirestoreService()
-        .getAnnoucements("userId", uid)
-        .then((value) {
-          if (mounted){
-            setState(() {
-              announcementsList = value;
-            });
-          }
+    FirebaseFirestoreService().getAnnoucements("userId", uid).then((value) {
+      if (mounted) {
+        setState(() {
+          announcementsList = value;
+        });
+      }
     });
   }
 
@@ -43,7 +40,7 @@ class _UserProfileState extends State<UserProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    getPostsData(context.watch<User>().uid);
+    // getPostsData(context.watch<User>().uid);
 
     return ProtectedContainer(
       body: Scaffold(
@@ -94,9 +91,25 @@ class _UserProfileState extends State<UserProfilePage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: _buildAnnouncements(),
-                )
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: FutureBuilder<List<Annoucement>>(
+                        future: FirebaseFirestoreService().getAnnoucements(
+                            "userId", context.watch<User>().uid),
+                        builder: (context, snapshot) {
+                          // if (snapshot.hasError) print(snapshot.error);
+
+                          return snapshot.hasData
+                              ? ListView.builder(
+                                  shrinkWrap: true,
+                                  controller: controller,
+                                  itemCount: snapshot.data.length,
+                                  physics: BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return AnnouncementsListItem(
+                                        snapshot.data[index]);
+                                  })
+                              : Column();
+                        }))
               ],
             ),
           ),
@@ -106,10 +119,9 @@ class _UserProfileState extends State<UserProfilePage> {
   }
 
   Widget _buildAnnouncements() {
-    if (announcementsList.isEmpty) {
+    if (announcementsList == null || announcementsList.isEmpty) {
       return Column();
-    }
-    else {
+    } else {
       return ListView.builder(
           shrinkWrap: true,
           controller: controller,
@@ -172,7 +184,8 @@ class _UserProfileState extends State<UserProfilePage> {
                       image: AssetImage("assets/images/profile.jpg"))),
             ),
             FutureBuilder<UserModel>(
-                future: FirebaseFirestoreService().getUser(context.watch<User>().uid),
+                future: FirebaseFirestoreService()
+                    .getUser(context.watch<User>().uid),
                 builder: (context, snapshot) {
                   // if (snapshot.hasError) print(snapshot.error);
 
@@ -195,11 +208,11 @@ class _UserProfileState extends State<UserProfilePage> {
                             _buildUserPersonalDataItem(
                                 Icons.phone, snapshot.data.phoneNumber),
                             SizedBox(height: 5),
-                            _buildUserPersonalDataItem(
-                                Icons.email_outlined, context.watch<User>().email),
+                            _buildUserPersonalDataItem(Icons.email_outlined,
+                                context.watch<User>().email),
                             SizedBox(height: 5),
-                            _buildUserPersonalDataItem(Icons.location_pin,
-                                snapshot.data.getAddress()),
+                            _buildUserPersonalDataItem(
+                                Icons.location_pin, snapshot.data.getAddress()),
                           ],
                         )
                       : Column();
