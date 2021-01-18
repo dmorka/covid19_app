@@ -21,9 +21,11 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     FirebaseFirestoreService()
         .getAllAnnoucements()
         .then((value) {
-      setState(() {
-        announcementsList = value;
-      });
+      if (mounted){
+        setState(() {
+          announcementsList = value;
+        });
+      }
     });
   }
 

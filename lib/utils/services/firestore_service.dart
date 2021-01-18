@@ -9,7 +9,6 @@ final CollectionReference userCollection =
 final CollectionReference annoucementCollection =
     FirebaseFirestore.instance.collection('annoucements');
 
-
 class FirebaseFirestoreService {
   static final FirebaseFirestoreService _instance =
       new FirebaseFirestoreService._internal();
@@ -61,12 +60,10 @@ class FirebaseFirestoreService {
     });
   }
 
-  Future<dynamic> getAllAnnoucements() async {
+  Future<List<Annoucement>> getAllAnnoucements() async {
     List<Annoucement> annoucements = new List<Annoucement>();
 
-    await annoucementCollection
-        .get()
-        .then((value) {
+    await annoucementCollection.get().then((value) {
       if (value.size > 0) {
         value.docs
             .forEach((element) => annoucements.add(Annoucement.map(element)));
@@ -78,7 +75,8 @@ class FirebaseFirestoreService {
     return annoucements;
   }
 
-  Future<dynamic> getAnnoucements(String field, String equalTo) async {
+  Future<List<Annoucement>> getAnnoucements(
+      String field, String equalTo) async {
     List<Annoucement> annoucements = new List<Annoucement>();
     // print("weszlo");
     await annoucementCollection
@@ -89,7 +87,7 @@ class FirebaseFirestoreService {
         value.docs
             .forEach((element) => annoucements.add(Annoucement.map(element)));
       } else {
-        print("Empty query1!");
+        print("Empty query13!");
       }
     });
 
