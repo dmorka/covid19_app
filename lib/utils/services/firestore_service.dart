@@ -80,7 +80,7 @@ class FirebaseFirestoreService {
 
   Future<dynamic> getAnnoucements(String field, String equalTo) async {
     List<Annoucement> annoucements = new List<Annoucement>();
-
+    // print("weszlo");
     await annoucementCollection
         .where(field, isEqualTo: equalTo)
         .get()

@@ -28,7 +28,7 @@ class _UserProfileState extends State<UserProfilePage> {
     FirebaseFirestoreService()
         .getAnnoucements("userId", uid)
         .then((value) {
-          if (mounted){
+          if (!mounted){
             setState(() {
               announcementsList = value;
             });
@@ -106,7 +106,7 @@ class _UserProfileState extends State<UserProfilePage> {
   }
 
   Widget _buildAnnouncements() {
-    if (announcementsList.isEmpty) {
+    if (announcementsList == null || announcementsList.isEmpty) {
       return Column();
     }
     else {
