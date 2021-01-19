@@ -9,9 +9,7 @@ import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/models/annoucement.dart';
-import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:covid19_app/components/announcements_list_item.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
 class UserProfilePage extends StatefulWidget {

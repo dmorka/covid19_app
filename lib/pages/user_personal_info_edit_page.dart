@@ -1,3 +1,4 @@
+import 'package:covid19_app/components/avatar_dialog.dart';
 import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/components/rounded_input_field.dart';
@@ -27,6 +28,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
   final cityController = new TextEditingController();
   final phoneNumberController = new TextEditingController();
   bool areValuesInitialized = false;
+
   @override
   Widget build(BuildContext context) {
     if (!areValuesInitialized) {
@@ -75,8 +77,8 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                               ),
                             ),
                             child: Container(
-                              width: 40,
-                              height: 40,
+                              width: 50,
+                              height: 50,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                     color: Colors.purple[300], width: 4),
@@ -84,9 +86,19 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                                   Radius.circular(100),
                                 ),
                               ),
-                              child: Icon(
-                                Icons.edit_rounded,
-                                color: Colors.purple[100],
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.edit
+                                ),
+                                iconSize: 28,
+                                color: Colors.white,
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AvatarDialog();
+                                      });
+                                },
                               ),
                             ),
                           ),

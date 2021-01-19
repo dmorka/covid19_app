@@ -11,8 +11,8 @@ class AnnouncementsListItem extends StatelessWidget {
 
   AnnouncementsListItem(this.content);
 
-  factory AnnouncementsListItem.withContent(Map) {
-    return new AnnouncementsListItem(Map);
+  factory AnnouncementsListItem.withContent(map) {
+    return new AnnouncementsListItem(map);
   }
 
   @override
