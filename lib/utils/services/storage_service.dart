@@ -10,20 +10,13 @@ final firebase_storage.FirebaseStorage storage =
 
 class FirebaseStorageService {
   static final FirebaseStorageService _instance =
-  new FirebaseStorageService._internal();
+      new FirebaseStorageService._internal();
 
   factory FirebaseStorageService() => _instance;
 
   FirebaseStorageService._internal();
 
   Future<void> uploadAvatar(File image, String userId) async {
-    // firebase_storage.Reference ref =
-    // TaskSnapshot snapshot = await storage
-    //     .ref()
-    //     .child('avatars/$userId')
-    //     .putFile(image)
-    //     .whenComplete(() => print("Successfully added!"));
-
     try {
       await firebase_storage.FirebaseStorage.instance
           .ref('avatars/$userId')
@@ -31,7 +24,5 @@ class FirebaseStorageService {
     } on firebase_core.FirebaseException catch (e) {
       print("Avatar Error!\n" + e.toString());
     }
-
-
   }
 }

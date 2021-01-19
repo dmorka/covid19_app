@@ -24,6 +24,8 @@ class _AvatarDialog extends State<AvatarDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final userId = context.read<User>().uid;
+
     return Dialog(
       backgroundColor: backgroundColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
@@ -36,22 +38,21 @@ class _AvatarDialog extends State<AvatarDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               RoundedButton(
-                text: "Camera",
-                press: () {
-                  onImageButtonPressed(
-                    ImageSource.camera,
-                    context: context,
-                    capturedImageFile: (s) {
-                      FirebaseStorageService()
-                          .uploadAvatar(new File(s), context.read<User>().uid);
-                      // setState(() {
-                      //   // _imageFile = new File(s);
-                      // });
-                    },
-                  );
-                  Navigator.pop(context);
-                }
-              ),
+                  text: "Camera",
+                  press: () {
+                    onImageButtonPressed(
+                      ImageSource.camera,
+                      context: context,
+                      capturedImageFile: (s) {
+                        FirebaseStorageService()
+                            .uploadAvatar(new File(s), userId);
+                        // setState(() {
+                        //   // _imageFile = new File(s);
+                        // });
+                      },
+                    );
+                    Navigator.pop(context);
+                  }),
               SizedBox(height: 25),
               RoundedButton(
                   text: "Gallery",
@@ -61,15 +62,14 @@ class _AvatarDialog extends State<AvatarDialog> {
                       context: context,
                       capturedImageFile: (s) {
                         FirebaseStorageService()
-                            .uploadAvatar(new File(s), context.read<User>().uid);
+                            .uploadAvatar(new File(s), userId);
                         // setState(() {
                         //   // _imageFile = new File(s);
                         // });
                       },
                     );
                     Navigator.pop(context);
-                  }
-              ),
+                  }),
             ],
           ),
         ),

@@ -1,15 +1,15 @@
+import 'package:covid19_app/components/announcements_list_item.dart';
 import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/core/flutter_icons.dart';
+import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/models/user.dart';
 import 'package:covid19_app/pages/user_personal_info_edit_page.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:covid19_app/models/annoucement.dart';
-import 'package:covid19_app/components/announcements_list_item.dart';
 import 'package:provider/provider.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -18,18 +18,7 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfilePage> {
-  List<Annoucement> announcementsList;
   ScrollController controller = ScrollController();
-
-  void getPostsData(String uid) {
-    FirebaseFirestoreService().getAnnoucements("userId", uid).then((value) {
-      if (mounted) {
-        setState(() {
-          announcementsList = value;
-        });
-      }
-    });
-  }
 
   @override
   void initState() {
@@ -38,8 +27,6 @@ class _UserProfileState extends State<UserProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    // getPostsData(context.watch<User>().uid);
-
     return ProtectedContainer(
       body: Scaffold(
         // resizeToAvoidBottomPadding: false,
@@ -89,25 +76,9 @@ class _UserProfileState extends State<UserProfilePage> {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: FutureBuilder<List<Annoucement>>(
-                        future: FirebaseFirestoreService().getAnnoucements(
-                            "userId", context.watch<User>().uid),
-                        builder: (context, snapshot) {
-                          // if (snapshot.hasError) print(snapshot.error);
-
-                          return snapshot.hasData
-                              ? ListView.builder(
-                              shrinkWrap: true,
-                              controller: controller,
-                              itemCount: snapshot.data.length,
-                              physics: BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return AnnouncementsListItem(
-                                    snapshot.data[index]);
-                              })
-                              : Column();
-                        }))
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: _buildAnnouncements(),
+                )
               ],
             ),
           ),
@@ -117,18 +88,23 @@ class _UserProfileState extends State<UserProfilePage> {
   }
 
   Widget _buildAnnouncements() {
-    if (announcementsList == null || announcementsList.isEmpty) {
-      return Column();
-    } else {
-      return ListView.builder(
-          shrinkWrap: true,
-          controller: controller,
-          itemCount: announcementsList.length,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, index) {
-            return AnnouncementsListItem(announcementsList[index]);
-          });
-    }
+    return FutureBuilder<List<Annoucement>>(
+        future: FirebaseFirestoreService()
+            .getAnnoucements("userId", context.read<User>().uid),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+
+          return snapshot.hasData
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  controller: controller,
+                  itemCount: snapshot.data.length,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return AnnouncementsListItem(snapshot.data[index]);
+                  })
+              : Column();
+        });
   }
 
   Widget _buildHeader(BuildContext context) {
@@ -189,30 +165,30 @@ class _UserProfileState extends State<UserProfilePage> {
 
                   return snapshot.hasData
                       ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * .5,
-                        child: Text(
-                          snapshot.data.getName(),
-                          style: TextStyle(
-                            fontSize: 32,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      _buildUserPersonalDataItem(
-                          Icons.phone, snapshot.data.phoneNumber),
-                      SizedBox(height: 5),
-                      _buildUserPersonalDataItem(Icons.email_outlined,
-                          context.watch<User>().email),
-                      SizedBox(height: 5),
-                      _buildUserPersonalDataItem(
-                          Icons.location_pin, snapshot.data.getAddress()),
-                    ],
-                  )
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * .5,
+                              child: Text(
+                                snapshot.data.getName(),
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            _buildUserPersonalDataItem(
+                                Icons.phone, snapshot.data.phoneNumber),
+                            SizedBox(height: 5),
+                            _buildUserPersonalDataItem(Icons.email_outlined,
+                                context.watch<User>().email),
+                            SizedBox(height: 5),
+                            _buildUserPersonalDataItem(
+                                Icons.location_pin, snapshot.data.getAddress()),
+                          ],
+                        )
                       : Column();
                 })
           ],
