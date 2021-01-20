@@ -45,7 +45,7 @@ class _AvatarDialog extends State<AvatarDialog> {
                       context: context,
                       capturedImageFile: (s) {
                         FirebaseStorageService()
-                            .uploadAvatar(new File(s), userId);
+                            .uploadAvatar(new File(s), userId, context);
                         // setState(() {
                         //   // _imageFile = new File(s);
                         // });
@@ -62,7 +62,7 @@ class _AvatarDialog extends State<AvatarDialog> {
                       context: context,
                       capturedImageFile: (s) {
                         FirebaseStorageService()
-                            .uploadAvatar(new File(s), userId);
+                            .uploadAvatar(new File(s), userId, context);
                         // setState(() {
                         //   // _imageFile = new File(s);
                         // });

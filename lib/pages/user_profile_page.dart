@@ -11,6 +11,7 @@ import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:covid19_app/components/avatar.dart';
 
 class UserProfilePage extends StatefulWidget {
   @override
@@ -144,19 +145,7 @@ class _UserProfileState extends State<UserProfilePage> {
         ),
         Row(
           children: <Widget>[
-            Container(
-              margin: const EdgeInsets.all(16),
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 5),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(70),
-                  ),
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage("assets/images/profile.jpg"))),
-            ),
+            Avatar(width: 100, height: 100),
             FutureBuilder<UserModel>(
                 future: FirebaseFirestoreService()
                     .getUser(context.watch<User>().uid),

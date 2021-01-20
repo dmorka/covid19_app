@@ -1,7 +1,8 @@
 import 'package:covid19_app/core/flutter_icons.dart';
 import 'package:covid19_app/pages/user_profile_page.dart';
-import 'package:covid19_app/components/menu.dart';
 import 'package:flutter/material.dart';
+import 'package:covid19_app/components/avatar.dart';
+
 
 class CustomAppBarWidget extends StatelessWidget {
   @override
@@ -25,23 +26,11 @@ class CustomAppBarWidget extends StatelessWidget {
               MaterialPageRoute(builder: (context) => UserProfilePage()),
             );
           },
-          child: Container(
-            width: 50,
-            height: 50,
-            margin: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white),
-              borderRadius: BorderRadius.all(
-                Radius.circular(100),
-              ),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage("assets/images/profile.jpg"),
-              ),
-            ),
-          ),
+          child: Avatar(width: 50, height: 50,),
         )
       ],
     );
   }
 }
+
+

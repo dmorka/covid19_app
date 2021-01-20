@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:covid19_app/components/avatar_dialog.dart';
 import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/components/rounded_button.dart';
@@ -9,6 +10,8 @@ import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:covid19_app/components/avatar.dart';
 
 class UserPersonalInfoEditPage extends StatefulWidget {
   @override
@@ -29,6 +32,14 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
   final phoneNumberController = new TextEditingController();
   bool areValuesInitialized = false;
 
+
+  // _UserPersonalInfoEditState() {
+  //   getAvatar().then((value) => setState(() {
+  //         avatar = value;
+  //         print(value);
+  //       }));
+  // }
+
   @override
   Widget build(BuildContext context) {
     if (!areValuesInitialized) {
@@ -37,7 +48,6 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
           .then((value) => setTextFieldInitValues(value));
       areValuesInitialized = true;
     }
-
     return ProtectedContainer(
       body: Scaffold(
         backgroundColor: backgroundColor,
@@ -61,47 +71,14 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                       Image.asset("assets/images/virus2.png"),
                       Row(
                         children: [
-                          Container(
-                            alignment: Alignment.bottomRight,
-                            margin: const EdgeInsets.all(16),
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white, width: 5),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(100),
-                              ),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage("assets/images/profile.jpg"),
-                              ),
-                            ),
-                            child: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.purple[300], width: 4),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(100),
-                                ),
-                              ),
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.edit
-                                ),
-                                iconSize: 28,
-                                color: Colors.white,
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AvatarDialog();
-                                      });
-                                },
-                              ),
-                            ),
-                          ),
+                          FutureBuilder<File>(
+                              future: getAvatar(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) print(snapshot.error);
+
+                                return AvatarWidget(avatar: snapshot.data);
+
+                              }),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.6,
                             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -161,26 +138,23 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                       text: "SAVE",
                       color: mainColor,
                       press: () {
-                        if(!phoneRegExp.hasMatch(phoneNumberController.text)) {
-                          phoneNumberController.text =
-                          "Invalid format!";
+                        if (!phoneRegExp.hasMatch(phoneNumberController.text)) {
+                          phoneNumberController.text = "Invalid format!";
                           return;
                         }
-                        if(!zipCodeRegExp.hasMatch(zipCodeController.text)) {
-                          zipCodeController.text =
-                          "Invalid format!";
+                        if (!zipCodeRegExp.hasMatch(zipCodeController.text)) {
+                          zipCodeController.text = "Invalid format!";
                           return;
                         }
                         final UserModel user = new UserModel(
-                          context.read<User>().uid,
-                          firstNameController.text,
-                          lastNameController.text,
-                          cityController.text,
-                          zipCodeController.text,
-                          streetController.text,
-                          apartmentNumberController.text,
-                          phoneNumberController.text
-                        );
+                            context.read<User>().uid,
+                            firstNameController.text,
+                            lastNameController.text,
+                            cityController.text,
+                            zipCodeController.text,
+                            streetController.text,
+                            apartmentNumberController.text,
+                            phoneNumberController.text);
                         FirebaseFirestoreService().updateUser(user);
                         Navigator.push(
                           context,
@@ -200,6 +174,12 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
         ),
       ),
     );
+  }
+
+  Future<File> getAvatar() async {
+    final directory = await getApplicationDocumentsDirectory();
+    String dir = directory.path;
+    return File('$dir/profile.jpg');
   }
 
   @override
@@ -223,5 +203,58 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
       cityController.text = value.city;
       phoneNumberController.text = value.phoneNumber;
     }
+  }
+}
+
+class AvatarWidget extends StatelessWidget {
+  const AvatarWidget({
+    Key key,
+    @required this.avatar,
+  }) : super(key: key);
+
+  final File avatar;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.bottomRight,
+      margin: const EdgeInsets.all(16),
+      width: 120,
+      height: 120,
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: Colors.white, width: 5),
+        borderRadius: BorderRadius.all(
+          Radius.circular(100),
+        ),
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: avatar == null ? AssetImage("assets/images/profile.jpg") : FileImage(avatar),
+        ),
+      ),
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          border: Border.all(
+              color: Colors.purple[300], width: 4),
+          borderRadius: BorderRadius.all(
+            Radius.circular(100),
+          ),
+        ),
+        child: IconButton(
+          icon: Icon(Icons.edit),
+          iconSize: 28,
+          color: Colors.white,
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AvatarDialog();
+                });
+          },
+        ),
+      ),
+    );
   }
 }
