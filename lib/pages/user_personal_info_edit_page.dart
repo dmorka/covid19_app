@@ -11,7 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:covid19_app/components/avatar.dart';
+import 'package:covid19_app/utils/services/storage_service.dart';
 
 class UserPersonalInfoEditPage extends StatefulWidget {
   @override
@@ -71,8 +71,8 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                       Image.asset("assets/images/virus2.png"),
                       Row(
                         children: [
-                          FutureBuilder<File>(
-                              future: getAvatar(),
+                          FutureBuilder<String>(
+                              future: FirebaseStorageService().setAvatar(context.read<User>().uid),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) print(snapshot.error);
 
@@ -156,13 +156,8 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                             apartmentNumberController.text,
                             phoneNumberController.text);
                         FirebaseFirestoreService().updateUser(user);
-                        Navigator.push(
+                        Navigator.pop(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return UserProfilePage();
-                            },
-                          ),
                         );
                       },
                     ),
@@ -174,12 +169,6 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
         ),
       ),
     );
-  }
-
-  Future<File> getAvatar() async {
-    final directory = await getApplicationDocumentsDirectory();
-    String dir = directory.path;
-    return File('$dir/profile.jpg');
   }
 
   @override
@@ -212,7 +201,7 @@ class AvatarWidget extends StatelessWidget {
     @required this.avatar,
   }) : super(key: key);
 
-  final File avatar;
+  final String avatar;
 
   @override
   Widget build(BuildContext context) {
@@ -229,7 +218,7 @@ class AvatarWidget extends StatelessWidget {
         ),
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: avatar == null ? AssetImage("assets/images/profile.jpg") : FileImage(avatar),
+          image: avatar == null ? AssetImage("assets/images/profile.jpg") : NetworkImage(avatar),
         ),
       ),
       child: Container(

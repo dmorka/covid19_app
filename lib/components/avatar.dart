@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
-
-import 'package:path_provider/path_provider.dart';
+import 'package:covid19_app/utils/services/storage_service.dart';
+import 'package:provider/provider.dart';
 
 class Avatar extends StatefulWidget {
   final double height;
@@ -17,37 +17,33 @@ class Avatar extends StatefulWidget {
 }
 
 class _Avatar extends State<Avatar> {
-  File _avatar;
+  String _avatar;
   double height;
   double width;
 
-  _Avatar() {
-    getAvatar().then((val) => setState(() {
-      _avatar = val;
-    }));
-  }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.width,
-      height: widget.height,
-      margin: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
-        borderRadius: BorderRadius.all(
-          Radius.circular(100),
-        ),
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: _avatar == null ? AssetImage("assets/images/profile.jpg") : FileImage(_avatar),
-        ),
-      ),
-    );
-  }
-  Future<File> getAvatar() async {
-    print("get-----------");
-    final directory = await getApplicationDocumentsDirectory();
-    String dir = directory.path;
-    return File('$dir/profile.jpg');
+    return FutureBuilder<String>(
+      future: FirebaseStorageService().setAvatar(context.read<User>().uid),
+
+      builder: (context, snapshot) {
+        if (snapshot.hasError) print(snapshot.error);
+
+        return Container(
+          width: widget.width,
+          height: widget.height,
+          margin: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white),
+            borderRadius: BorderRadius.all(
+              Radius.circular(100),
+            ),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: snapshot.hasData ? NetworkImage(snapshot.data) : AssetImage("assets/images/profile.jpg"),
+            ),
+          ),
+        );
+      });
   }
 }

@@ -26,31 +26,16 @@ class FirebaseStorageService {
           .ref('avatars/$userId')
           .putFile(image);
       setAvatar(userId);
-      // void rebuild(Element el) {
-      //   el.markNeedsBuild();
-      //   el.visitChildren(rebuild);
-      // }
-      // (context as Element).visitChildren(rebuild);
     } on firebase_core.FirebaseException catch (e) {
       print("Avatar Error!\n" + e.toString());
     }
   }
 
-  Future<void> setAvatar(String userId) async {
+  Future<String> setAvatar(String userId) async {
     String downloadURL = await firebase_storage.FirebaseStorage.instance
         .ref('avatars/$userId')
         .getDownloadURL();
-    // if (downloadURL == null)
-    //   downloadURL = await firebase_storage.FirebaseStorage.instance
-    //       .ref('avatars/default')
-    //       .getDownloadURL();
-    var documentDirectory = await getApplicationDocumentsDirectory();
-    var response = await get(downloadURL);
-    print("set----------------");
-    File file = new File(
-        join(documentDirectory.path, 'profile.jpg')
-    );
-    file.writeAsBytesSync(response.bodyBytes);
-  }
 
+    return downloadURL;
+  }
 }
