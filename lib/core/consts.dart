@@ -10,30 +10,3 @@ const COVID_LABS_REQ_BODY = ''
     '   <wfs:Query typeName="feature:laboratoria_covid" srsName="EPSG:900913" xmlns:feature="urn:x-isdp:gs:namespace:default"></wfs:Query>'
     '</wfs:GetFeature>'
     '';
-
-const ANNOUNCEMENT_DATA = [
-  {
-    "name":"Anna",
-    "description":"Potrzebuję pomocy w...",
-    "when":"05-11-2020 11:20",
-    "where":"Warszawa, Śródmieście"
-  },
-  {
-    "name":"Paweł",
-    "description":"Potrzebuję pomocy z...",
-    "when":"07-11-2020 15:30",
-    "where":"Warszawa, Śródmieście"
-  },
-  {
-    "name":"Patryk",
-    "description":"Czy ktoś może mi pomóc w...",
-    "when":"09-11-2020 09:10",
-    "where":"Warszawa, Ursynów"
-  },
-  {
-    "name":"Piotr",
-    "description":"Bardzo potrzebuję...",
-    "when":"ASAP",
-    "where":"Warszawa, Żoliborz"
-  }
-];

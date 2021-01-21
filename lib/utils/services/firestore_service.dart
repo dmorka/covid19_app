@@ -60,15 +60,15 @@ class FirebaseFirestoreService {
     });
   }
 
-  Future<List<Annoucement>> getAllAnnoucements() async {
+  Future<dynamic> getAllAnnoucements() async {
     List<Annoucement> annoucements = new List<Annoucement>();
-
+    print("alalalla");
     await annoucementCollection.get().then((value) {
       if (value.size > 0) {
         value.docs
             .forEach((element) => annoucements.add(Annoucement.map(element)));
       } else {
-        print("Empty query2!");
+        print("Empty query!");
       }
     });
 
@@ -78,7 +78,7 @@ class FirebaseFirestoreService {
   Future<List<Annoucement>> getAnnoucements(
       String field, String equalTo) async {
     List<Annoucement> annoucements = new List<Annoucement>();
-    // print("weszlo");
+
     await annoucementCollection
         .where(field, isEqualTo: equalTo)
         .get()
@@ -87,7 +87,7 @@ class FirebaseFirestoreService {
         value.docs
             .forEach((element) => annoucements.add(Annoucement.map(element)));
       } else {
-        print("Empty query13!");
+        print("Empty query!");
       }
     });
 
