@@ -159,7 +159,7 @@ class _UserProfileState extends State<UserProfilePage> {
                             Container(
                               width: MediaQuery.of(context).size.width * .5,
                               child: Text(
-                                snapshot.data.getName(),
+                                snapshot.data.getFullName(),
                                 style: TextStyle(
                                   fontSize: 32,
                                   color: Colors.white,
@@ -174,8 +174,8 @@ class _UserProfileState extends State<UserProfilePage> {
                             _buildUserPersonalDataItem(Icons.email_outlined,
                                 context.watch<User>().email),
                             SizedBox(height: 5),
-                            _buildUserPersonalDataItem(
-                                Icons.location_pin, snapshot.data.getAddress()),
+                            _buildUserPersonalDataItem(Icons.location_pin,
+                                snapshot.data.address.getFullAddress()),
                           ],
                         )
                       : Column();

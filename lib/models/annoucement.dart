@@ -1,3 +1,4 @@
+import 'package:covid19_app/models/address.dart';
 import 'package:intl/intl.dart';
 
 class Annoucement {
@@ -6,8 +7,10 @@ class Annoucement {
   String _title;
   String _description;
   DateTime _dueDate;
+  AddressModel _address;
 
-  Annoucement(this._userId, this._title, this._description, this._dueDate);
+  Annoucement(this._userId, this._title, this._description, this._dueDate,
+      this._address);
 
   Annoucement.map(dynamic obj) {
     this._id = obj['id'];
@@ -15,6 +18,7 @@ class Annoucement {
     this._title = obj['title'];
     this._description = obj['description'];
     this._dueDate = obj['dueDate'].toDate();
+    this._address = AddressModel.map(obj['address']);
   }
 
   String get id => _id;
@@ -22,11 +26,13 @@ class Annoucement {
   String get title => _title;
   String get description => _description;
   DateTime get dueDate => _dueDate;
+  AddressModel get address => _address;
   set id(String id) => this._id = id;
   set userId(String userId) => this._userId = userId;
   set title(String title) => this._title = title;
   set description(String description) => this._description = description;
   set dueDate(DateTime dueDate) => this._dueDate = dueDate;
+  set address(AddressModel address) => this._address;
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
@@ -37,6 +43,7 @@ class Annoucement {
     map['title'] = _title;
     map['description'] = _description;
     map['dueDate'] = _dueDate;
+    map['address'] = _address.toMap();
 
     return map;
   }
@@ -47,6 +54,7 @@ class Annoucement {
     this._title = map['title'];
     this._description = map['description'];
     this._dueDate = map['dueDate'];
+    this._address = AddressModel.fromMap(map['address']);
   }
 
   String formatedDate() {

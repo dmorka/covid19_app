@@ -22,15 +22,41 @@ class RoundedDatetimeInputField extends StatelessWidget {
         format: DateFormat("dd-MM-yyyy HH:mm"),
         onShowPicker: (context, currentValue) async {
           final date = await showDatePicker(
-              context: context,
-              firstDate: DateTime.now(),
-              initialDate: currentValue ?? DateTime.now(),
-              lastDate: DateTime(2030));
+            context: context,
+            firstDate: DateTime.now(),
+            initialDate: currentValue ?? DateTime.now(),
+            lastDate: DateTime(2030),
+            builder: (BuildContext context, Widget child) {
+              return Theme(
+                data: ThemeData.light().copyWith(
+                  primaryColor: mainColor,
+                  accentColor: mainColor,
+                  colorScheme: ColorScheme.light(primary: mainColor),
+                  buttonTheme:
+                      ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                ),
+                child: child,
+              );
+            },
+          );
+
           if (date != null) {
             final time = await showTimePicker(
               context: context,
               initialTime:
-              TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                  TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+              builder: (BuildContext context, Widget child) {
+                return Theme(
+                  data: ThemeData.light().copyWith(
+                    primaryColor: mainColor,
+                    accentColor: mainColor,
+                    colorScheme: ColorScheme.light(primary: mainColor),
+                    buttonTheme:
+                        ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                  ),
+                  child: child,
+                );
+              },
             );
             return DateTimeField.combine(date, time);
           } else {

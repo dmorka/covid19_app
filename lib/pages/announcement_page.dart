@@ -7,10 +7,7 @@ import 'package:covid19_app/components/content_header.dart';
 import 'package:covid19_app/models/annoucement.dart';
 
 class AnnouncementPage extends StatefulWidget {
-  const AnnouncementPage({
-    Key key,
-    this.announcement
-  }) : super(key: key);
+  const AnnouncementPage({Key key, this.announcement}) : super(key: key);
 
   final Annoucement announcement;
 
@@ -19,7 +16,6 @@ class AnnouncementPage extends StatefulWidget {
 }
 
 class _AnnouncementPage extends State<AnnouncementPage> {
-
   Annoucement _announcement;
 
   _AnnouncementPage(Annoucement announcement) {
@@ -62,8 +58,7 @@ class _AnnouncementPage extends State<AnnouncementPage> {
     );
   }
 
-  Widget _buildAnnouncement()
-  {
+  Widget _buildAnnouncement() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -72,26 +67,19 @@ class _AnnouncementPage extends State<AnnouncementPage> {
             ContentHeader(name: "Opis"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                _announcement.description
-              ),
+              child: Text(_announcement.description),
             ),
             ContentHeader(name: "Czas dostarczenia"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                  _announcement.dueDate.toString()
-              ),
+              child: Text(_announcement.dueDate.toString()),
             ),
             ContentHeader(name: "Gdzie"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                  ""
-              ),
+              child: Text(_announcement.address.getFullAddress()),
             )
-          ]
-      ),
+          ]),
     );
   }
 

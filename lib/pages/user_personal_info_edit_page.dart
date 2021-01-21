@@ -4,6 +4,7 @@ import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/components/rounded_input_field.dart';
 import 'package:covid19_app/core/consts.dart';
+import 'package:covid19_app/models/address.dart';
 import 'package:covid19_app/models/user.dart';
 import 'package:covid19_app/pages/user_profile_page.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
@@ -31,14 +32,6 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
   final cityController = new TextEditingController();
   final phoneNumberController = new TextEditingController();
   bool areValuesInitialized = false;
-
-
-  // _UserPersonalInfoEditState() {
-  //   getAvatar().then((value) => setState(() {
-  //         avatar = value;
-  //         print(value);
-  //       }));
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +65,12 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                       Row(
                         children: [
                           FutureBuilder<String>(
-                              future: FirebaseStorageService().setAvatar(context.read<User>().uid),
+                              future: FirebaseStorageService()
+                                  .setAvatar(context.read<User>().uid),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) print(snapshot.error);
 
                                 return AvatarWidget(avatar: snapshot.data);
-
                               }),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.6,
@@ -114,7 +107,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                       icon: Icons.location_pin,
                     ),
                     RoundedInputField(
-                      hintText: "Numer budynku/mieszkania",
+                      hintText: "Numer budynku",
                       controller: apartmentNumberController,
                       icon: Icons.location_pin,
                     ),
@@ -147,14 +140,17 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                           return;
                         }
                         final UserModel user = new UserModel(
-                            context.read<User>().uid,
-                            firstNameController.text,
-                            lastNameController.text,
+                          context.read<User>().uid,
+                          firstNameController.text,
+                          lastNameController.text,
+                          phoneNumberController.text,
+                          new AddressModel(
                             cityController.text,
                             zipCodeController.text,
                             streetController.text,
                             apartmentNumberController.text,
-                            phoneNumberController.text);
+                          ),
+                        );
                         FirebaseFirestoreService().updateUser(user);
                         Navigator.pop(
                           context,
@@ -186,10 +182,10 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
     if (value != null) {
       firstNameController.text = value.firstName;
       lastNameController.text = value.lastName;
-      streetController.text = value.street;
-      apartmentNumberController.text = value.apartmentNumber;
-      zipCodeController.text = value.zipCode;
-      cityController.text = value.city;
+      streetController.text = value.address.street;
+      apartmentNumberController.text = value.address.apartmentNumber;
+      zipCodeController.text = value.address.zipCode;
+      cityController.text = value.address.city;
       phoneNumberController.text = value.phoneNumber;
     }
   }
@@ -211,22 +207,22 @@ class AvatarWidget extends StatelessWidget {
       width: 120,
       height: 120,
       decoration: BoxDecoration(
-        border: Border.all(
-            color: Colors.white, width: 5),
+        border: Border.all(color: Colors.white, width: 5),
         borderRadius: BorderRadius.all(
           Radius.circular(100),
         ),
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: avatar == null ? AssetImage("assets/images/profile.jpg") : NetworkImage(avatar),
+          image: avatar == null
+              ? AssetImage("assets/images/profile.jpg")
+              : NetworkImage(avatar),
         ),
       ),
       child: Container(
         width: 50,
         height: 50,
         decoration: BoxDecoration(
-          border: Border.all(
-              color: Colors.purple[300], width: 4),
+          border: Border.all(color: Colors.purple[300], width: 4),
           borderRadius: BorderRadius.all(
             Radius.circular(100),
           ),
