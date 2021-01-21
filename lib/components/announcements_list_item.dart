@@ -47,7 +47,7 @@ class AnnouncementsListItem extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      content.description,
+                      content.description.length > 200 ?  content.description.substring(0, 200) + "..." : content.description,
                       style: const TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.normal,
@@ -55,7 +55,7 @@ class AnnouncementsListItem extends StatelessWidget {
                     ),
                     SizedBox(height: 35),
                     Text(
-                      "Czas dostarczenia: " + content.dueDate.toString(),
+                      "Czas dostarczenia: " + content.formatedDate(),
                       style: const TextStyle(
                         color: Colors.black45,
                         fontWeight: FontWeight.normal,

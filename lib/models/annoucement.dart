@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Annoucement {
   String _id;
   String _userId;
@@ -45,5 +47,9 @@ class Annoucement {
     this._title = map['title'];
     this._description = map['description'];
     this._dueDate = map['dueDate'];
+  }
+
+  String formatedDate() {
+    return new DateFormat("y.M.d H:m").format(_dueDate);
   }
 }
