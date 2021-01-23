@@ -72,7 +72,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
 
                                 return AvatarWidget(avatar: snapshot.data);
                               }),
-                          Container(
+                          Flexible(child: Container(
                             width: MediaQuery.of(context).size.width * 0.6,
                             padding: EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
@@ -80,10 +80,10 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 32,
+                                fontSize: 28,
                               ),
                             ),
-                          ),
+                          ),)
                         ],
                       ),
                     ],
