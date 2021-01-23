@@ -62,7 +62,7 @@ class FirebaseFirestoreService {
 
   Future<dynamic> getAllAnnoucements() async {
     List<Annoucement> annoucements = new List<Annoucement>();
-    print("alalalla");
+
     await annoucementCollection.get().then((value) {
       if (value.size > 0) {
         value.docs

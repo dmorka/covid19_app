@@ -64,6 +64,7 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
                           child: TextField(
                             minLines: 1,
                             maxLines: 6,
+                            controller: descriptionController,
                             keyboardType: TextInputType.multiline,
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
@@ -127,23 +128,7 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
                         ),
                         RoundedButton(
                           text: "Dodaj",
-                          press: () {
-                            final announcement = new Annoucement(
-                              context.read<User>().uid,
-                              titleController.text,
-                              descriptionController.text,
-                              dueDate,
-                              new AddressModel(
-                                cityController.text,
-                                zipCodeController.text,
-                                streetController.text,
-                                apartmentNumberController.text,
-                              ),
-                            );
-                            FirebaseFirestoreService()
-                                .createAnnoucement(announcement);
-                            Navigator.pop(context);
-                          },
+                          press: addAnnoucement,
                         ),
                       ],
                     ),
@@ -155,5 +140,37 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
         ],
       ),
     );
+  }
+
+  void addAnnoucement() async {
+    String userId = context.read<User>().uid;
+    AddressModel address;
+    await getAddress(userId).then((value) => address = value);
+    final announcement = new Annoucement(
+      userId,
+      titleController.text,
+      descriptionController.text,
+      dueDate,
+      address,
+    );
+    FirebaseFirestoreService().createAnnoucement(announcement);
+    Navigator.pop(context);
+  }
+
+  Future<AddressModel> getAddress(userId) async {
+    AddressModel addressModel;
+    if (isChangeAddressVisible) {
+      addressModel = new AddressModel(
+          cityController.text,
+          zipCodeController.text,
+          streetController.text,
+          apartmentNumberController.text);
+    } else {
+      await FirebaseFirestoreService()
+          .getUser(userId)
+          .then((value) => {addressModel = value.address});
+    }
+
+    return addressModel;
   }
 }
