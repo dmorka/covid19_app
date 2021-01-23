@@ -30,10 +30,10 @@ class ApiDataProvider {
 
   Future<GeneralStatisticsModel> fetchGeneralStatistics() async {
     final response = await http
-        .get('https://coronavirus-19-api.herokuapp.com/countries/Poland');
+        .get('https://services9.arcgis.com/RykcEgwHWuMsJXPj/arcgis/rest/services/global_corona_widok2/FeatureServer/0/query?f=json&where=Data%20BETWEEN%20(CURRENT_TIMESTAMP%20-%20INTERVAL%20%2724%27%20HOUR)%20AND%20CURRENT_TIMESTAMP&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&resultOffset=0&resultRecordCount=1&resultType=standard');
 
     if (response.statusCode == 200) {
-      return GeneralStatisticsModel.fromJson(jsonDecode(response.body));
+      return GeneralStatisticsModel.fromJson(jsonDecode(response.body)['features'][0]['attributes']);
     } else {
       throw Exception('Failed to load general statistics');
     }

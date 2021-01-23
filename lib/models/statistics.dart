@@ -8,9 +8,9 @@ class GeneralStatisticsModel {
 
   factory GeneralStatisticsModel.fromJson(Map<String, dynamic> json) {
     return GeneralStatisticsModel(
-      cases: json['cases'] as int,
-      deaths: json['deaths'] as int,
-      recovered: json['recovered'] as int,
+      cases: json['LICZBA_ZAKAZEN'] as int,
+      deaths: json['LICZBA_ZGONOW'] as int,
+      recovered: json['LICZBA_OZDROWIENCOW'] as int,
     );
   }
 }
