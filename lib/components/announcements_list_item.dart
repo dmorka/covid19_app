@@ -25,22 +25,24 @@ class AnnouncementsListItem extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        // padding: const EdgeInsets.all(3.0),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(color: Colors.black.withAlpha(80), blurRadius: 40.0)
-            ]),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Row(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: backgroundColor,
+          boxShadow: [
+            BoxShadow(color: Colors.black.withAlpha(80), blurRadius: 40.0)
+          ]),
+        child:
+        Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Flexible(
-                child: Column(
+                child: Container(
+                  child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
+                      // padding: ,
                       decoration: BoxDecoration(
                         borderRadius:
                             BorderRadius.vertical(top: Radius.circular(10)),
@@ -49,7 +51,7 @@ class AnnouncementsListItem extends StatelessWidget {
                       child: Row(
                         children: <Widget>[
                           Padding(
-                              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
                               child: Text(content.title,
                                   style: TextStyle(
                                     fontSize: 24,
@@ -61,12 +63,8 @@ class AnnouncementsListItem extends StatelessWidget {
                     ),
                     // SizedBox(height: 10),
                     Container(
-                      decoration: BoxDecoration(
-                        // borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                        color: Colors.white,
-                      ),
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
                         child: Text(
                           content.description.length > 200
                               ? content.description.substring(0, 200) + "..."
@@ -78,9 +76,8 @@ class AnnouncementsListItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 3),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                       child: Text(
                         "Czas dostarczenia: " + content.formatedDate(),
                         style: TextStyle(
@@ -90,17 +87,17 @@ class AnnouncementsListItem extends StatelessWidget {
                         textAlign: TextAlign.right,
                       ),
                     ),
-                    Padding(padding: EdgeInsets.fromLTRB(5, 5, 5, 5), child: Text(
+                    Padding(padding: EdgeInsets.fromLTRB(10, 0, 10, 10), child: Text(
                       "Gdzie: ",
                       style: TextStyle(
                           color: Colors.black45, fontWeight: FontWeight.normal),
                     ),)
                   ],
                 ),
-              ),
+              ),),
             ],
           ),
-        ),
+        // ),
       ),
     );
   }
