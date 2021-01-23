@@ -27,9 +27,9 @@ class AnnouncementsListItem extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            color: backgroundColor,
+            color: Colors.white,
             boxShadow: [
-              BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0)
+              BoxShadow(color: Colors.black.withAlpha(80), blurRadius: 40.0)
             ]),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -42,7 +42,8 @@ class AnnouncementsListItem extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(10)),
                         color: mainColor,
                       ),
                       child: Row(
@@ -53,19 +54,19 @@ class AnnouncementsListItem extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black87,
+                                    color: Colors.white,
                                   ))),
                         ],
                       ),
                     ),
-                    SizedBox(height: 10),
+                    // SizedBox(height: 10),
                     Container(
                       decoration: BoxDecoration(
                         // borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                        color: backgroundColor,
+                        color: Colors.white,
                       ),
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                        padding: EdgeInsets.fromLTRB(5, 10, 5, 5),
                         child: Text(
                           content.description.length > 200
                               ? content.description.substring(0, 200) + "..."
@@ -74,22 +75,26 @@ class AnnouncementsListItem extends StatelessWidget {
                             color: Colors.black87,
                             fontWeight: FontWeight.normal,
                           ),
-                        ),),
-                    ),
-                    SizedBox(height: 35),
-                    Text(
-                      "Czas dostarczenia: " + content.formatedDate(),
-                      style: TextStyle(
-                        color: Colors.black45,
-                        fontWeight: FontWeight.normal,
+                        ),
                       ),
-                      textAlign: TextAlign.right,
                     ),
-                    Text(
+                    SizedBox(height: 3),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                      child: Text(
+                        "Czas dostarczenia: " + content.formatedDate(),
+                        style: TextStyle(
+                          color: Colors.black45,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.fromLTRB(5, 5, 5, 5), child: Text(
                       "Gdzie: ",
                       style: TextStyle(
                           color: Colors.black45, fontWeight: FontWeight.normal),
-                    )
+                    ),)
                   ],
                 ),
               ),
