@@ -88,7 +88,7 @@ class AnnouncementsListItem extends StatelessWidget {
                       ),
                     ),
                     Padding(padding: EdgeInsets.fromLTRB(10, 0, 10, 10), child: Text(
-                      "Gdzie: ",
+                      "Gdzie: " + content.address.getFullAddress(),
                       style: TextStyle(
                           color: Colors.black45, fontWeight: FontWeight.normal),
                     ),)

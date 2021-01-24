@@ -22,13 +22,13 @@ class AnnouncementDialog extends StatefulWidget {
 class _AnnouncementDialog extends State<AnnouncementDialog> {
   _AnnouncementDialog();
 
-  final titleController = new TextEditingController();
-  final descriptionController = new TextEditingController();
-  final locationController = new TextEditingController();
-  final streetController = new TextEditingController();
-  final apartmentNumberController = new TextEditingController();
-  final zipCodeController = new TextEditingController();
-  final cityController = new TextEditingController();
+  final RegExp zipCodeRegExp = new RegExp(r"^$|\d{2}-\d{3}");
+  final titleController = new TextEditingController(text: "");
+  final descriptionController = new TextEditingController(text: "");
+  final streetController = new TextEditingController(text: "");
+  final apartmentNumberController = new TextEditingController(text: "");
+  final zipCodeController = new TextEditingController(text: "");
+  final cityController = new TextEditingController(text: "");
   var dueDate = DateTime.now();
   bool isChangeAddressVisible = false;
 
@@ -143,6 +143,34 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
   }
 
   void addAnnoucement() async {
+    bool _isValid = true;
+    if (cityController.text == "") {
+      cityController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (titleController.text == "") {
+      titleController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (!zipCodeRegExp.hasMatch(zipCodeController.text) || zipCodeController.text == "") {
+      zipCodeController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (apartmentNumberController.text == "") {
+      apartmentNumberController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (streetController.text == "") {
+      streetController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (descriptionController.text == "") {
+      descriptionController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (!_isValid) {
+      return;
+    }
     String userId = context.read<User>().uid;
     AddressModel address;
     await getAddress(userId).then((value) => address = value);
@@ -173,4 +201,7 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
 
     return addressModel;
   }
+
+
+
 }

@@ -80,7 +80,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 28,
+                                fontSize: 32,
                               ),
                             ),
                           ),)
@@ -130,32 +130,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                     RoundedButton(
                       text: "SAVE",
                       color: mainColor,
-                      press: () {
-                        if (!phoneRegExp.hasMatch(phoneNumberController.text)) {
-                          phoneNumberController.text = "Invalid format!";
-                          return;
-                        }
-                        if (!zipCodeRegExp.hasMatch(zipCodeController.text)) {
-                          zipCodeController.text = "Invalid format!";
-                          return;
-                        }
-                        final UserModel user = new UserModel(
-                          context.read<User>().uid,
-                          firstNameController.text,
-                          lastNameController.text,
-                          phoneNumberController.text,
-                          new AddressModel(
-                            cityController.text,
-                            zipCodeController.text,
-                            streetController.text,
-                            apartmentNumberController.text,
-                          ),
-                        );
-                        FirebaseFirestoreService().updateUser(user);
-                        Navigator.pop(
-                          context,
-                        );
-                      },
+                      press: setUser,
                     ),
                   ],
                 )
@@ -164,6 +139,58 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void setUser() {
+    bool _isValid = true;
+    if (cityController.text == "") {
+      cityController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (firstNameController.text == "") {
+      firstNameController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (lastNameController.text == "") {
+      lastNameController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (apartmentNumberController.text == "") {
+      apartmentNumberController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (streetController.text == "") {
+      streetController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (cityController.text == "") {
+      cityController.text = "Invalid format!";
+      _isValid = false;
+    }
+    if (!phoneRegExp.hasMatch(phoneNumberController.text) || phoneNumberController.text == "") {
+      phoneNumberController.text = "Invalid format!";
+      return;
+    }
+    if (!zipCodeRegExp.hasMatch(zipCodeController.text) || zipCodeController.text == "") {
+      zipCodeController.text = "Invalid format!";
+      return;
+    }
+    final UserModel user = new UserModel(
+      context.read<User>().uid,
+      firstNameController.text,
+      lastNameController.text,
+      phoneNumberController.text,
+      new AddressModel(
+        cityController.text,
+        zipCodeController.text,
+        streetController.text,
+        apartmentNumberController.text,
+      ),
+    );
+    FirebaseFirestoreService().updateUser(user);
+    Navigator.pop(
+      context,
     );
   }
 
