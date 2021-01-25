@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:covid19_app/components/already_have_an_account_check.dart';
 import 'package:covid19_app/components/background.dart';
 import 'package:covid19_app/components/rounded_button.dart';
@@ -5,6 +6,8 @@ import 'package:covid19_app/components/rounded_input_field.dart';
 import 'package:covid19_app/components/rounded_password_field.dart';
 import 'package:covid19_app/pages/user_personal_info_edit_page.dart';
 import 'package:covid19_app/utils/services/authentication_provider.dart';
+import 'package:covid19_app/utils/services/firestore_service.dart';
+import 'package:covid19_app/utils/services/storage_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -67,6 +70,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           password: passwordController.value.text.trim())
                       .then((String result) {
                     if (context.read<User>() != null) {
+                      // FirebaseFirestoreService()
+                      //     .addDeviceToken(context.read<User>().uid, "sfsdfds");
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return HomePage();

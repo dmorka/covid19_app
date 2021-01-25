@@ -166,4 +166,24 @@ class FirebaseFirestoreService {
       return false;
     });
   }
+
+  Future<dynamic> addDeviceToken(String userId, String token) {
+    final TransactionHandler addDeviceTokenTransaction =
+        (Transaction tx) async {
+      final DocumentSnapshot ds = await tx.get(userCollection.doc(userId));
+
+      await tx.update(ds.reference, {
+        "deviceTokens": FieldValue.arrayUnion([token])
+      });
+      return {'updated': true};
+    };
+
+    return FirebaseFirestore.instance
+        .runTransaction(addDeviceTokenTransaction)
+        .then((result) => result['updated'])
+        .catchError((error) {
+      print('error: $error');
+      return false;
+    });
+  }
 }
