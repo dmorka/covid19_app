@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
 import 'package:covid19_app/components/content_header.dart';
+import 'package:covid19_app/components/announcement_data_widget.dart';
 import 'package:covid19_app/models/annoucement.dart';
+import 'package:covid19_app/components/rounded_button.dart';
 
 class AnnouncementPage extends StatefulWidget {
   const AnnouncementPage({Key key, this.announcement}) : super(key: key);
@@ -50,36 +52,30 @@ class _AnnouncementPage extends State<AnnouncementPage> {
                 ),
               ),
               SizedBox(height: 10),
-              _buildAnnouncement(),
+              AnnouncementDataWidget(_announcement),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RoundedButton(
+                        text: "Zgłoś chęć realizacji ogłoszenia",
+                        textAlign: TextAlign.center,
+                        color: Colors.blue,
+                        /*press: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AnnouncementsPage()));
+                        },*/
+                        padding: EdgeInsets.all(20),
+                      ),
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildAnnouncement() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ContentHeader(name: "Opis"),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(_announcement.description),
-            ),
-            ContentHeader(name: "Czas dostarczenia"),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(_announcement.dueDate.toString()),
-            ),
-            ContentHeader(name: "Gdzie"),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(_announcement.address.getFullAddress()),
-            )
-          ]),
     );
   }
 

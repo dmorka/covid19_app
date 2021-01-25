@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:covid19_app/components/avatar.dart';
+import 'package:covid19_app/components/users_created_announcements_list_item.dart';
 
 class UserProfilePage extends StatefulWidget {
   @override
@@ -102,7 +103,7 @@ class _UserProfileState extends State<UserProfilePage> {
                   itemCount: snapshot.data.length,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return AnnouncementsListItem(snapshot.data[index]);
+                    return UsersCreatedAnnouncementsListItem(snapshot.data[index]);
                   })
               : Column();
         });
