@@ -11,7 +11,6 @@ import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:covid19_app/utils/services/storage_service.dart';
 
 class UserPersonalInfoEditPage extends StatefulWidget {
