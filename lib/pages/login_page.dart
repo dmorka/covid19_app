@@ -5,11 +5,13 @@ import 'package:covid19_app/components/rounded_input_field.dart';
 import 'package:covid19_app/components/rounded_password_field.dart';
 import 'package:covid19_app/pages/sign_up_page.dart';
 import 'package:covid19_app/utils/services/authentication_provider.dart';
+import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:covid19_app/utils/services/storage_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'home_page.dart';
 
@@ -67,7 +69,8 @@ class _LoginPageState extends State<LoginPage> {
                           password: passwordController.value.text.trim())
                       .then((String result) {
                     if (context.read<User>() != null) {
-                      FirebaseStorageService().setAvatar(context.read<User>().uid);
+                      FirebaseStorageService()
+                          .setAvatar(context.read<User>().uid);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return HomePage();
