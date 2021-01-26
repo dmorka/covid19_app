@@ -11,7 +11,7 @@ class UserModel {
   List<bool> _recommendations;
 
   UserModel(this._id, this._firstName, this._lastName, this._phoneNumber,
-      this._address, [this._recommendations = const <bool>[]]);
+      this._address, [this._recommendations = const []]);
 
   UserModel.map(dynamic obj) {
     this._id = obj['id'];
@@ -19,7 +19,7 @@ class UserModel {
     this._lastName = obj['lastName'];
     this._phoneNumber = obj['phoneNumber'];
     this._address = AddressModel.map(obj['address']);
-    this._recommendations = obj['recommendations'];
+    this._recommendations = obj['recommendations'].cast<bool>();
   }
 
   set id(id) => this._id = id;
@@ -62,6 +62,6 @@ class UserModel {
     this._lastName = map['lastName'];
     this._phoneNumber = map['phoneNumber'];
     this._address = AddressModel.fromMap(map['address']);
-    this._recommendations = map['recommendations'];
+    this._recommendations = map['recommendations'].cast<bool>();
   }
 }

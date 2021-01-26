@@ -8,7 +8,7 @@ class Annoucement {
   String _description;
   DateTime _dueDate;
   AddressModel _address;
-  List _volunteers;
+  List<String> _volunteers;
 
   Annoucement(this._userId, this._title, this._description, this._dueDate,
       this._address, [this._volunteers = const []]);
@@ -20,7 +20,7 @@ class Annoucement {
     this._description = obj['description'];
     this._dueDate = obj['dueDate'].toDate();
     this._address = AddressModel.map(obj['address']);
-    this._volunteers = obj['volunteers'];
+    this._volunteers = obj['volunteers'].cast<String>();
   }
 
   String get id => _id;
@@ -61,7 +61,7 @@ class Annoucement {
     this._description = map['description'];
     this._dueDate = map['dueDate'];
     this._address = AddressModel.fromMap(map['address']);
-    this._volunteers = map['volunteers'];
+    this._volunteers = map['volunteers'].cast<String>();
   }
 
   String formatedDate() {
