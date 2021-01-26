@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/models/user.dart';
+import 'package:covid19_app/models/volunteer.dart';
 
 final CollectionReference userCollection =
     FirebaseFirestore.instance.collection('users');
@@ -73,6 +74,25 @@ class FirebaseFirestoreService {
     });
 
     return annoucements;
+  }
+
+  Future<List<VolunteerModel>> getVolunteers(
+      List volunteerIDs) async {
+    List<VolunteerModel> volunteers = new List<VolunteerModel>();
+    print(volunteerIDs);
+    await userCollection
+        .where('id', whereIn: volunteerIDs)
+        .get()
+        .then((value) {
+      if (value.size > 0) {
+        value.docs
+            .forEach((element) => volunteers.add(VolunteerModel.map(element)));
+      } else {
+        print("Empty query!");
+      }
+    });
+
+    return volunteers;
   }
 
   Future<List<Annoucement>> getAnnoucements(
@@ -161,6 +181,26 @@ class FirebaseFirestoreService {
     return FirebaseFirestore.instance
         .runTransaction(deleteTransaction)
         .then((result) => result['deleted'])
+        .catchError((error) {
+      print('error: $error');
+      return false;
+    });
+  }
+
+  Future<dynamic> addVolunteer(String annoucementId, String userId) {
+    final TransactionHandler addVolunteerTransaction =
+        (Transaction tx) async {
+      final DocumentSnapshot ds = await tx.get(annoucementCollection.doc(annoucementId));
+
+      await tx.update(ds.reference, {
+        "volunteers": FieldValue.arrayUnion([userId])
+      });
+      return {'updated': true};
+    };
+
+    return FirebaseFirestore.instance
+        .runTransaction(addVolunteerTransaction)
+        .then((result) => result['updated'])
         .catchError((error) {
       print('error: $error');
       return false;
