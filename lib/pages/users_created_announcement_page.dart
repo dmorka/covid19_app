@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/protected_container.dart';
@@ -81,31 +82,20 @@ class _UsersCreatedAnnouncementPageState
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
                 child: Row(
                   children: <Widget>[
                     Expanded(
                       child: RoundedButton(
-                        text: "Usuń",
+                        text: "Usuń to ogłoszenie",
                         textAlign: TextAlign.center,
-                        color: Colors.blue,
-                        /*press: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AnnouncementsPage()));
-                        },*/
-                        padding: EdgeInsets.all(20),
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: RoundedButton(
-                        text: "Usuń",
-                        textAlign: TextAlign.center,
-                        color: Colors.blue,
-                        /*press: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AnnouncementsPage()));
-                        },*/
+                        color: Colors.red,
+                        press: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => _createAlertDialog()
+                          );
+                        },
                         padding: EdgeInsets.all(20),
                       ),
                     ),
@@ -119,6 +109,29 @@ class _UsersCreatedAnnouncementPageState
     );
   }
 
+  AlertDialog _createAlertDialog() {
+    return AlertDialog(
+      title: Text("Potwierdzenie usunięcia ogłoszenia"),
+      content: Text("Czy na pewno chcesz usunąć bezpowrotnie to ogłoszenie?"),
+      actions: [
+        FlatButton(
+          child: Text("Tak, usuń"),
+          onPressed: () {
+            FirebaseFirestoreService()
+                .deleteAnnoucement(_announcement.id)
+                .then((value) =>
+                Navigator.of(context).popUntil(ModalRoute.withName('/user-profile')));
+          },
+        ),
+        FlatButton(
+          child: Text("Nie"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    );
+  }
 
   Widget _buildVolunteersList(volunteers) {
     return ListView.builder(

@@ -70,10 +70,9 @@ class MenuDrawer extends StatelessWidget {
             trailing: Icon(Icons.logout),
             title: Text('Wyloguj'),
             onTap: () {
-              Navigator.pop(context);
               context.read<AuthenticationProvider>().signOut();
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => IntroPage()));
+                  .popUntil(ModalRoute.withName('/'));
             },
           ),
         ],

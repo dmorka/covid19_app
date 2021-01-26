@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 class EagerVolunteersListItem extends StatelessWidget {
   final VolunteerModel _volunteer;
-  int antiRecommendsCount;
-  int recommendsCount;
 
   EagerVolunteersListItem(this._volunteer);
 
