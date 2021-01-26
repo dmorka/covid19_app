@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
           fontFamily: "Ubuntu",
         ),
         home: IntroPage(),
+        initialRoute: '/',
       ),
     );
   }

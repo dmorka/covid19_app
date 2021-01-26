@@ -59,6 +59,12 @@ class _LoginPageState extends State<LoginPage> {
               RoundedButton(
                 text: "Zaloguj",
                 press: () {
+                  if (emailAddressController.value.text == '' || passwordController.value.text == '') {
+                    setState(() {
+                      errorMessage = "Proszę podać adres e-mail oraz hasło do swojego konta.";
+                    });
+                    return;
+                  }
                   context
                       .read<AuthenticationProvider>()
                       .signIn(
@@ -67,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                       .then((String result) {
                     if (context.read<User>() != null || result == "Signed in!") {
                       FirebaseStorageService().setAvatar(context.read<User>().uid);
+                      Navigator.popUntil(context, ModalRoute.withName('/'));
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return new HomePage();

@@ -138,7 +138,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                     ),
                     SizedBox(height: 10),
                     RoundedButton(
-                      text: "SAVE",
+                      text: "ZAPISZ",
                       color: mainColor,
                       press: setUser,
                     ),
@@ -160,43 +160,43 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
     });
     if (cityController.text == "") {
       setState(() {
-        errorMessage = "City is required!";
+        errorMessage = "Miasto jest wymagane!";
       });
       _isValid = false;
     }
     if (firstNameController.text == "") {
       setState(() {
-        errorMessage = "First name is required!";
+        errorMessage = "Imię jest wymagane!";
       });
       _isValid = false;
     }
     if (lastNameController.text == "") {
       setState(() {
-        errorMessage = "Last name is required!";
+        errorMessage = "Nazwisko jest wymagane!";
       });
       _isValid = false;
     }
     if (apartmentNumberController.text == "") {
       setState(() {
-        errorMessage = "Apartment is required!";
+        errorMessage = "Nr mieszkania jest wymagane!";
       });
       _isValid = false;
     }
     if (streetController.text == "") {
       setState(() {
-        errorMessage = "Street is required!";
+        errorMessage = "Ulica jest wymagana!";
       });
       _isValid = false;
     }
     if (!phoneRegExp.hasMatch(phoneNumberController.text) || phoneNumberController.text == "") {
       setState(() {
-        errorMessage = "Phone number invalid format!";
+        errorMessage = "Nr telefonu ma zły format!";
       });
       _isValid = false;
     }
     if (!zipCodeRegExp.hasMatch(zipCodeController.text) || zipCodeController.text == "") {
       setState(() {
-        errorMessage = "Zip code invalid format!";
+        errorMessage = "Kod pocztowy ma zły format!";
       });
       _isValid = false;
     }
@@ -215,14 +215,15 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
           apartmentNumberController.text,
         ),
       );
-      FirebaseFirestoreService().updateUser(user);
-      // Navigator.pop(
-      //   context,
-      // );
-      Navigator.push(
+      FirebaseFirestoreService()
+          .updateUser(user);
+
+      Navigator.pop(context);
+
+      /*Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => new UserProfilePage()),
-      );
+      );*/
     }
   }
 

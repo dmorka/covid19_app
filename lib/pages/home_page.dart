@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 15),
               Container(
-                height: 130,
+                height: 150,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.only(left: 16),
@@ -90,7 +90,8 @@ class _HomePageState extends State<HomePage> {
                     _buildSymptomItem("assets/images/1.png", "Gorączka"),
                     _buildSymptomItem("assets/images/2.png", "Suchy kaszel"),
                     _buildSymptomItem("assets/images/3.png", "Ból głowy"),
-                    _buildSymptomItem("assets/images/4.png", "Bez tchu"),
+                    _buildSymptomItem("assets/images/4.png", "Brak tchu"),
+                    _buildSymptomItem("assets/images/5.png", "Brak zapachu\ni węchu"),
                   ],
                 ),
               ),
@@ -119,9 +120,9 @@ class _HomePageState extends State<HomePage> {
                     _buildPrevention("assets/images/a4.png", "ZAKRYWAJ",
                         "buzie gdy kaszlesz", 190),
                     _buildPrevention(
-                        "assets/images/a6.png", "ZAWSZE", "wyczyść", 160),
+                        "assets/images/a6.png", "CZYŚĆ", "często używane\npowierzchnie", 200),
                     _buildPrevention(
-                        "assets/images/a8.png", "UTRZYMUJ", "ODSTĘP", 180),
+                        "assets/images/a8.png", "UTRZYMUJ", "odstęp", 180),
                   ],
                 ),
               ),
@@ -291,9 +292,10 @@ class _HomePageState extends State<HomePage> {
             child: Image.asset(path),
           ),
           SizedBox(height: 7),
-          Container(
+          Expanded(
             child: Text(
               text,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black87,
                 fontWeight: FontWeight.bold,
