@@ -22,7 +22,7 @@ class AnnouncementDataWidget extends StatelessWidget {
             ContentHeader(name: "Czas dostarczenia"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(_announcement.dueDate.toString()),
+              child: Text(_announcement.formatedDate()),
             ),
             ContentHeader(name: "Gdzie"),
             Padding(
