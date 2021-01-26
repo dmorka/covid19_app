@@ -120,9 +120,9 @@ class _HomePageState extends State<HomePage> {
                     _buildPrevention("assets/images/a4.png", "ZAKRYWAJ",
                         "buzie gdy kaszlesz", 190),
                     _buildPrevention(
-                        "assets/images/a6.png", "ZAWSZE", "wyczyść", 160),
+                        "assets/images/a6.png", "CZYŚĆ", "często używane\npowierzchnie", 200),
                     _buildPrevention(
-                        "assets/images/a8.png", "UTRZYMUJ", "ODSTĘP", 180),
+                        "assets/images/a8.png", "UTRZYMUJ", "odstęp", 180),
                   ],
                 ),
               ),

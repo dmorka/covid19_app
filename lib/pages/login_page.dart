@@ -59,6 +59,10 @@ class _LoginPageState extends State<LoginPage> {
               RoundedButton(
                 text: "Zaloguj",
                 press: () {
+                  if (emailAddressController.value.text == '' || passwordController.value.text == '') {
+                    errorMessage = "Proszę podać adres e-mail oraz hasło do swojego konta.";
+                    return;
+                  }
                   context
                       .read<AuthenticationProvider>()
                       .signIn(
