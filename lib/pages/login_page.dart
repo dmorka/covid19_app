@@ -60,7 +60,9 @@ class _LoginPageState extends State<LoginPage> {
                 text: "Zaloguj",
                 press: () {
                   if (emailAddressController.value.text == '' || passwordController.value.text == '') {
-                    errorMessage = "Proszę podać adres e-mail oraz hasło do swojego konta.";
+                    setState(() {
+                      errorMessage = "Proszę podać adres e-mail oraz hasło do swojego konta.";
+                    });
                     return;
                   }
                   context
