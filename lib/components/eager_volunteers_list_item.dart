@@ -1,20 +1,20 @@
+import 'package:covid19_app/models/volunteer.dart';
 import 'package:flutter/material.dart';
 
 class EagerVolunteersListItem extends StatelessWidget {
-  final String name;
-  final int recommendsCount;
-  final int antiRecommendsCount;
+  final VolunteerModel _volunteer;
+  int antiRecommendsCount;
+  int recommendsCount;
 
-  EagerVolunteersListItem(
-      this.name, this.recommendsCount, this.antiRecommendsCount);
+  EagerVolunteersListItem(this._volunteer);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            // Action for accepting help from this volunteer (dialog box?).
-              builder: (_) => null));
+          // Navigator.of(context).push(MaterialPageRoute(
+          //   // Action for accepting help from this volunteer (dialog box?).
+          //     builder: (_) => null));
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 1.0),
@@ -31,7 +31,7 @@ class EagerVolunteersListItem extends StatelessWidget {
                     flex: 6,
                     child: RichText(
                     text: TextSpan(
-                      text: name,
+                      text: _volunteer.firstName,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -43,7 +43,7 @@ class EagerVolunteersListItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      recommendsCount.toString(),
+                      _volunteer.recommendations.where((e) => e == true).length.toString(),
                       style: TextStyle(
                         fontSize: 22,
                         color: Colors.green,
@@ -53,7 +53,7 @@ class EagerVolunteersListItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      antiRecommendsCount.toString(),
+                      _volunteer.recommendations.where((e) => e == false).length.toString(),
                       style: TextStyle(
                         fontSize: 22,
                         color: Colors.red,

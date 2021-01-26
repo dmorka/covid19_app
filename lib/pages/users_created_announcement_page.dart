@@ -10,20 +10,24 @@ import 'package:covid19_app/components/eager_volunteers_list_item.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:covid19_app/models/volunteer.dart';
 import 'package:covid19_app/components/content_header.dart';
 
 class UsersCreatedAnnouncementPage extends StatefulWidget {
-  const UsersCreatedAnnouncementPage({Key key, this.announcement}) : super(key: key);
+  const UsersCreatedAnnouncementPage({Key key, this.announcement})
+      : super(key: key);
 
   final Annoucement announcement;
 
   @override
-  _UsersCreatedAnnouncementPageState createState() => _UsersCreatedAnnouncementPageState(announcement);
+  _UsersCreatedAnnouncementPageState createState() =>
+      _UsersCreatedAnnouncementPageState(announcement);
 }
 
-class _UsersCreatedAnnouncementPageState extends State<UsersCreatedAnnouncementPage> {
+class _UsersCreatedAnnouncementPageState
+    extends State<UsersCreatedAnnouncementPage> {
   Annoucement _announcement;
-
+  ScrollController controller = ScrollController();
   _UsersCreatedAnnouncementPageState(Annoucement annoucement) {
     _announcement = annoucement;
   }
@@ -58,12 +62,24 @@ class _UsersCreatedAnnouncementPageState extends State<UsersCreatedAnnouncementP
               SizedBox(height: 10),
               AnnouncementDataWidget(_announcement),
               SizedBox(height: 10),
-              ContentHeader(name: "Chętni wolontariusze"),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: _buildVolunteersList(),
+                child: ContentHeader(name: "Chętni wolontariusze"),
               ),
-              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: FutureBuilder<List<VolunteerModel>>(
+                  future: FirebaseFirestoreService().getVolunteers(
+                      _announcement.volunteers),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) print(snapshot.error);
+
+                    return snapshot.hasData
+                        ? _buildVolunteersList(snapshot.data) : Column();
+                  },
+                  // _buildVolunteersList(),
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
@@ -103,33 +119,21 @@ class _UsersCreatedAnnouncementPageState extends State<UsersCreatedAnnouncementP
     );
   }
 
-  Widget _buildVolunteersList() {
-    // temporary list
-    return Column(
-      children: [
-        EagerVolunteersListItem("Anna", 10, 1),
-        EagerVolunteersListItem("Tomek", 55, 9),
-        EagerVolunteersListItem("Artur", 2, 1000),
-        EagerVolunteersListItem("Patryk", 30, 10),
-      ],
-    );
-    /*return FutureBuilder<List<Annoucement>>(
-        future: FirebaseFirestoreService()
-            .getAnnoucements("userId", context.read<User>().uid),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
 
-          return snapshot.hasData
-              ? ListView.builder(
-              shrinkWrap: true,
-              controller: controller,
-              itemCount: snapshot.data.length,
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return UsersCreatedAnnouncementsListItem(snapshot.data[index]);
-              })
-              : Column();
-        });*/
+  Widget _buildVolunteersList(volunteers) {
+    return ListView.builder(
+        shrinkWrap: true,
+        controller: controller,
+        itemCount: volunteers.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            children: <Widget>[
+              EagerVolunteersListItem(volunteers[index]),
+            ],
+
+          );
+        }
+    );
   }
 
   Widget _buildHeader() {
