@@ -68,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                       .then((String result) {
                     if (context.read<User>() != null) {
                       FirebaseStorageService().setAvatar(context.read<User>().uid);
+                      Navigator.popUntil(context, ModalRoute.withName('/'));
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return HomePage();
