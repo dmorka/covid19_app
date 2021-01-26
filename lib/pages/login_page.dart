@@ -65,11 +65,11 @@ class _LoginPageState extends State<LoginPage> {
                           email: emailAddressController.value.text.trim(),
                           password: passwordController.value.text.trim())
                       .then((String result) {
-                    if (result == "Signed in!") {
+                    if (context.read<User>() != null || result == "Signed in!") {
                       FirebaseStorageService().setAvatar(context.read<User>().uid);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return HomePage();
+                        return new HomePage();
                       }));
                     } else {
                       setState(() {
@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return SignUpPage();
+                        return new SignUpPage();
                       },
                     ),
                   );
