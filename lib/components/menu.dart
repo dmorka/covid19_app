@@ -6,6 +6,7 @@ import 'package:covid19_app/utils/services/authentication_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/pages/home_page.dart';
 import 'package:provider/provider.dart';
+import 'package:covid19_app/pages/important_info_page.dart';
 
 class MenuDrawer extends StatelessWidget {
   @override
@@ -18,19 +19,16 @@ class MenuDrawer extends StatelessWidget {
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            child: Text(
-              "MENU",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.white),
-            ),
-            decoration: BoxDecoration(
-              color: mainColor,
-              image: DecorationImage(
-                  image: AssetImage("assets/images/virus2.png"),
-                  fit: BoxFit.cover),
+          Container(
+            height: 70,
+            child: DrawerHeader(
+              decoration: BoxDecoration(
+                color: mainColor,
+                image: DecorationImage(
+                    image: AssetImage("assets/images/virus2.png"),
+                    fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
           ListTile(
@@ -41,6 +39,15 @@ class MenuDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (_) => HomePage()));
+            },
+          ),
+          ListTile(
+            trailing: Icon(Icons.warning, color: Colors.orange,),
+            title: Text('Ważne informacje'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => ImportantInfoPage()));
             },
           ),
           ListTile(
@@ -60,12 +67,12 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Sign out'),
+            trailing: Icon(Icons.logout),
+            title: Text('Wyloguj'),
             onTap: () {
-              Navigator.pop(context);
               context.read<AuthenticationProvider>().signOut();
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => IntroPage()));
+                  .popUntil(ModalRoute.withName('/'));
             },
           ),
         ],

@@ -8,9 +8,10 @@ class UserModel {
   String _lastName;
   AddressModel _address;
   String _phoneNumber;
+  List<bool> _recommendations;
 
   UserModel(this._id, this._firstName, this._lastName, this._phoneNumber,
-      this._address);
+      this._address, [this._recommendations = const []]);
 
   UserModel.map(dynamic obj) {
     this._id = obj['id'];
@@ -18,6 +19,7 @@ class UserModel {
     this._lastName = obj['lastName'];
     this._phoneNumber = obj['phoneNumber'];
     this._address = AddressModel.map(obj['address']);
+    this._recommendations = obj['recommendations'].cast<bool>();
   }
 
   set id(id) => this._id = id;
@@ -25,10 +27,12 @@ class UserModel {
   set lastName(lastName) => this._lastName = lastName;
   set phoneNumber(phoneNumber) => this._phoneNumber = phoneNumber;
   set address(address) => this._address = address;
+  set recommendations(recommendations) => this._recommendations;
   String get id => _id;
   String get firstName => _firstName;
   String get lastName => _lastName;
   String get phoneNumber => _phoneNumber;
+  List<bool> get recommendations => _recommendations;
   AddressModel get address => _address;
 
   String getFullName() {
@@ -44,6 +48,7 @@ class UserModel {
     map['lastName'] = this._lastName;
     map['phoneNumber'] = this._phoneNumber;
     map['address'] = this._address.toMap();
+    map['recommendations'] = this._recommendations;
 
     return map;
   }
@@ -57,5 +62,6 @@ class UserModel {
     this._lastName = map['lastName'];
     this._phoneNumber = map['phoneNumber'];
     this._address = AddressModel.fromMap(map['address']);
+    this._recommendations = map['recommendations'].cast<bool>();
   }
 }

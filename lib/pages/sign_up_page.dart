@@ -59,6 +59,12 @@ class _SignUpPageState extends State<SignUpPage> {
               RoundedButton(
                 text: "Zarejestruj",
                 press: () {
+                  if (emailAddressController.value.text == '' || passwordController.value.text == '') {
+                    setState(() {
+                      errorMessage = "Aby założyć konto musisz podać adres e-mail oraz hasło.";
+                    });
+                    return;
+                  }
                   context
                       .read<AuthenticationProvider>()
                       .signUp(
@@ -68,7 +74,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     if (context.read<User>() != null) {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return HomePage();
+                        return new HomePage();
                         // return UserPersonalInfoEditPage();
                       }));
                     } else {
@@ -87,7 +93,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return LoginPage();
+                        return new LoginPage();
                       },
                     ),
                   );

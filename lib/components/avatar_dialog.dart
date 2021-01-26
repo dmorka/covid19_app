@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
+import 'package:covid19_app/pages/user_personal_info_edit_page.dart';
 import 'package:covid19_app/utils/camera_method.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,11 @@ class _AvatarDialog extends State<AvatarDialog> {
                         // });
                       },
                     );
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(builder: (context) => new UserPersonalInfoEditPage()),
+                    );
                   }),
             ],
           ),

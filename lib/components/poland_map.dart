@@ -71,7 +71,7 @@ class _PolandMapState extends State<PolandMap> {
                                   from: 1001,
                                   to: 10000,
                                   color: Color.fromRGBO(49, 0, 71, 1),
-                                  text: '1000 <'),
+                                  text: '> 1000'),
                             ],
                           ),
                           shapeTooltipBuilder:

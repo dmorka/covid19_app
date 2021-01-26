@@ -11,7 +11,6 @@ import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:covid19_app/utils/services/storage_service.dart';
 
 class UserPersonalInfoEditPage extends StatefulWidget {
@@ -20,6 +19,7 @@ class UserPersonalInfoEditPage extends StatefulWidget {
 }
 
 class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
+  String errorMessage = '';
   String id;
   final RegExp phoneRegExp =
       new RegExp(r"^[\+]?[(]?[0-9]{2}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$");
@@ -35,6 +35,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     if (!areValuesInitialized) {
       FirebaseFirestoreService()
           .getUser(context.watch<User>().uid)
@@ -70,7 +71,7 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) print(snapshot.error);
 
-                                return AvatarWidget(avatar: snapshot.data);
+                                return new AvatarWidget(avatar: snapshot.data);
                               }),
                           Flexible(child: Container(
                             width: MediaQuery.of(context).size.width * 0.6,
@@ -126,12 +127,22 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
                       controller: phoneNumberController,
                       icon: Icons.smartphone,
                     ),
-                    SizedBox(height: 15),
+                    SizedBox(height: 10),
+                    Container(
+                      alignment: Alignment.center,
+                      width: size.width * 0.7,
+                      child: Text(
+                        errorMessage,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                    SizedBox(height: 10),
                     RoundedButton(
-                      text: "SAVE",
+                      text: "ZAPISZ",
                       color: mainColor,
                       press: setUser,
                     ),
+                    SizedBox(height: 20)
                   ],
                 )
               ],
@@ -144,54 +155,76 @@ class _UserPersonalInfoEditState extends State<UserPersonalInfoEditPage> {
 
   void setUser() {
     bool _isValid = true;
+    setState(() {
+      errorMessage = "";
+    });
     if (cityController.text == "") {
-      cityController.text = "Invalid format!";
+      setState(() {
+        errorMessage = "Miasto jest wymagane!";
+      });
       _isValid = false;
     }
     if (firstNameController.text == "") {
-      firstNameController.text = "Invalid format!";
+      setState(() {
+        errorMessage = "Imię jest wymagane!";
+      });
       _isValid = false;
     }
     if (lastNameController.text == "") {
-      lastNameController.text = "Invalid format!";
+      setState(() {
+        errorMessage = "Nazwisko jest wymagane!";
+      });
       _isValid = false;
     }
     if (apartmentNumberController.text == "") {
-      apartmentNumberController.text = "Invalid format!";
+      setState(() {
+        errorMessage = "Nr mieszkania jest wymagane!";
+      });
       _isValid = false;
     }
     if (streetController.text == "") {
-      streetController.text = "Invalid format!";
-      _isValid = false;
-    }
-    if (cityController.text == "") {
-      cityController.text = "Invalid format!";
+      setState(() {
+        errorMessage = "Ulica jest wymagana!";
+      });
       _isValid = false;
     }
     if (!phoneRegExp.hasMatch(phoneNumberController.text) || phoneNumberController.text == "") {
-      phoneNumberController.text = "Invalid format!";
-      return;
+      setState(() {
+        errorMessage = "Nr telefonu ma zły format!";
+      });
+      _isValid = false;
     }
     if (!zipCodeRegExp.hasMatch(zipCodeController.text) || zipCodeController.text == "") {
-      zipCodeController.text = "Invalid format!";
-      return;
+      setState(() {
+        errorMessage = "Kod pocztowy ma zły format!";
+      });
+      _isValid = false;
     }
-    final UserModel user = new UserModel(
-      context.read<User>().uid,
-      firstNameController.text,
-      lastNameController.text,
-      phoneNumberController.text,
-      new AddressModel(
-        cityController.text,
-        zipCodeController.text,
-        streetController.text,
-        apartmentNumberController.text,
-      ),
-    );
-    FirebaseFirestoreService().updateUser(user);
-    Navigator.pop(
-      context,
-    );
+    if (_isValid) {
+      final UserModel user = new UserModel(
+        context
+            .read<User>()
+            .uid,
+        firstNameController.text,
+        lastNameController.text,
+        phoneNumberController.text,
+        new AddressModel(
+          cityController.text,
+          zipCodeController.text,
+          streetController.text,
+          apartmentNumberController.text,
+        ),
+      );
+      FirebaseFirestoreService()
+          .updateUser(user);
+
+      Navigator.pop(context);
+
+      /*Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => new UserProfilePage()),
+      );*/
+    }
   }
 
   @override

@@ -21,10 +21,7 @@ class CustomAppBarWidget extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UserProfilePage()),
-            );
+            Navigator.pushNamed(context, '/user-profile');
           },
           child: Avatar(width: 50, height: 50,),
         )

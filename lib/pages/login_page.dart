@@ -7,7 +7,6 @@ import 'package:covid19_app/pages/sign_up_page.dart';
 import 'package:covid19_app/utils/services/authentication_provider.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:covid19_app/utils/services/storage_service.dart';
@@ -62,18 +61,24 @@ class _LoginPageState extends State<LoginPage> {
               RoundedButton(
                 text: "Zaloguj",
                 press: () {
+                  if (emailAddressController.value.text == '' || passwordController.value.text == '') {
+                    setState(() {
+                      errorMessage = "Proszę podać adres e-mail oraz hasło do swojego konta.";
+                    });
+                    return;
+                  }
                   context
                       .read<AuthenticationProvider>()
                       .signIn(
                           email: emailAddressController.value.text.trim(),
                           password: passwordController.value.text.trim())
                       .then((String result) {
-                    if (context.read<User>() != null) {
-                      FirebaseStorageService()
-                          .setAvatar(context.read<User>().uid);
+                    if (context.read<User>() != null || result == "Signed in!") {
+                      FirebaseStorageService().setAvatar(context.read<User>().uid);
+                      Navigator.popUntil(context, ModalRoute.withName('/'));
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return HomePage();
+                        return new HomePage();
                       }));
                     } else {
                       setState(() {
@@ -90,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return SignUpPage();
+                        return new SignUpPage();
                       },
                     ),
                   );
