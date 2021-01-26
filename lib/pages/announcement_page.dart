@@ -3,10 +3,13 @@ import 'package:covid19_app/components/protected_container.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
-import 'package:covid19_app/components/content_header.dart';
+import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:covid19_app/components/announcement_data_widget.dart';
 import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/components/rounded_button.dart';
+import 'package:provider/provider.dart';
+import 'announcements_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AnnouncementPage extends StatefulWidget {
   const AnnouncementPage({Key key, this.announcement}) : super(key: key);
@@ -53,6 +56,7 @@ class _AnnouncementPage extends State<AnnouncementPage> {
               ),
               SizedBox(height: 10),
               AnnouncementDataWidget(_announcement),
+              SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
@@ -62,10 +66,11 @@ class _AnnouncementPage extends State<AnnouncementPage> {
                         text: "Zgłoś chęć realizacji ogłoszenia",
                         textAlign: TextAlign.center,
                         color: Colors.blue,
-                        /*press: () {
+                        press: () {
+                          FirebaseFirestoreService().addVolunteer(_announcement.id, context.read<User>().uid);
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AnnouncementsPage()));
-                        },*/
+                              builder: (context) => new AnnouncementsPage()));
+                        },
                         padding: EdgeInsets.all(20),
                       ),
                     )
@@ -78,6 +83,8 @@ class _AnnouncementPage extends State<AnnouncementPage> {
       ),
     );
   }
+
+
 
   Widget _buildHeader() {
     return Column(
