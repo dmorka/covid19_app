@@ -91,7 +91,7 @@ class _IntroPageState extends State<IntroPage> {
               press: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  MaterialPageRoute(builder: (context) => new LoginPage()),
                 );
               },
             ),
@@ -102,7 +102,7 @@ class _IntroPageState extends State<IntroPage> {
               press: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()),
+                  MaterialPageRoute(builder: (context) => new SignUpPage()),
                 );
               },
             ),

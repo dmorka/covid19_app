@@ -137,7 +137,7 @@ class _UserProfileState extends State<UserProfilePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => UserPersonalInfoEditPage()),
+                        builder: (context) => new UserPersonalInfoEditPage()),
                   );
                 },
               ),

@@ -21,7 +21,7 @@ class AnnouncementDialog extends StatefulWidget {
 
 class _AnnouncementDialog extends State<AnnouncementDialog> {
   _AnnouncementDialog();
-
+  String errorMessage = '';
   final RegExp zipCodeRegExp = new RegExp(r"^$|\d{2}-\d{3}");
   final titleController = new TextEditingController(text: "");
   final descriptionController = new TextEditingController(text: "");
@@ -34,6 +34,7 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       alignment: Alignment.center,
       child: ListView(
@@ -126,6 +127,16 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
                           ),
                           visible: isChangeAddressVisible,
                         ),
+                        SizedBox(height: 10),
+                        Container(
+                          alignment: Alignment.center,
+                          width: size.width * 0.7,
+                          child: Text(
+                            errorMessage,
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                        SizedBox(height: 10),
                         RoundedButton(
                           text: "Dodaj",
                           press: addAnnoucement,
@@ -144,45 +155,61 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
 
   void addAnnoucement() async {
     bool _isValid = true;
-    if (cityController.text == "") {
-      cityController.text = "Invalid format!";
-      _isValid = false;
+    setState(() {
+      errorMessage = "";
+    });
+    if (isChangeAddressVisible){
+      if (cityController.text == "") {
+        setState(() {
+          errorMessage = "City is required!";
+        });
+        _isValid = false;
+      }
+      if (!zipCodeRegExp.hasMatch(zipCodeController.text) || zipCodeController.text == "") {
+        setState(() {
+          errorMessage = "Zip code invalid format!";
+        });
+        _isValid = false;
+      }
+      if (apartmentNumberController.text == "") {
+        setState(() {
+          errorMessage = "Apartment is required!";
+        });
+        _isValid = false;
+      }
+      if (streetController.text == "") {
+        setState(() {
+          errorMessage = "Street is required!";
+        });
+        _isValid = false;
+      }
     }
     if (titleController.text == "") {
-      titleController.text = "Invalid format!";
-      _isValid = false;
-    }
-    if (!zipCodeRegExp.hasMatch(zipCodeController.text) || zipCodeController.text == "") {
-      zipCodeController.text = "Invalid format!";
-      _isValid = false;
-    }
-    if (apartmentNumberController.text == "") {
-      apartmentNumberController.text = "Invalid format!";
-      _isValid = false;
-    }
-    if (streetController.text == "") {
-      streetController.text = "Invalid format!";
+      setState(() {
+        errorMessage = "Title is required!";
+      });
       _isValid = false;
     }
     if (descriptionController.text == "") {
-      descriptionController.text = "Invalid format!";
+      setState(() {
+        errorMessage = "Description is required!";
+      });
       _isValid = false;
     }
-    if (!_isValid) {
-      return;
+    if (_isValid) {
+      String userId = context.read<User>().uid;
+      AddressModel address;
+      await getAddress(userId).then((value) => address = value);
+      final announcement = new Annoucement(
+        userId,
+        titleController.text,
+        descriptionController.text,
+        dueDate,
+        address,
+      );
+      FirebaseFirestoreService().createAnnoucement(announcement);
+      Navigator.pop(context);
     }
-    String userId = context.read<User>().uid;
-    AddressModel address;
-    await getAddress(userId).then((value) => address = value);
-    final announcement = new Annoucement(
-      userId,
-      titleController.text,
-      descriptionController.text,
-      dueDate,
-      address,
-    );
-    FirebaseFirestoreService().createAnnoucement(announcement);
-    Navigator.pop(context);
   }
 
   Future<AddressModel> getAddress(userId) async {

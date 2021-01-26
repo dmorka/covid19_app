@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) => StatisticPage(),
+                      builder: (_) => new StatisticPage(),
                     ),
                   );
                 },
@@ -374,7 +374,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.blue,
                   press: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AnnouncementsPage()));
+                        builder: (context) => new AnnouncementsPage()));
                   },
                   padding: EdgeInsets.all(20),
                 ),
