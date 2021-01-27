@@ -29,6 +29,7 @@ class _UsersCreatedAnnouncementPageState
     extends State<UsersCreatedAnnouncementPage> {
   Annoucement _announcement;
   ScrollController controller = ScrollController();
+
   _UsersCreatedAnnouncementPageState(Annoucement annoucement) {
     _announcement = annoucement;
   }
@@ -70,19 +71,21 @@ class _UsersCreatedAnnouncementPageState
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: FutureBuilder<List<VolunteerModel>>(
-                  future: FirebaseFirestoreService().getVolunteers(
-                      _announcement.volunteers),
+                  future: FirebaseFirestoreService()
+                      .getVolunteers(_announcement.volunteers),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) print(snapshot.error);
 
-                    return snapshot.data.length != 0
+                    return snapshot.hasData
                         ? _buildVolunteersList(snapshot.data)
-                        :Column(children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: Text("Brak zgłoszeń."),
-                      ),
-                    ],);
+                        : Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                child: Text("Brak zgłoszeń."),
+                              ),
+                            ],
+                          );
                   },
                   // _buildVolunteersList(),
                 ),
@@ -98,9 +101,8 @@ class _UsersCreatedAnnouncementPageState
                         color: Colors.red,
                         press: () {
                           showDialog(
-                            context: context,
-                            builder: (_) => _createAlertDialog()
-                          );
+                              context: context,
+                              builder: (_) => _createAlertDialog());
                         },
                         padding: EdgeInsets.all(20),
                       ),
@@ -123,10 +125,9 @@ class _UsersCreatedAnnouncementPageState
         FlatButton(
           child: Text("Tak, usuń"),
           onPressed: () {
-            FirebaseFirestoreService()
-                .deleteAnnoucement(_announcement.id)
-                .then((value) =>
-                Navigator.of(context).popUntil(ModalRoute.withName('/user-profile')));
+            FirebaseFirestoreService().deleteAnnoucement(_announcement.id).then(
+                (value) => Navigator.of(context)
+                    .popUntil(ModalRoute.withName('/user-profile')));
           },
         ),
         FlatButton(
@@ -149,10 +150,8 @@ class _UsersCreatedAnnouncementPageState
             children: <Widget>[
               EagerVolunteersListItem(volunteers[index]),
             ],
-
           );
-        }
-    );
+        });
   }
 
   Widget _buildHeader() {

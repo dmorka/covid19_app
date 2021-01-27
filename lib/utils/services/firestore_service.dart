@@ -83,7 +83,7 @@ class FirebaseFirestoreService {
   Future<List<VolunteerModel>> getVolunteers(
       List volunteerIDs) async {
     if (volunteerIDs.length == 0)
-      return [];
+      return null;
     List<VolunteerModel> volunteers = new List<VolunteerModel>();
     print(volunteerIDs);
     await userCollection
