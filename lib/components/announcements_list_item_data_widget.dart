@@ -62,6 +62,7 @@ class AnnouncementsListItemDataWidget extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black87,
                           fontWeight: FontWeight.normal,
+                          fontSize: 16
                         ),
                       ),
                     ),
