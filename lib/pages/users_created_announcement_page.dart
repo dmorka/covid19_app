@@ -75,8 +75,14 @@ class _UsersCreatedAnnouncementPageState
                   builder: (context, snapshot) {
                     if (snapshot.hasError) print(snapshot.error);
 
-                    return snapshot.hasData
-                        ? _buildVolunteersList(snapshot.data) : Column();
+                    return snapshot.data.length != 0
+                        ? _buildVolunteersList(snapshot.data)
+                        :Column(children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Text("Brak zgłoszeń."),
+                      ),
+                    ],);
                   },
                   // _buildVolunteersList(),
                 ),
