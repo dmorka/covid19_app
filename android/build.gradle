@@ -30,3 +30,8 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+dependencies {
+//    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+//    implementation 'android.arch.work:work-runtime:1.0.1'
+}

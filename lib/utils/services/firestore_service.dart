@@ -3,7 +3,11 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/models/user.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:covid19_app/models/volunteer.dart';
+
 
 final CollectionReference userCollection =
     FirebaseFirestore.instance.collection('users');
@@ -212,9 +216,12 @@ class FirebaseFirestoreService {
         (Transaction tx) async {
       final DocumentSnapshot ds = await tx.get(userCollection.doc(userId));
 
-      await tx.update(ds.reference, {
-        "deviceTokens": FieldValue.arrayUnion([token])
-      });
+      await tx.set(
+          ds.reference,
+          {
+            "deviceTokens": FieldValue.arrayUnion([token])
+          },
+          SetOptions(merge: true));
       return {'updated': true};
     };
 

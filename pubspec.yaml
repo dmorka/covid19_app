@@ -41,8 +41,12 @@ dependencies:
   path_provider: ^1.6.27
   intl: ^0.16.1
   flutter_local_notifications: ^3.0.2
-  firebase_messaging: ^8.0.0-dev.11
+# <<<<<<< notifications
+  firebase_messaging: ^7.0.0
+# =======
+#   firebase_messaging: ^8.0.0-dev.11
   fluttertoast: ^7.1.6
+# >>>>>>> master
 
 dev_dependencies:
   flutter_test:

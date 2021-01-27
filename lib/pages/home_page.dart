@@ -1,21 +1,34 @@
-import 'dart:ui';
+import 'dart:async';
+import 'dart:io';
 
 import 'package:covid19_app/components/annoucment_dialog.dart';
+import 'package:covid19_app/components/custom_appbar_widget.dart';
 import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
-import 'package:covid19_app/models/annoucement.dart';
+import 'package:covid19_app/models/statistics.dart';
+import 'package:covid19_app/pages/intro_page.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
-import 'package:covid19_app/pages/announcements_page.dart';
-import 'package:covid19_app/components/custom_appbar_widget.dart';
+import 'package:covid19_app/utils/services/authentication_provider.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:covid19_app/utils/services/rest_api_service.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+
 import 'package:covid19_app/models/statistics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:flutter/material.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+
+import 'announcements_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -32,6 +45,76 @@ class _HomePageState extends State<HomePage> {
     ApiDataProvider().fetchGeneralStatistics().then((val) => setState(() {
           _generalStatisticsModel = val;
         }));
+  }
+
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+
+  StreamSubscription iosSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isIOS) {
+      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
+        print(data);
+        _saveDeviceToken();
+      });
+
+      _fcm.requestNotificationPermissions(IosNotificationSettings());
+    } else {
+      _saveDeviceToken();
+    }
+
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Text(message['notification']['title']),
+              subtitle: Text(message['notification']['body']),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.amber,
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        // TODO open the page of the announcement to which the notification refers
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        // TODO open the page of the announcement to which the notification refers
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    if (iosSubscription != null) iosSubscription.cancel();
+    super.dispose();
+  }
+
+  /// Get the token, save it to the database for current user
+  _saveDeviceToken() async {
+    // Get the current user
+    User user = FirebaseAuth.instance.currentUser;
+
+    // Get the token for this device
+    String fcmToken = await _fcm.getToken();
+
+    // Save it to Firestore
+    if (user != null && fcmToken != null) {
+      FirebaseFirestoreService().addDeviceToken(user.uid, fcmToken);
+    }
   }
 
   @override
@@ -366,10 +449,10 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.blue,
                 press: () {
                   showDialog(
-                     context: context,
-                     builder: (BuildContext context) {
-                     return AnnouncementDialog();
-                  });
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AnnouncementDialog();
+                      });
                 },
                 padding: EdgeInsets.all(20),
               )),
