@@ -26,17 +26,32 @@ class AnnouncementDataWidget extends StatelessWidget {
             ContentHeader(name: "Opis"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(_announcement.description),
+              child: Text(
+                _announcement.description,
+                style: TextStyle(
+                  fontSize: 16
+                ),
+              ),
             ),
             ContentHeader(name: "Czas dostarczenia"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(_announcement.formatedDate()),
+              child: Text(
+                _announcement.formatedDate(),
+                style: TextStyle(
+                    fontSize: 16
+                ),
+              ),
             ),
             ContentHeader(name: "Gdzie"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(_announcement.address.getFullAddress()),
+              child: Text(
+                _announcement.address.getFullAddress(),
+                style: TextStyle(
+                    fontSize: 16
+                ),
+              ),
             )
           ]),
     );

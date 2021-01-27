@@ -67,6 +67,7 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
                             maxLines: 6,
                             controller: descriptionController,
                             keyboardType: TextInputType.multiline,
+                            cursorColor: Colors.purple[700],
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               icon: Icon(
@@ -158,14 +159,15 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
     setState(() {
       errorMessage = "";
     });
-    if (isChangeAddressVisible){
+    if (isChangeAddressVisible) {
       if (cityController.text == "") {
         setState(() {
           errorMessage = "City is required!";
         });
         _isValid = false;
       }
-      if (!zipCodeRegExp.hasMatch(zipCodeController.text) || zipCodeController.text == "") {
+      if (!zipCodeRegExp.hasMatch(zipCodeController.text) ||
+          zipCodeController.text == "") {
         setState(() {
           errorMessage = "Zip code invalid format!";
         });
@@ -228,7 +230,4 @@ class _AnnouncementDialog extends State<AnnouncementDialog> {
 
     return addressModel;
   }
-
-
-
 }

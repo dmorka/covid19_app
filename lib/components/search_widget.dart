@@ -1,16 +1,15 @@
-
+import 'package:covid19_app/components/text_field_container.dart';
+import 'package:covid19_app/core/consts.dart';
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatefulWidget {
-  const SearchWidget({
-    Key key,
-    this.searchQueryListener
-  }) : super(key: key);
+  const SearchWidget({Key key, this.searchQueryListener}) : super(key: key);
 
   final void Function(String query) searchQueryListener;
 
   @override
-  State<StatefulWidget> createState() => _SearchWidgetState(searchQueryListener);
+  State<StatefulWidget> createState() =>
+      _SearchWidgetState(searchQueryListener);
 }
 
 class _SearchWidgetState extends State<SearchWidget> {
@@ -25,34 +24,33 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.white54,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: TextFieldContainer(
+        backgroundColor: Color.fromRGBO(206, 147, 216, 0.5),
         child: TextField(
           controller: _textEditingController,
           autofocus: false,
+          cursorColor: Colors.purple[700],
           decoration: InputDecoration(
-            hintText: "Wyszukaj",
-            hintStyle: TextStyle(
-                color: Colors.white70
-            ),
-            icon: Icon(Icons.search),
-            suffixIcon: IconButton(
-              onPressed: () {
-                _textEditingController.clear();
-                _searchQuery = "";
-                _searchQueryListener(_searchQuery);
-              },
-              icon: Icon(Icons.clear)
-            )
-          ),
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16
-          ),
+              hintText: "Wyszukaj",
+              hintStyle: TextStyle(color: Colors.white70),
+              border: InputBorder.none,
+              icon: Icon(
+                Icons.search,
+                color: backgroundColor,
+              ),
+              suffixIcon: IconButton(
+                  onPressed: () {
+                    _textEditingController.clear();
+                    _searchQuery = "";
+                    _searchQueryListener(_searchQuery);
+                  },
+                  icon: Icon(
+                    Icons.clear,
+                    color: backgroundColor,
+                  ))),
+          style: TextStyle(color: Colors.white, fontSize: 16),
           onChanged: (query) => setState(() {
             _searchQuery = query;
             _searchQueryListener(_searchQuery);
@@ -61,5 +59,4 @@ class _SearchWidgetState extends State<SearchWidget> {
       ),
     );
   }
-
 }

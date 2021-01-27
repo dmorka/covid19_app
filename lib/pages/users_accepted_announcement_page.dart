@@ -15,14 +15,14 @@ import 'package:covid19_app/models/volunteer.dart';
 import 'package:covid19_app/components/content_header.dart';
 
 class UsersAcceptedAnnouncementPage extends StatefulWidget {
-  const UsersAcceptedAnnouncementPage({Key key, this.announcement})
+  const UsersAcceptedAnnouncementPage({Key key, this.announcementId})
       : super(key: key);
 
-  final Annoucement announcement;
+  final String announcementId;
 
   @override
   _UsersAcceptedAnnouncementPageState createState() =>
-      _UsersAcceptedAnnouncementPageState(announcement);
+      _UsersAcceptedAnnouncementPageState();
 }
 
 class _UsersAcceptedAnnouncementPageState
@@ -30,12 +30,16 @@ class _UsersAcceptedAnnouncementPageState
   Annoucement _announcement;
   ScrollController controller = ScrollController();
 
-  _UsersAcceptedAnnouncementPageState(Annoucement annoucement) {
-    _announcement = annoucement;
-  }
-
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestoreService()
+        .getAnnoucements("id", widget.announcementId)
+        .then((value) {
+      setState(() {
+        _announcement = value[0];
+      });
+    });
+
     return ProtectedContainer(
       body: Scaffold(
         // resizeToAvoidBottomPadding: false,
@@ -62,28 +66,34 @@ class _UsersAcceptedAnnouncementPageState
                 ),
               ),
               SizedBox(height: 10),
-              AnnouncementDataWidget(_announcement),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: RoundedButton(
-                        text: "Zrezygnuj z chęci pomocy",
-                        textAlign: TextAlign.center,
-                        color: Colors.red,
-                        press: () {
-                          showDialog(
-                              context: context,
-                              builder: (_) => _createAlertDialog());
-                        },
-                        padding: EdgeInsets.all(20),
-                      ),
+              _announcement != null
+              ? Column(
+                children: [
+                  AnnouncementDataWidget(_announcement),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: RoundedButton(
+                            text: "Zrezygnuj z chęci pomocy",
+                            textAlign: TextAlign.center,
+                            color: Colors.red,
+                            press: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => _createAlertDialog());
+                            },
+                            padding: EdgeInsets.all(20),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  )
+                ],
               )
+              : Column(),
             ],
           ),
         ),
@@ -114,7 +124,8 @@ class _UsersAcceptedAnnouncementPageState
   }
 
   Widget _buildHeader() {
-    return Column(
+    return _announcement != null
+      ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         CustomAppBarWidget(),
@@ -130,6 +141,7 @@ class _UsersAcceptedAnnouncementPageState
           ),
         ),
       ],
-    );
+    )
+    : Column();
   }
 }
