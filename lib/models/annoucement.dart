@@ -10,9 +10,11 @@ class Annoucement {
   AddressModel _address;
   List<String> _volunteers;
   bool _confirmed;
+  bool _delivered;
+  bool _received;
 
   Annoucement(this._userId, this._title, this._description, this._dueDate,
-      this._address, [this._volunteers = const [], this._confirmed = false]);
+      this._address, [this._volunteers = const [], this._confirmed = false, this._received = false, this._delivered = false]);
 
   Annoucement.map(dynamic obj) {
     this._id = obj['id'];
@@ -23,6 +25,8 @@ class Annoucement {
     this._address = AddressModel.map(obj['address']);
     this._volunteers = obj['volunteers'].cast<String>();
     this._confirmed = obj['confirmed'];
+    this._delivered = obj['delivered'];
+    this._received = obj['received'];
   }
 
   String get id => _id;
@@ -33,6 +37,8 @@ class Annoucement {
   List get volunteers => _volunteers;
   AddressModel get address => _address;
   bool get confirmed => _confirmed;
+  bool get delivered => _delivered;
+  bool get received => _received;
 
   set id(String id) => this._id = id;
   set userId(String userId) => this._userId = userId;
@@ -42,6 +48,8 @@ class Annoucement {
   set address(AddressModel address) => this._address = address;
   set volunteers(List<String> volunteers) => this._volunteers = volunteers;
   set confirmed(bool confirmed) => this._confirmed = confirmed;
+  set received(bool received) => this._received = received;
+  set delivered(bool delivered) => this._delivered = delivered;
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
@@ -55,6 +63,8 @@ class Annoucement {
     map['address'] = _address.toMap();
     map['volunteers'] = _volunteers;
     map['confirmed'] = _confirmed;
+    map['delivered'] = _delivered;
+    map['received'] = _received;
 
     return map;
   }
@@ -68,6 +78,8 @@ class Annoucement {
     this._address = AddressModel.fromMap(map['address']);
     this._volunteers = map['volunteers'].cast<String>();
     this._confirmed = map['confirmed'];
+    this._delivered = map['delivered'];
+    this._received = map['received'];
   }
 
   String formatedDate() {
