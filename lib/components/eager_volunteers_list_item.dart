@@ -1,18 +1,23 @@
 import 'package:covid19_app/models/volunteer.dart';
 import 'package:flutter/material.dart';
 
-class EagerVolunteersListItem extends StatelessWidget {
+class EagerVolunteersListItem extends StatefulWidget {
   final VolunteerModel _volunteer;
 
   EagerVolunteersListItem(this._volunteer);
 
   @override
+  _EagerVolunteersListItemState createState() => _EagerVolunteersListItemState();
+}
+
+class _EagerVolunteersListItemState extends State<EagerVolunteersListItem> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          // Navigator.of(context).push(MaterialPageRoute(
-          //   // Action for accepting help from this volunteer (dialog box?).
-          //     builder: (_) => null));
+          showDialog(
+              context: context,
+              builder: (_) => _createAlertDialog());
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 1.0),
@@ -29,7 +34,7 @@ class EagerVolunteersListItem extends StatelessWidget {
                     flex: 6,
                     child: RichText(
                     text: TextSpan(
-                      text: _volunteer.firstName,
+                      text: widget._volunteer.firstName,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -39,9 +44,9 @@ class EagerVolunteersListItem extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    flex: 2,
+                    flex: 1,
                     child: Text(
-                      _volunteer.recommendations.where((e) => e == true).length.toString(),
+                      widget._volunteer.recommendations.where((e) => e == true).length.toString(),
                       style: TextStyle(
                         fontSize: 22,
                         color: Colors.green,
@@ -49,9 +54,9 @@ class EagerVolunteersListItem extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    flex: 2,
+                    flex: 1,
                     child: Text(
-                      _volunteer.recommendations.where((e) => e == false).length.toString(),
+                      widget._volunteer.recommendations.where((e) => e == false).length.toString(),
                       style: TextStyle(
                         fontSize: 22,
                         color: Colors.red,
@@ -63,6 +68,30 @@ class EagerVolunteersListItem extends StatelessWidget {
             ),
           ),
         )
+    );
+  }
+
+  AlertDialog _createAlertDialog() {
+    return AlertDialog(
+      title: Text("Potwierdzenie przyjęcia pomocy"),
+      content: Text("Czy na pewno chcesz przyjąć pomoc od " + widget._volunteer.firstName + "?"),
+      actions: [
+        FlatButton(
+          child: Text("Tak, przyjmuję"),
+          onPressed: () {
+            // Call Firebase to accept the announcement
+
+            Navigator.of(context)
+                .popUntil(ModalRoute.withName('/user-profile'));
+          },
+        ),
+        FlatButton(
+          child: Text("Nie"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
     );
   }
 }

@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:covid19_app/components/avatar.dart';
 import 'package:covid19_app/components/users_created_announcements_list_item.dart';
+import 'package:covid19_app/components/users_accepted_announcements_list_item.dart';
 
 class UserProfilePage extends StatefulWidget {
   @override
@@ -56,31 +57,17 @@ class _UserProfileState extends State<UserProfilePage> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: RichText(
-                    text: TextSpan(
-                      text: "Lista Wystawionych ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                        color: Colors.black87,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "Ogłoszeń:",
-                          style: TextStyle(
-                            color: mainColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                _buildSectionHeader("Lista Wystawionych ", "Ogłoszeń"),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: _buildAnnouncements(),
-                )
+                  child: _buildUsersCreatedAnnouncements(),
+                ),
+                SizedBox(height: 15),
+                _buildSectionHeader("Lista Przyjętych ", "Ogłoszeń"),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: _buildUsersAcceptedAnnouncements(),
+                ),
               ],
             ),
           ),
@@ -89,7 +76,31 @@ class _UserProfileState extends State<UserProfilePage> {
     );
   }
 
-  Widget _buildAnnouncements() {
+  Widget _buildSectionHeader(String text1, String text2) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: RichText(
+        text: TextSpan(
+          text: text1,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: Colors.black87,
+          ),
+          children: [
+            TextSpan(
+              text: text2,
+              style: TextStyle(
+                color: mainColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUsersCreatedAnnouncements() {
     return FutureBuilder<List<Annoucement>>(
         future: FirebaseFirestoreService()
             .getAnnoucements("userId", context.read<User>().uid),
@@ -105,6 +116,26 @@ class _UserProfileState extends State<UserProfilePage> {
                   itemBuilder: (context, index) {
                     return UsersCreatedAnnouncementsListItem(snapshot.data[index]);
                   })
+              : Column();
+        });
+  }
+
+  Widget _buildUsersAcceptedAnnouncements() {
+    return FutureBuilder<List<Annoucement>>(
+        future: FirebaseFirestoreService()
+            .getAnnoucements("userId", context.read<User>().uid),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+
+          return snapshot.hasData
+              ? ListView.builder(
+              shrinkWrap: true,
+              controller: controller,
+              itemCount: snapshot.data.length,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                return UsersAcceptedAnnouncementsListItem(snapshot.data[index]);
+              })
               : Column();
         });
   }

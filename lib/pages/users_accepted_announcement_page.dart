@@ -1,30 +1,37 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/protected_container.dart';
-import 'package:flutter/material.dart';
 import 'package:covid19_app/core/consts.dart';
-import 'package:covid19_app/components/custom_appbar_widget.dart';
-import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:covid19_app/components/announcement_data_widget.dart';
-import 'package:covid19_app/models/annoucement.dart';
+import 'package:flutter/material.dart';
 import 'package:covid19_app/components/rounded_button.dart';
-import 'package:provider/provider.dart';
-import 'announcements_page.dart';
+import 'package:covid19_app/components/custom_appbar_widget.dart';
+import 'package:covid19_app/components/eager_volunteers_list_item.dart';
+import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:covid19_app/models/volunteer.dart';
+import 'package:covid19_app/components/content_header.dart';
 
-class AnnouncementPage extends StatefulWidget {
-  const AnnouncementPage({Key key, this.announcement}) : super(key: key);
+class UsersAcceptedAnnouncementPage extends StatefulWidget {
+  const UsersAcceptedAnnouncementPage({Key key, this.announcement})
+      : super(key: key);
 
   final Annoucement announcement;
 
   @override
-  State<StatefulWidget> createState() => _AnnouncementPage(announcement);
+  _UsersAcceptedAnnouncementPageState createState() =>
+      _UsersAcceptedAnnouncementPageState(announcement);
 }
 
-class _AnnouncementPage extends State<AnnouncementPage> {
+class _UsersAcceptedAnnouncementPageState
+    extends State<UsersAcceptedAnnouncementPage> {
   Annoucement _announcement;
+  ScrollController controller = ScrollController();
 
-  _AnnouncementPage(Annoucement announcement) {
-    _announcement = announcement;
+  _UsersAcceptedAnnouncementPageState(Annoucement annoucement) {
+    _announcement = annoucement;
   }
 
   @override
@@ -56,23 +63,24 @@ class _AnnouncementPage extends State<AnnouncementPage> {
               ),
               SizedBox(height: 10),
               AnnouncementDataWidget(_announcement),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
                 child: Row(
                   children: <Widget>[
                     Expanded(
                       child: RoundedButton(
-                        text: "Zgłoś chęć realizacji ogłoszenia",
+                        text: "Zrezygnuj z chęci pomocy",
                         textAlign: TextAlign.center,
-                        color: Colors.blue,
+                        color: Colors.red,
                         press: () {
-                          FirebaseFirestoreService().addVolunteer(_announcement.id, context.read<User>().uid);
-                          Navigator.of(context).pop();
+                          showDialog(
+                              context: context,
+                              builder: (_) => _createAlertDialog());
                         },
                         padding: EdgeInsets.all(20),
                       ),
-                    )
+                    ),
                   ],
                 ),
               )
@@ -83,7 +91,27 @@ class _AnnouncementPage extends State<AnnouncementPage> {
     );
   }
 
-
+  AlertDialog _createAlertDialog() {
+    return AlertDialog(
+      title: Text("Potwierdzenie rezygnacji"),
+      content: Text("Czy na pewno chcesz zrezygnować z chęci realizacji tego ogłoszenia?"),
+      actions: [
+        FlatButton(
+          child: Text("Tak, rezygnuję"),
+          onPressed: () {
+            Navigator.of(context)
+                .popUntil(ModalRoute.withName('/user-profile'));
+          },
+        ),
+        FlatButton(
+          child: Text("Nie"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    );
+  }
 
   Widget _buildHeader() {
     return Column(

@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                       _buildSymptomItem("assets/images/2.png", "Suchy kaszel"),
                       _buildSymptomItem("assets/images/3.png", "Ból głowy"),
                       _buildSymptomItem("assets/images/4.png", "Brak tchu"),
-                      _buildSymptomItem("assets/images/5.png", "Brak zapachu\ni węchu"),
+                      _buildSymptomItem("assets/images/5.png", "Brak smaku\ni węchu"),
                     ],
                   ),
                 ),
