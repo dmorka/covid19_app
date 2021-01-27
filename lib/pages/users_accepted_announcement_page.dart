@@ -13,6 +13,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:covid19_app/models/volunteer.dart';
 import 'package:covid19_app/components/content_header.dart';
+import 'package:covid19_app/models/user.dart';
+import 'package:covid19_app/components/contact_info.dart';
 
 class UsersAcceptedAnnouncementPage extends StatefulWidget {
   const UsersAcceptedAnnouncementPage({Key key, this.announcementId})
@@ -29,6 +31,7 @@ class _UsersAcceptedAnnouncementPageState
     extends State<UsersAcceptedAnnouncementPage> {
   Annoucement _announcement;
   ScrollController controller = ScrollController();
+  UserModel orderer;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,16 @@ class _UsersAcceptedAnnouncementPageState
         .then((value) {
       setState(() {
         _announcement = value[0];
+
+        if (_announcement.confirmed) {
+          FirebaseFirestoreService()
+              .getUser(_announcement.userId)
+              .then((value) {
+            setState(() {
+              orderer = value;
+            });
+          });
+        }
       });
     });
 
@@ -71,26 +84,25 @@ class _UsersAcceptedAnnouncementPageState
                 children: [
                   AnnouncementDataWidget(_announcement),
                   SizedBox(height: 10),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: RoundedButton(
-                            text: "Zrezygnuj z chęci pomocy",
-                            textAlign: TextAlign.center,
-                            color: Colors.red,
-                            press: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (_) => _createAlertDialog());
-                            },
-                            padding: EdgeInsets.all(20),
-                          ),
-                        ),
-                      ],
-                    ),
+                  _announcement.confirmed
+                  ? Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: ContentHeader(name: "Dane zleceniodawcy"),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: orderer != null
+                        ? ContactInfo(orderer)
+                        : Column(),
+                      ),
+                      _announcement.delivered
+                      ? _buildDeliveredAnnouncement()
+                      : _buildNotDeliveredAnnouncement()
+                    ],
                   )
+                  : _buildNotConfirmedAnnouncement()
                 ],
               )
               : Column(),
@@ -101,7 +113,68 @@ class _UsersAcceptedAnnouncementPageState
     );
   }
 
-  AlertDialog _createAlertDialog() {
+  Widget _buildDeliveredAnnouncement() {
+    return Column(children: [
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+          child: Text("Dostarczone"))
+    ]);
+  }
+
+  Widget _buildNotDeliveredAnnouncement() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: RoundedButton(
+                  text: "Oznacz zlecenie jako zrealizowane",
+                  textAlign: TextAlign.center,
+                  color: Colors.green,
+                  press: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => _createAlertDialogOnDelivered());
+                  },
+                  padding: EdgeInsets.all(20),
+                ),
+              ),
+              SizedBox(width: 10,),
+              _createDeclineButton(),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildNotConfirmedAnnouncement() {
+    return Column(children: [
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+          child: _createDeclineButton())
+    ]);
+  }
+
+  Widget _createDeclineButton() {
+    return Expanded(
+      child: RoundedButton(
+        text: "Zrezygnuj z chęci pomocy",
+        textAlign: TextAlign.center,
+        color: Colors.red,
+        press: () {
+          showDialog(
+              context: context,
+              builder: (_) => _createAlertDialogOnDecline());
+        },
+        padding: EdgeInsets.all(20),
+      ),
+    );
+  }
+
+  AlertDialog _createAlertDialogOnDecline() {
     return AlertDialog(
       title: Text("Potwierdzenie rezygnacji"),
       content: Text("Czy na pewno chcesz zrezygnować z chęci realizacji tego ogłoszenia?"),
@@ -109,6 +182,39 @@ class _UsersAcceptedAnnouncementPageState
         FlatButton(
           child: Text("Tak, rezygnuję"),
           onPressed: () {
+            setState(() {
+              _announcement.confirmed = false;
+              _announcement.volunteers = [];
+            });
+            FirebaseFirestoreService()
+              .updateAnnoucement(_announcement)
+              .then((value) => Navigator.of(context)
+                .popUntil(ModalRoute.withName('/user-profile')));
+          },
+        ),
+        FlatButton(
+          child: Text("Nie"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    );
+  }
+
+  AlertDialog _createAlertDialogOnDelivered() {
+    return AlertDialog(
+      title: Text("Potwierdzenie dostarczenia"),
+      content: Text("Czy na pewno chcesz oznaczyć zlecenie jako dostarczone?"),
+      actions: [
+        FlatButton(
+          child: Text("Tak, dostarczyłem zlecenie"),
+          onPressed: () {
+            setState(() {
+              _announcement.delivered = true;
+            });
+            FirebaseFirestoreService()
+              .updateAnnoucement(_announcement);
             Navigator.of(context)
                 .popUntil(ModalRoute.withName('/user-profile'));
           },
@@ -140,6 +246,37 @@ class _UsersAcceptedAnnouncementPageState
             ),
           ),
         ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            children: [
+              Text(
+                "Dla kogo:",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 24,
+                ),
+              ),
+              SizedBox(width: 10),
+              FutureBuilder(
+                future: FirebaseFirestoreService().getUser(_announcement.userId),
+                builder: (context, snapshot) {
+                  return snapshot.hasData
+                  ? Text(
+                    snapshot.data.firstName + ' ' + snapshot.data.lastName,
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 20
+                    ),
+                  )
+                  : Column();
+                },
+              )
+
+            ],
+          ),
+        )
       ],
     )
     : Column();

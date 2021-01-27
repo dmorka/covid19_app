@@ -15,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:covid19_app/models/volunteer.dart';
 import 'package:covid19_app/components/content_header.dart';
+import 'package:covid19_app/components/contact_info.dart';
 
 class UsersCreatedAnnouncementPage extends StatefulWidget {
   final String announcementId;
@@ -82,11 +83,14 @@ class _UsersCreatedAnnouncementPageState
               SizedBox(height: 10),
               _announcement != null
               ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AnnouncementDataWidget(_announcement),
                   SizedBox(height: 10),
                   _announcement.confirmed && deliveringVolunteer != null
-                      ? _buildConfirmedAnnouncement()
+                      ? _announcement.received
+                        ? _buildReceivedAnnouncement()
+                        : _buildConfirmedAnnouncement()
                       : _buildNotConfirmedAnnouncement()
                 ],
               )
@@ -98,6 +102,14 @@ class _UsersCreatedAnnouncementPageState
     );
   }
 
+  Widget _buildReceivedAnnouncement() {
+    return Column(children: [
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+          child: Text("Otrzymane"))
+    ]);
+  }
+
   Widget _buildConfirmedAnnouncement() {
     return Column(
       children: [
@@ -107,17 +119,7 @@ class _UsersCreatedAnnouncementPageState
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildUserPersonalDataItem(
-                  Icons.phone, deliveringVolunteer.phoneNumber),
-              SizedBox(height: 5),
-              _buildUserPersonalDataItem(Icons.location_pin,
-                  deliveringVolunteer.address.getFullAddress()),
-              Text("ID: " + deliveringVolunteer.id)
-            ],
-          ),
+          child: ContactInfo(deliveringVolunteer),
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
@@ -125,17 +127,19 @@ class _UsersCreatedAnnouncementPageState
             children: <Widget>[
               Expanded(
                 child: RoundedButton(
-                  text: "Anuluj zlecenie",
+                  text: "Oznacz zlecenie jako zrealizowane",
                   textAlign: TextAlign.center,
-                  color: Colors.red,
+                  color: Colors.green,
                   press: () {
                     showDialog(
                         context: context,
-                        builder: (_) => _createAlertDialogOnCancel());
+                        builder: (_) => _createAlertDialogOnReceived());
                   },
                   padding: EdgeInsets.all(20),
                 ),
               ),
+              SizedBox(width: 10,),
+              _createCancelButton(),
             ],
           ),
         )
@@ -143,24 +147,19 @@ class _UsersCreatedAnnouncementPageState
     );
   }
 
-  Widget _buildUserPersonalDataItem(IconData icon, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Icon(
-          icon,
-          color: Colors.black,
-        ),
-        SizedBox(width: 5),
-        Container(
-          width: MediaQuery.of(context).size.width * .5,
-          child: Text(
-            value,
-            style: TextStyle(
-                color: Colors.black, fontSize: 16),
-          ),
-        ),
-      ],
+  Widget _createCancelButton() {
+    return Expanded(
+      child: RoundedButton(
+        text: "Anuluj zlecenie",
+        textAlign: TextAlign.center,
+        color: Colors.red,
+        press: () {
+          showDialog(
+              context: context,
+              builder: (_) => _createAlertDialogOnCancel());
+        },
+        padding: EdgeInsets.all(20),
+      ),
     );
   }
 
@@ -265,6 +264,33 @@ class _UsersCreatedAnnouncementPageState
           onPressed: () {
             FirebaseFirestoreService().deleteAnnoucement(_announcement.id).then(
                 (value) => Navigator.of(context)
+                    .popUntil(ModalRoute.withName('/user-profile')));
+          },
+        ),
+        FlatButton(
+          child: Text("Nie"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    );
+  }
+
+  AlertDialog _createAlertDialogOnReceived() {
+    return AlertDialog(
+      title: Text("Potwierdzenie otrzymania zlecenia"),
+      content: Text("Czy na pewno chcesz oznaczyć zlecenie jako otrzymane?"),
+      actions: [
+        FlatButton(
+          child: Text("Tak, otrzymałem"),
+          onPressed: () {
+            setState(() {
+              _announcement.received = true;
+            });
+            FirebaseFirestoreService()
+                .updateAnnoucement(_announcement)
+                .then((value) => Navigator.of(context)
                     .popUntil(ModalRoute.withName('/user-profile')));
           },
         ),
