@@ -17,10 +17,11 @@ import 'package:covid19_app/models/volunteer.dart';
 import 'package:covid19_app/components/content_header.dart';
 
 class UsersCreatedAnnouncementPage extends StatefulWidget {
+  final String announcementId;
+
   const UsersCreatedAnnouncementPage({Key key, this.announcementId})
       : super(key: key);
 
-  final String announcementId;
 
   @override
   _UsersCreatedAnnouncementPageState createState() =>

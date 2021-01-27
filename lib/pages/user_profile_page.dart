@@ -185,7 +185,7 @@ class _UserProfileState extends State<UserProfilePage> {
                   // if (snapshot.hasError) print(snapshot.error);
 
                   return snapshot.hasData
-                      ? Column(
+                      ? Flexible(child:Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
@@ -210,7 +210,7 @@ class _UserProfileState extends State<UserProfilePage> {
                                 snapshot.data.address.getFullAddress()),
                             Text("ID: " + snapshot.data.id)
                           ],
-                        )
+                        ),)
                       : Column();
                 })
           ],
