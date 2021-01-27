@@ -19,7 +19,7 @@ class UsersAcceptedAnnouncementsListItem extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => UsersAcceptedAnnouncementPage(announcement: content)));
+              builder: (_) => UsersAcceptedAnnouncementPage(announcementId: content.id)));
         },
         child: AnnouncementsListItemDataWidget(content)
     );
