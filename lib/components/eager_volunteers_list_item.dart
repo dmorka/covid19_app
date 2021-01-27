@@ -11,15 +11,10 @@ class EagerVolunteersListItem extends StatefulWidget {
   EagerVolunteersListItem(this._volunteer, this._annoucement);
 
   @override
-  _EagerVolunteersListItemState createState() => _EagerVolunteersListItemState(_annoucement);
+  _EagerVolunteersListItemState createState() => _EagerVolunteersListItemState();
 }
 
 class _EagerVolunteersListItemState extends State<EagerVolunteersListItem> {
-  Annoucement _annoucement;
-
-  _EagerVolunteersListItemState(Annoucement annoucement) {
-    _annoucement = annoucement;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,12 +97,12 @@ class _EagerVolunteersListItemState extends State<EagerVolunteersListItem> {
         FlatButton(
           child: Text("Tak, przyjmuję"),
           onPressed: () {
-            Annoucement annoucement = _annoucement.clone();
-            annoucement.confirmed = true;
-            annoucement.volunteers = [widget._volunteer.id];
-            print(annoucement.toString());
+            setState(() {
+              widget._annoucement.confirmed = true;
+              widget._annoucement.volunteers = [widget._volunteer.id];
+            });
             FirebaseFirestoreService()
-              .updateAnnoucement(annoucement);
+              .updateAnnoucement(widget._annoucement);
             /*Navigator.of(context)
                 .popUntil(ModalRoute.withName('/user-profile'));*/
             Navigator.of(context).pop();
