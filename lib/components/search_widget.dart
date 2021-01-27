@@ -27,11 +27,12 @@ class _SearchWidgetState extends State<SearchWidget> {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: TextFieldContainer(
-        backgroundColor: Color.fromRGBO(206, 147, 216, 0.5),
+        // backgroundColor: Color.fromRGBO(206, 147, 216, 0.5),
+        backgroundColor: Color.fromRGBO(87, 6, 161, 0.6),
         child: TextField(
           controller: _textEditingController,
           autofocus: false,
-          cursorColor: Colors.purple[700],
+          cursorColor: Colors.white,
           decoration: InputDecoration(
               hintText: "Wyszukaj",
               hintStyle: TextStyle(color: Colors.white70),
