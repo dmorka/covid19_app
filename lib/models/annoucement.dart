@@ -9,9 +9,10 @@ class Annoucement {
   DateTime _dueDate;
   AddressModel _address;
   List<String> _volunteers;
+  bool _confirmed;
 
   Annoucement(this._userId, this._title, this._description, this._dueDate,
-      this._address, [this._volunteers = const []]);
+      this._address, [this._volunteers = const [], this._confirmed = false]);
 
   Annoucement.map(dynamic obj) {
     this._id = obj['id'];
@@ -21,6 +22,7 @@ class Annoucement {
     this._dueDate = obj['dueDate'].toDate();
     this._address = AddressModel.map(obj['address']);
     this._volunteers = obj['volunteers'].cast<String>();
+    this._confirmed = obj['confirmed'];
   }
 
   String get id => _id;
@@ -30,6 +32,7 @@ class Annoucement {
   DateTime get dueDate => _dueDate;
   List get volunteers => _volunteers;
   AddressModel get address => _address;
+  bool get confirmed => _confirmed;
 
   set id(String id) => this._id = id;
   set userId(String userId) => this._userId = userId;
@@ -38,6 +41,7 @@ class Annoucement {
   set dueDate(DateTime dueDate) => this._dueDate = dueDate;
   set address(AddressModel address) => this._address;
   set volunteers(List volunteers) => this._volunteers;
+  set confirmed(bool confirmed) => this._confirmed;
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
@@ -50,6 +54,7 @@ class Annoucement {
     map['dueDate'] = _dueDate;
     map['address'] = _address.toMap();
     map['volunteers'] = _volunteers;
+    map['confirmed'] = _confirmed;
 
     return map;
   }
@@ -62,6 +67,7 @@ class Annoucement {
     this._dueDate = map['dueDate'];
     this._address = AddressModel.fromMap(map['address']);
     this._volunteers = map['volunteers'].cast<String>();
+    this._confirmed = map['confirmed'];
   }
 
   String formatedDate() {

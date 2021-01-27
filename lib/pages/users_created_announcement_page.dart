@@ -148,7 +148,7 @@ class _UsersCreatedAnnouncementPageState
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: <Widget>[
-              EagerVolunteersListItem(volunteers[index]),
+              EagerVolunteersListItem(volunteers[index], _announcement),
             ],
           );
         });

@@ -14,6 +14,15 @@ class AnnouncementDataWidget extends StatelessWidget {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Padding(padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+              child: Text(
+                "ID: " + _announcement.id,
+                style: TextStyle(
+                    color: Colors.black45,
+                    fontWeight: FontWeight.normal
+                ),
+              ),
+            ),
             ContentHeader(name: "Opis"),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),

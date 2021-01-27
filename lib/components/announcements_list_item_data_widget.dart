@@ -77,11 +77,24 @@ class AnnouncementsListItemDataWidget extends StatelessWidget {
                       textAlign: TextAlign.right,
                     ),
                   ),
-                  Padding(padding: EdgeInsets.fromLTRB(10, 0, 10, 10), child: Text(
+                  Padding(padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: Text(
                     "Gdzie: " + content.address.getFullAddress(),
                     style: TextStyle(
-                        color: Colors.black45, fontWeight: FontWeight.normal),
-                  ),)
+                        color: Colors.black45,
+                        fontWeight: FontWeight.normal
+                      ),
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: Text(
+                      "ID: " + content.id,
+                      style: TextStyle(
+                          color: Colors.black45,
+                          fontWeight: FontWeight.normal
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),),
