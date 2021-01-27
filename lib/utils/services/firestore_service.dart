@@ -120,6 +120,25 @@ class FirebaseFirestoreService {
     return annoucements;
   }
 
+  Future<List<Annoucement>> getAnnoucementsWithVolunteers(
+      List<String> volunteerIds) async {
+    List<Annoucement> annoucements = new List<Annoucement>();
+
+    await annoucementCollection
+        .where('volunteers', arrayContainsAny: volunteerIds)
+        .get()
+        .then((value) {
+      if (value.size > 0) {
+        value.docs
+            .forEach((element) => annoucements.add(Annoucement.map(element)));
+      } else {
+        print("Empty query!");
+      }
+    });
+
+    return annoucements;
+  }
+
   Future<UserModel> getUser(String userId) async {
     final DocumentSnapshot ds = await userCollection.doc(userId).get();
     return UserModel.map(ds);

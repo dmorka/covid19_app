@@ -123,7 +123,7 @@ class _UserProfileState extends State<UserProfilePage> {
   Widget _buildUsersAcceptedAnnouncements() {
     return FutureBuilder<List<Annoucement>>(
         future: FirebaseFirestoreService()
-            .getAnnoucements("userId", context.read<User>().uid),
+            .getAnnoucementsWithVolunteers([context.read<User>().uid]),
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
 

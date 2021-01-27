@@ -17,14 +17,14 @@ import 'package:covid19_app/models/volunteer.dart';
 import 'package:covid19_app/components/content_header.dart';
 
 class UsersCreatedAnnouncementPage extends StatefulWidget {
-  const UsersCreatedAnnouncementPage({Key key, this.announcement})
+  const UsersCreatedAnnouncementPage({Key key, this.announcementId})
       : super(key: key);
 
-  final Annoucement announcement;
+  final String announcementId;
 
   @override
   _UsersCreatedAnnouncementPageState createState() =>
-      _UsersCreatedAnnouncementPageState(announcement);
+      _UsersCreatedAnnouncementPageState();
 }
 
 class _UsersCreatedAnnouncementPageState
@@ -33,21 +33,25 @@ class _UsersCreatedAnnouncementPageState
   ScrollController controller = ScrollController();
   UserModel deliveringVolunteer;
 
-  _UsersCreatedAnnouncementPageState(Annoucement annoucement) {
-    _announcement = annoucement;
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_announcement.confirmed) {
-      FirebaseFirestoreService()
-          .getUser(_announcement.volunteers[0])
-          .then((value) {
+    FirebaseFirestoreService()
+      .getAnnoucements("id", widget.announcementId)
+      .then((value) {
+        setState(() {
+          _announcement = value[0];
+        });
+
+        if (_announcement.confirmed) {
+          FirebaseFirestoreService()
+              .getUser(_announcement.volunteers[0])
+              .then((value) {
             setState(() {
               deliveringVolunteer = value;
             });
-      });
-    }
+          });
+        }
+    });
 
     return ProtectedContainer(
       body: Scaffold(
@@ -75,11 +79,17 @@ class _UsersCreatedAnnouncementPageState
                 ),
               ),
               SizedBox(height: 10),
-              AnnouncementDataWidget(_announcement),
-              SizedBox(height: 10),
-              _announcement.confirmed
-              ? _buildConfirmedAnnouncement()
-              : _buildNotConfirmedAnnouncement()
+              _announcement != null
+              ? Column(
+                children: [
+                  AnnouncementDataWidget(_announcement),
+                  SizedBox(height: 10),
+                  _announcement.confirmed
+                      ? _buildConfirmedAnnouncement()
+                      : _buildNotConfirmedAnnouncement()
+                ],
+              )
+              : Column(),
             ],
           ),
         ),
@@ -105,6 +115,26 @@ class _UsersCreatedAnnouncementPageState
               _buildUserPersonalDataItem(Icons.location_pin,
                   deliveringVolunteer.address.getFullAddress()),
               Text("ID: " + deliveringVolunteer.id)
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: RoundedButton(
+                  text: "Anuluj zlecenie",
+                  textAlign: TextAlign.center,
+                  color: Colors.red,
+                  press: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => _createAlertDialogOnCancel());
+                  },
+                  padding: EdgeInsets.all(20),
+                ),
+              ),
             ],
           ),
         )
@@ -186,6 +216,44 @@ class _UsersCreatedAnnouncementPageState
     );
   }
 
+  AlertDialog _createAlertDialogOnCancel() {
+    return AlertDialog(
+      title: Text("Potwierdzenie anulowania zlecenia"),
+      content: Text("Czy na pewno chcesz anulować to zlecenie?\n"
+          "Spowoduje to brak możliwości wystawienia oceny wolontariuszowi. "
+          "Jeżeli nie jesteś zadowolony z usług wolontariusza możesz zakończyć zlecenie, "
+          "a następnie wystawić mu negatywną opinie."),
+      actions: [
+        FlatButton(
+          child: Text("Tak, anuluj"),
+          onPressed: () {
+            Annoucement annoucement = _announcement.clone();
+            annoucement.confirmed = false;
+            annoucement.volunteers = [];
+            print(annoucement.toString());
+            FirebaseFirestoreService()
+                .updateAnnoucement(annoucement)
+                .then((value) {
+                  setState(() {
+                    _announcement = annoucement;
+                  });
+            });
+
+            /*Navigator.of(context)
+                .popUntil(ModalRoute.withName('/user-profile'));*/
+            Navigator.of(context).pop();
+          },
+        ),
+        FlatButton(
+          child: Text("Nie, pozostaw zlecenie"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    );
+  }
+
   AlertDialog _createAlertDialogOnDelete() {
     return AlertDialog(
       title: Text("Potwierdzenie usunięcia ogłoszenia"),
@@ -224,7 +292,8 @@ class _UsersCreatedAnnouncementPageState
   }
 
   Widget _buildHeader() {
-    return Column(
+    return _announcement != null
+      ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         CustomAppBarWidget(),
@@ -239,32 +308,33 @@ class _UsersCreatedAnnouncementPageState
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            children: [
-              Text(
-                "Wolontariusz:",
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 24,
+        _announcement.confirmed && deliveringVolunteer != null
+        ? Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              children: [
+                Text(
+                  "Wolontariusz:",
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 24,
+                  ),
                 ),
-              ),
-              SizedBox(width: 10),
-              _announcement.confirmed && deliveringVolunteer != null
-              ? Text(
-                deliveringVolunteer.firstName + ' ' + deliveringVolunteer.lastName,
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 20
-                ),
-              )
-              : Text("Brak (wybierz wolontariusza poniżej)")
-            ],
-          ),
-        )
+                SizedBox(width: 10),
+                Text(
+                  deliveringVolunteer.firstName + ' ' + deliveringVolunteer.lastName,
+                  style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 20
+                  ),
+                )
+              ],
+            ),
+          )
+        : Column()
       ],
-    );
+    )
+    : Column();
   }
 }

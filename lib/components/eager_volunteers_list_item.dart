@@ -15,6 +15,7 @@ class EagerVolunteersListItem extends StatefulWidget {
 }
 
 class _EagerVolunteersListItemState extends State<EagerVolunteersListItem> {
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -96,13 +97,15 @@ class _EagerVolunteersListItemState extends State<EagerVolunteersListItem> {
         FlatButton(
           child: Text("Tak, przyjmuję"),
           onPressed: () {
-            Annoucement annoucement = widget._annoucement.clone();
-            annoucement.confirmed = true;
-            annoucement.volunteers = [widget._volunteer.id];
-            print(annoucement.toString());
-            FirebaseFirestoreService().updateAnnoucement(annoucement);
-            Navigator.of(context)
-                .popUntil(ModalRoute.withName('/user-profile'));
+            setState(() {
+              widget._annoucement.confirmed = true;
+              widget._annoucement.volunteers = [widget._volunteer.id];
+            });
+            FirebaseFirestoreService()
+              .updateAnnoucement(widget._annoucement);
+            /*Navigator.of(context)
+                .popUntil(ModalRoute.withName('/user-profile'));*/
+            Navigator.of(context).pop();
           },
         ),
         FlatButton(
