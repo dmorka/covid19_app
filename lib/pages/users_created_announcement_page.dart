@@ -84,7 +84,7 @@ class _UsersCreatedAnnouncementPageState
                 children: [
                   AnnouncementDataWidget(_announcement),
                   SizedBox(height: 10),
-                  _announcement.confirmed
+                  _announcement.confirmed && deliveringVolunteer != null
                       ? _buildConfirmedAnnouncement()
                       : _buildNotConfirmedAnnouncement()
                 ],
