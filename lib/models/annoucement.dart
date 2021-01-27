@@ -82,13 +82,7 @@ class Annoucement {
         DateTime(_dueDate.year, _dueDate.month, _dueDate.day, _dueDate.hour, _dueDate.minute, _dueDate.second, _dueDate.millisecond, _dueDate.microsecond),
         _address.clone());
     annoucement.id = _id.substring(0);
-    //annoucement.volunteers = [_volunteers];
     annoucement.volunteers = List.from(_volunteers);
-
-    /*for (var v in _volunteers) {
-      annoucement.volunteers.add(v);
-    }*/
-    print(annoucement.volunteers);
     annoucement.confirmed = _confirmed;
 
     return annoucement;

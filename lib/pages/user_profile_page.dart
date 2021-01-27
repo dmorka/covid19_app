@@ -208,6 +208,7 @@ class _UserProfileState extends State<UserProfilePage> {
                             SizedBox(height: 5),
                             _buildUserPersonalDataItem(Icons.location_pin,
                                 snapshot.data.address.getFullAddress()),
+                            Text("ID: " + snapshot.data.id)
                           ],
                         )
                       : Column();
