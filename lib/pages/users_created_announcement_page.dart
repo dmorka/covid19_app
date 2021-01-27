@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:covid19_app/components/text_field_container.dart';
 import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/components/announcement_data_widget.dart';
+import 'package:covid19_app/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
@@ -29,6 +31,7 @@ class _UsersCreatedAnnouncementPageState
     extends State<UsersCreatedAnnouncementPage> {
   Annoucement _announcement;
   ScrollController controller = ScrollController();
+  UserModel deliveringVolunteer;
 
   _UsersCreatedAnnouncementPageState(Annoucement annoucement) {
     _announcement = annoucement;
@@ -36,6 +39,16 @@ class _UsersCreatedAnnouncementPageState
 
   @override
   Widget build(BuildContext context) {
+    if (_announcement.confirmed) {
+      FirebaseFirestoreService()
+          .getUser(_announcement.volunteers[0])
+          .then((value) {
+            setState(() {
+              deliveringVolunteer = value;
+            });
+      });
+    }
+
     return ProtectedContainer(
       body: Scaffold(
         // resizeToAvoidBottomPadding: false,
@@ -64,52 +77,9 @@ class _UsersCreatedAnnouncementPageState
               SizedBox(height: 10),
               AnnouncementDataWidget(_announcement),
               SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: ContentHeader(name: "Chętni wolontariusze"),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: FutureBuilder<List<VolunteerModel>>(
-                  future: FirebaseFirestoreService()
-                      .getVolunteers(_announcement.volunteers),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) print(snapshot.error);
-
-                    return snapshot.hasData
-                        ? _buildVolunteersList(snapshot.data)
-                        : Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                child: Text("Brak zgłoszeń."),
-                              ),
-                            ],
-                          );
-                  },
-                  // _buildVolunteersList(),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: RoundedButton(
-                        text: "Usuń to ogłoszenie",
-                        textAlign: TextAlign.center,
-                        color: Colors.red,
-                        press: () {
-                          showDialog(
-                              context: context,
-                              builder: (_) => _createAlertDialog());
-                        },
-                        padding: EdgeInsets.all(20),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              _announcement.confirmed
+              ? _buildConfirmedAnnouncement()
+              : _buildNotConfirmedAnnouncement()
             ],
           ),
         ),
@@ -117,7 +87,106 @@ class _UsersCreatedAnnouncementPageState
     );
   }
 
-  AlertDialog _createAlertDialog() {
+  Widget _buildConfirmedAnnouncement() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: ContentHeader(name: "Dane wolontariusza"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildUserPersonalDataItem(
+                  Icons.phone, deliveringVolunteer.phoneNumber),
+              SizedBox(height: 5),
+              _buildUserPersonalDataItem(Icons.location_pin,
+                  deliveringVolunteer.address.getFullAddress()),
+              Text("ID: " + deliveringVolunteer.id)
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildUserPersonalDataItem(IconData icon, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(
+          icon,
+          color: Colors.black,
+        ),
+        SizedBox(width: 5),
+        Container(
+          width: MediaQuery.of(context).size.width * .5,
+          child: Text(
+            value,
+            style: TextStyle(
+                color: Colors.black, fontSize: 16),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNotConfirmedAnnouncement() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: ContentHeader(name: "Chętni wolontariusze"),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: FutureBuilder<List<VolunteerModel>>(
+            future: FirebaseFirestoreService()
+                .getVolunteers(_announcement.volunteers),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) print(snapshot.error);
+
+              return snapshot.hasData
+                  ? _buildVolunteersList(snapshot.data)
+                  : Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text("Brak zgłoszeń."),
+                  ),
+                ],
+              );
+            },
+            // _buildVolunteersList(),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: RoundedButton(
+                  text: "Usuń to ogłoszenie",
+                  textAlign: TextAlign.center,
+                  color: Colors.red,
+                  press: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => _createAlertDialogOnDelete());
+                  },
+                  padding: EdgeInsets.all(20),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  AlertDialog _createAlertDialogOnDelete() {
     return AlertDialog(
       title: Text("Potwierdzenie usunięcia ogłoszenia"),
       content: Text("Czy na pewno chcesz usunąć bezpowrotnie to ogłoszenie?"),
@@ -170,6 +239,31 @@ class _UsersCreatedAnnouncementPageState
             ),
           ),
         ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            children: [
+              Text(
+                "Wolontariusz:",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 24,
+                ),
+              ),
+              SizedBox(width: 10),
+              _announcement.confirmed && deliveringVolunteer != null
+              ? Text(
+                deliveringVolunteer.firstName + ' ' + deliveringVolunteer.lastName,
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 20
+                ),
+              )
+              : Text("Brak (wybierz wolontariusza poniżej)")
+            ],
+          ),
+        )
       ],
     );
   }
