@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 
 class TextFieldContainer extends StatelessWidget {
   final Widget child;
-  const TextFieldContainer({
-    Key key,
-    this.child,
-  }) : super(key: key);
+  final Color backgroundColor;
+  const TextFieldContainer({Key key, this.child, this.backgroundColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,7 @@ class TextFieldContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       width: size.width * 0.8,
       decoration: BoxDecoration(
-        color: mainColor.withOpacity(0.7),
+        color: backgroundColor ?? mainColor.withOpacity(0.7),
         borderRadius: BorderRadius.circular(10),
       ),
       child: child,
