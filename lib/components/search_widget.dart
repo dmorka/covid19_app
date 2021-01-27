@@ -31,6 +31,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         child: TextField(
           controller: _textEditingController,
           autofocus: false,
+          cursorColor: Colors.purple[700],
           decoration: InputDecoration(
               hintText: "Wyszukaj",
               hintStyle: TextStyle(color: Colors.white70),
