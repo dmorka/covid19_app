@@ -39,9 +39,9 @@ class Annoucement {
   set title(String title) => this._title = title;
   set description(String description) => this._description = description;
   set dueDate(DateTime dueDate) => this._dueDate = dueDate;
-  set address(AddressModel address) => this._address;
-  set volunteers(List volunteers) => this._volunteers;
-  set confirmed(bool confirmed) => this._confirmed;
+  set address(AddressModel address) => this._address = address;
+  set volunteers(List<String> volunteers) => this._volunteers = volunteers;
+  set confirmed(bool confirmed) => this._confirmed = confirmed;
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
@@ -72,5 +72,30 @@ class Annoucement {
 
   String formatedDate() {
     return new DateFormat("y/M/d, H:m").format(_dueDate);
+  }
+
+  Annoucement clone() {
+    Annoucement annoucement = Annoucement(
+        _userId.substring(0),
+        _title.substring(0),
+        _description.substring(0),
+        DateTime(_dueDate.year, _dueDate.month, _dueDate.day, _dueDate.hour, _dueDate.minute, _dueDate.second, _dueDate.millisecond, _dueDate.microsecond),
+        _address.clone());
+    annoucement.id = _id.substring(0);
+    //annoucement.volunteers = [_volunteers];
+    annoucement.volunteers = List.from(_volunteers);
+
+    /*for (var v in _volunteers) {
+      annoucement.volunteers.add(v);
+    }*/
+    print(annoucement.volunteers);
+    annoucement.confirmed = _confirmed;
+
+    return annoucement;
+  }
+
+  @override
+  String toString() {
+    return 'Annoucement{_id: $_id, _userId: $_userId, _title: $_title, _description: $_description, _dueDate: $_dueDate, _address: $_address, _volunteers: $_volunteers, _confirmed: $_confirmed}';
   }
 }

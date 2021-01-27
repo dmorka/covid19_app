@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class AddressModel {
   static final RegExp isValidZip = new RegExp(r"^$|\d{2}-\d{3}");
   String _city;
@@ -36,6 +38,16 @@ class AddressModel {
     map['zipCode'] = this._zipCode;
 
     return map;
+  }
+
+  AddressModel clone() {
+    AddressModel addressModel = AddressModel(
+        _city.substring(0),
+        _zipCode.substring(0),
+        _street.substring(0),
+        _apartmentNumber.substring(0));
+
+    return addressModel;
   }
 
   AddressModel.fromMap(Map<String, dynamic> map) {

@@ -2,6 +2,7 @@ import 'package:covid19_app/models/annoucement.dart';
 import 'package:covid19_app/models/volunteer.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class EagerVolunteersListItem extends StatefulWidget {
   final VolunteerModel _volunteer;
@@ -95,9 +96,11 @@ class _EagerVolunteersListItemState extends State<EagerVolunteersListItem> {
         FlatButton(
           child: Text("Tak, przyjmuję"),
           onPressed: () {
-            widget._annoucement.confirmed = true;
-            widget._annoucement.volunteers = [widget._volunteer];
-            FirebaseFirestoreService().updateAnnoucement(widget._annoucement);
+            Annoucement annoucement = widget._annoucement.clone();
+            annoucement.confirmed = true;
+            annoucement.volunteers = [widget._volunteer.id];
+            print(annoucement.toString());
+            FirebaseFirestoreService().updateAnnoucement(annoucement);
             Navigator.of(context)
                 .popUntil(ModalRoute.withName('/user-profile'));
           },
