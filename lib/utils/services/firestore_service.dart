@@ -108,16 +108,16 @@ class FirebaseFirestoreService {
 
     var query = await annoucementCollection
         .where("confirmed", isEqualTo: false);
-    query.where("userId", isNotEqualTo: userId)
+    await query.where("userId", isNotEqualTo: userId)
         .get()
         .then((value) {
-          if (value.size > 0) {
-            value.docs
-                .forEach((element) => annoucements.add(Annoucement.map(element)));
-          } else {
-            print("Empty query!");
-          }
-        });
+      if (value.size > 0) {
+        value.docs
+            .forEach((element) => annoucements.add(Annoucement.map(element)));
+      } else {
+        print("Empty query!");
+      }
+    });
 
     return annoucements;
   }
