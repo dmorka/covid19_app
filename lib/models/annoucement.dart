@@ -83,7 +83,7 @@ class Annoucement {
   }
 
   String formatedDate() {
-    return new DateFormat("y/M/d, H:m").format(_dueDate);
+    return new DateFormat("y/M/d, H:mm").format(_dueDate);
   }
 
   Annoucement clone() {

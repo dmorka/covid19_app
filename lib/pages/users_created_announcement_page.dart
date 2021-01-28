@@ -34,6 +34,7 @@ class _UsersCreatedAnnouncementPageState
   Annoucement _announcement;
   ScrollController controller = ScrollController();
   UserModel deliveringVolunteer;
+  bool radioValue = true;
 
   @override
   Widget build(BuildContext context) {
@@ -103,10 +104,18 @@ class _UsersCreatedAnnouncementPageState
   }
 
   Widget _buildReceivedAnnouncement() {
-    return Column(children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-          child: Text("Otrzymane"))
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: ContentHeader(name: "Status"),
+      ),
+      Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            "Otrzymane",
+            style: TextStyle(
+                color: Colors.green, fontWeight: FontWeight.bold, fontSize: 20),
+          )),
     ]);
   }
 
@@ -280,7 +289,36 @@ class _UsersCreatedAnnouncementPageState
   AlertDialog _createAlertDialogOnReceived() {
     return AlertDialog(
       title: Text("Potwierdzenie otrzymania zlecenia"),
-      content: Text("Czy na pewno chcesz oznaczyć zlecenie jako otrzymane?"),
+      content: Column(
+        children: [
+          Text("Czy na pewno chcesz oznaczyć zlecenie jako otrzymane?"),
+          Text("Ocena wolontariusza:"),
+          ListTile(
+            leading: Radio(
+              groupValue: radioValue,
+              value: true,
+              onChanged: (bool value) {
+                setState(() {
+                  radioValue = value;
+                });
+              },
+            ),
+            title: Text("Pozytywna"),
+          ),
+          ListTile(
+            leading: Radio(
+              groupValue: radioValue,
+              value: false,
+              onChanged: (bool value) {
+                setState(() {
+                  radioValue = value;
+                });
+              },
+            ),
+            title: Text("Negatywna"),
+          ),
+        ],
+      ),
       actions: [
         FlatButton(
           child: Text("Tak, otrzymałem"),
@@ -289,9 +327,15 @@ class _UsersCreatedAnnouncementPageState
               _announcement.received = true;
             });
             FirebaseFirestoreService()
-                .updateAnnoucement(_announcement)
-                .then((value) => Navigator.of(context)
-                    .popUntil(ModalRoute.withName('/user-profile')));
+                .updateAnnoucement(_announcement);
+            setState(() {
+              deliveringVolunteer.recommendations.add(radioValue);
+            });
+            FirebaseFirestoreService()
+              .updateUser(deliveringVolunteer);
+
+            Navigator.of(context)
+                .popUntil(ModalRoute.withName('/user-profile'));
           },
         ),
         FlatButton(
