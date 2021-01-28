@@ -80,6 +80,8 @@ class FirebaseFirestoreService {
     return annoucements;
   }
 
+
+
   Future<List<VolunteerModel>> getVolunteers(
       List volunteerIDs) async {
     if (volunteerIDs.length == 0)
@@ -97,12 +99,31 @@ class FirebaseFirestoreService {
         print("Empty query!");
       }
     });
-
     return volunteers;
   }
 
+  Future<List<Annoucement>> getAnnoucementsOfOthers(
+      String userId) async {
+    List<Annoucement> annoucements = new List<Annoucement>();
+
+    var query = await annoucementCollection
+        .where("confirmed", isEqualTo: false);
+    query.where("userId", isNotEqualTo: userId)
+        .get()
+        .then((value) {
+          if (value.size > 0) {
+            value.docs
+                .forEach((element) => annoucements.add(Annoucement.map(element)));
+          } else {
+            print("Empty query!");
+          }
+        });
+
+    return annoucements;
+  }
+
   Future<List<Annoucement>> getAnnoucements(
-      String field, String equalTo) async {
+      String field, dynamic equalTo) async {
     List<Annoucement> annoucements = new List<Annoucement>();
 
     await annoucementCollection
@@ -165,7 +186,7 @@ class FirebaseFirestoreService {
       final DocumentSnapshot ds =
           await tx.get(annoucementCollection.doc(annoucement.id));
 
-      await tx.update(ds.reference, annoucement.toMap());
+      await tx.set(ds.reference, annoucement.toMap());
       return {'updated': true};
     };
 
