@@ -37,11 +37,11 @@ class _LabsPage extends State<LabsPage> {
       searchQueryListener: (query) {
         setState(() {
           filteredLabsList = List.from(allLabsList.where((item) {
-              String itemContent = item.fullAddress.toLowerCase().trim() + ' ' + item.name.toLowerCase().trim();
-              return itemContent.contains(
-                  query.toLowerCase().trim());
-            }
-          ));
+            String itemContent = item.fullAddress.toLowerCase().trim() +
+                ' ' +
+                item.name.toLowerCase().trim();
+            return itemContent.contains(query.toLowerCase().trim());
+          }));
         });
       },
     );
@@ -89,8 +89,11 @@ class _LabsPage extends State<LabsPage> {
   Widget _buildLabsList() {
     if (allLabsList.isEmpty) {
       return Center(
-          child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation(Colors.purple),
+          child: Container(
+        margin: new EdgeInsets.only(top: 20),
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Colors.purple),
+        ),
       ));
     } else {
       return ListView.builder(
@@ -100,7 +103,7 @@ class _LabsPage extends State<LabsPage> {
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) {
             return LabsListItem(filteredLabsList[index]);
-      });
+          });
     }
   }
 
