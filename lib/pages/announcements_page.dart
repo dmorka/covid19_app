@@ -1,13 +1,12 @@
 import 'package:covid19_app/components/menu.dart';
 import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/models/annoucement.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/components/announcements_list_item.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
 
 class AnnouncementsPage extends StatefulWidget {
   @override
@@ -22,7 +21,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     FirebaseFirestoreService()
         .getAnnoucementsOfOthers(FirebaseAuth.instance.currentUser.uid)
         .then((value) {
-      if (mounted){
+      if (mounted) {
         setState(() {
           announcementsList = value;
         });
@@ -79,9 +78,12 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
   Widget _buildAnnouncements() {
     if (announcementsList.isEmpty) {
       return Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation(Colors.purple),
-          ));
+          child: Container(
+        margin: new EdgeInsets.only(top: 20),
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Colors.purple),
+        ),
+      ));
     } else {
       return ListView.builder(
           shrinkWrap: true,

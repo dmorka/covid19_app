@@ -8,25 +8,14 @@ import 'package:covid19_app/components/protected_container.dart';
 import 'package:covid19_app/components/rounded_button.dart';
 import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/models/statistics.dart';
-import 'package:covid19_app/pages/intro_page.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
-import 'package:covid19_app/utils/services/authentication_provider.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
 import 'package:covid19_app/utils/services/rest_api_service.dart';
-
-import 'package:firebase_core/firebase_core.dart';
-
-import 'package:covid19_app/models/statistics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:flutter/material.dart';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
 
 import 'announcements_page.dart';
 
@@ -78,7 +67,7 @@ class _HomePageState extends State<HomePage> {
             ),
             actions: <Widget>[
               FlatButton(
-                color: Colors.amber,
+                color: mainColor,
                 child: Text('Ok'),
                 onPressed: () => Navigator.of(context).pop(),
               ),
@@ -180,7 +169,8 @@ class _HomePageState extends State<HomePage> {
                       _buildSymptomItem("assets/images/2.png", "Suchy kaszel"),
                       _buildSymptomItem("assets/images/3.png", "Ból głowy"),
                       _buildSymptomItem("assets/images/4.png", "Brak tchu"),
-                      _buildSymptomItem("assets/images/5.png", "Brak smaku\ni węchu"),
+                      _buildSymptomItem(
+                          "assets/images/5.png", "Brak smaku\ni węchu"),
                     ],
                   ),
                 ),
@@ -208,8 +198,8 @@ class _HomePageState extends State<HomePage> {
                           "assets/images/a10.png", "MYJ", "często ręce", 160),
                       _buildPrevention("assets/images/a4.png", "ZAKRYWAJ",
                           "buzie gdy kaszlesz", 190),
-                      _buildPrevention(
-                          "assets/images/a6.png", "CZYŚĆ", "często używane\npowierzchnie", 200),
+                      _buildPrevention("assets/images/a6.png", "CZYŚĆ",
+                          "często używane\npowierzchnie", 200),
                       _buildPrevention(
                           "assets/images/a8.png", "UTRZYMUJ", "odstęp", 180),
                     ],
@@ -478,7 +468,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<bool> _onWillPop() {
     DateTime now = DateTime.now();
-    if (lastBackPressTime == null || now.difference(lastBackPressTime) > Duration(seconds: 2)) {
+    if (lastBackPressTime == null ||
+        now.difference(lastBackPressTime) > Duration(seconds: 2)) {
       lastBackPressTime = now;
       Fluttertoast.showToast(msg: "Wciśnij ponownie, aby wyjść z aplikacji.");
       return Future.value(false);
