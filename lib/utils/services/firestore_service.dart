@@ -106,9 +106,11 @@ class FirebaseFirestoreService {
       String userId) async {
     List<Annoucement> annoucements = new List<Annoucement>();
 
-    var query = await annoucementCollection
-        .where("confirmed", isEqualTo: false);
-    await query.where("userId", isNotEqualTo: userId)
+    // var query =
+    await annoucementCollection
+        .where("confirmed", isEqualTo: false)
+    // await query
+        .where("userId", isNotEqualTo: userId)
         .get()
         .then((value) {
       if (value.size > 0) {

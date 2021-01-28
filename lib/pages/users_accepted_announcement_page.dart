@@ -38,6 +38,7 @@ class _UsersAcceptedAnnouncementPageState
     FirebaseFirestoreService()
         .getAnnoucements("id", widget.announcementId)
         .then((value) {
+          if(mounted)
       setState(() {
         _announcement = value[0];
 
@@ -45,7 +46,8 @@ class _UsersAcceptedAnnouncementPageState
           FirebaseFirestoreService()
               .getUser(_announcement.userId)
               .then((value) {
-            setState(() {
+            if(mounted)
+                setState(() {
               orderer = value;
             });
           });
@@ -80,12 +82,12 @@ class _UsersAcceptedAnnouncementPageState
               ),
               SizedBox(height: 10),
               _announcement != null
-              ? Column(
+                  ? Column(
                 children: [
                   AnnouncementDataWidget(_announcement),
                   SizedBox(height: 10),
                   _announcement.confirmed
-                  ? Column(
+                      ? Column(
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
@@ -94,18 +96,18 @@ class _UsersAcceptedAnnouncementPageState
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: orderer != null
-                        ? ContactInfo(orderer)
-                        : Column(),
+                            ? ContactInfo(orderer)
+                            : Column(),
                       ),
                       _announcement.delivered
-                      ? _buildDeliveredAnnouncement()
-                      : _buildNotDeliveredAnnouncement()
+                          ? _buildDeliveredAnnouncement()
+                          : _buildNotDeliveredAnnouncement()
                     ],
                   )
-                  : _buildNotConfirmedAnnouncement()
+                      : _buildNotConfirmedAnnouncement()
                 ],
               )
-              : Column(),
+                  : Column(),
             ],
           ),
         ),
@@ -187,8 +189,8 @@ class _UsersAcceptedAnnouncementPageState
               _announcement.volunteers = [];
             });
             FirebaseFirestoreService()
-              .updateAnnoucement(_announcement)
-              .then((value) => Navigator.of(context)
+                .updateAnnoucement(_announcement)
+                .then((value) => Navigator.of(context)
                 .popUntil(ModalRoute.withName('/user-profile')));
           },
         ),
@@ -214,7 +216,7 @@ class _UsersAcceptedAnnouncementPageState
               _announcement.delivered = true;
             });
             FirebaseFirestoreService()
-              .updateAnnoucement(_announcement);
+                .updateAnnoucement(_announcement);
             Navigator.of(context)
                 .popUntil(ModalRoute.withName('/user-profile'));
           },
@@ -231,7 +233,7 @@ class _UsersAcceptedAnnouncementPageState
 
   Widget _buildHeader() {
     return _announcement != null
-      ? Column(
+        ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         CustomAppBarWidget(),
@@ -263,14 +265,14 @@ class _UsersAcceptedAnnouncementPageState
                 future: FirebaseFirestoreService().getUser(_announcement.userId),
                 builder: (context, snapshot) {
                   return snapshot.hasData
-                  ? Text(
+                      ? Text(
                     snapshot.data.firstName + ' ' + snapshot.data.lastName,
                     style: TextStyle(
                         color: Colors.white70,
                         fontSize: 20
                     ),
                   )
-                  : Column();
+                      : Column();
                 },
               )
 
@@ -279,6 +281,6 @@ class _UsersAcceptedAnnouncementPageState
         )
       ],
     )
-    : Column();
+        : Column();
   }
 }

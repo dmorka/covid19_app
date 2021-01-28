@@ -41,6 +41,7 @@ class _UsersCreatedAnnouncementPageState
     FirebaseFirestoreService()
       .getAnnoucements("id", widget.announcementId)
       .then((value) {
+      if(mounted)
         setState(() {
           _announcement = value[0];
         });
@@ -49,7 +50,8 @@ class _UsersCreatedAnnouncementPageState
           FirebaseFirestoreService()
               .getUser(_announcement.volunteers[0])
               .then((value) {
-            setState(() {
+            if(mounted)
+                setState(() {
               deliveringVolunteer = value;
             });
           });
