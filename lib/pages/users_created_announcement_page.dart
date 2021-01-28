@@ -292,9 +292,10 @@ class _UsersCreatedAnnouncementPageState
     return AlertDialog(
       title: Text("Potwierdzenie otrzymania zlecenia"),
       content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Czy na pewno chcesz oznaczyć zlecenie jako otrzymane?"),
-          Text("Ocena wolontariusza:"),
+          Text("\nOcena wolontariusza:"),
           ListTile(
             leading: Radio(
               groupValue: radioValue,
