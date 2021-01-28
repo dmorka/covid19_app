@@ -7,7 +7,7 @@ import 'package:covid19_app/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:covid19_app/models/volunteer.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 final CollectionReference userCollection =
     FirebaseFirestore.instance.collection('users');
@@ -80,18 +80,11 @@ class FirebaseFirestoreService {
     return annoucements;
   }
 
-
-
-  Future<List<VolunteerModel>> getVolunteers(
-      List volunteerIDs) async {
-    if (volunteerIDs.length == 0)
-      return null;
+  Future<List<VolunteerModel>> getVolunteers(List volunteerIDs) async {
+    if (volunteerIDs.length == 0) return null;
     List<VolunteerModel> volunteers = new List<VolunteerModel>();
     print(volunteerIDs);
-    await userCollection
-        .where('id', whereIn: volunteerIDs)
-        .get()
-        .then((value) {
+    await userCollection.where('id', whereIn: volunteerIDs).get().then((value) {
       if (value.size > 0) {
         value.docs
             .forEach((element) => volunteers.add(VolunteerModel.map(element)));
@@ -102,14 +95,13 @@ class FirebaseFirestoreService {
     return volunteers;
   }
 
-  Future<List<Annoucement>> getAnnoucementsOfOthers(
-      String userId) async {
+  Future<List<Annoucement>> getAnnoucementsOfOthers(String userId) async {
     List<Annoucement> annoucements = new List<Annoucement>();
 
     // var query =
     await annoucementCollection
         .where("confirmed", isEqualTo: false)
-    // await query
+        // await query
         .where("userId", isNotEqualTo: userId)
         .get()
         .then((value) {
@@ -236,9 +228,9 @@ class FirebaseFirestoreService {
   }
 
   Future<dynamic> addVolunteer(String annoucementId, String userId) {
-    final TransactionHandler addVolunteerTransaction =
-        (Transaction tx) async {
-      final DocumentSnapshot ds = await tx.get(annoucementCollection.doc(annoucementId));
+    final TransactionHandler addVolunteerTransaction = (Transaction tx) async {
+      final DocumentSnapshot ds =
+          await tx.get(annoucementCollection.doc(annoucementId));
 
       await tx.update(ds.reference, {
         "volunteers": FieldValue.arrayUnion([userId])
@@ -271,6 +263,32 @@ class FirebaseFirestoreService {
 
     return FirebaseFirestore.instance
         .runTransaction(addDeviceTokenTransaction)
+        .then((result) => result['updated'])
+        .catchError((error) {
+      print('error: $error');
+      return false;
+    });
+  }
+
+  Future<dynamic> removeDeviceToken() async {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    String token = await FirebaseMessaging().getToken();
+
+    final TransactionHandler removeDeviceTokenTransaction =
+        (Transaction tx) async {
+      final DocumentSnapshot ds = await tx.get(userCollection.doc(userId));
+
+      await tx.update(
+        ds.reference,
+        {
+          "deviceTokens": FieldValue.arrayRemove([token])
+        },
+      );
+      return {'updated': true};
+    };
+
+    return FirebaseFirestore.instance
+        .runTransaction(removeDeviceTokenTransaction)
         .then((result) => result['updated'])
         .catchError((error) {
       print('error: $error');

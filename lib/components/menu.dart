@@ -3,6 +3,9 @@ import 'package:covid19_app/pages/intro_page.dart';
 import 'package:covid19_app/pages/labs_page.dart';
 import 'package:covid19_app/pages/statistics_page.dart';
 import 'package:covid19_app/utils/services/authentication_provider.dart';
+import 'package:covid19_app/utils/services/firestore_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:covid19_app/pages/home_page.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +28,8 @@ class MenuDrawer extends StatelessWidget {
               decoration: BoxDecoration(
                 color: mainColor,
                 image: DecorationImage(
-                    image: AssetImage("assets/images/virus2.png"),
-                    fit: BoxFit.cover,
+                  image: AssetImage("assets/images/virus2.png"),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -42,12 +45,15 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            trailing: Icon(Icons.warning, color: Colors.orange,),
+            trailing: Icon(
+              Icons.warning,
+              color: Colors.orange,
+            ),
             title: Text('Ważne informacje'),
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => ImportantInfoPage()));
+                  .push(MaterialPageRoute(builder: (_) => ImportantInfoPage()));
             },
           ),
           ListTile(
@@ -69,10 +75,10 @@ class MenuDrawer extends StatelessWidget {
           ListTile(
             trailing: Icon(Icons.logout),
             title: Text('Wyloguj'),
-            onTap: () {
+            onTap: () async {
+              await FirebaseFirestoreService().removeDeviceToken();
               context.read<AuthenticationProvider>().signOut();
-              Navigator.of(context)
-                  .popUntil(ModalRoute.withName('/'));
+              Navigator.of(context).popUntil(ModalRoute.withName('/'));
             },
           ),
         ],
