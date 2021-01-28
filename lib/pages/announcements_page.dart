@@ -6,6 +6,7 @@ import 'package:covid19_app/core/consts.dart';
 import 'package:covid19_app/components/announcements_list_item.dart';
 import 'package:covid19_app/components/custom_appbar_widget.dart';
 import 'package:covid19_app/utils/services/firestore_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 class AnnouncementsPage extends StatefulWidget {
@@ -19,7 +20,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
 
   void getPostsData() {
     FirebaseFirestoreService()
-        .getAllAnnoucements()
+        .getAnnoucementsOfOthers(FirebaseAuth.instance.currentUser.uid)
         .then((value) {
       if (mounted){
         setState(() {
