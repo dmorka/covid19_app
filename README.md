@@ -9,8 +9,13 @@ Introduction to mobile systems
 ### Programming language:
 Dart, Flutter + Firebase
 
-### Date:
-2020
+### Academic year:
+2020/2021
+
+### Authors:
+Dawid Morka\
+Kacper Włodarczyk\
+Artur Nowicki
 
 ### Screenshots:
 #### Login screen
