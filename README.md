@@ -1,16 +1,28 @@
-# covid19_app
+# Covid-19 App
 
-COVID 19 Statistics and more
+## Description:
+The application contains information useful during the COVID-19 pandemic and offers a mutual assistance system.
 
-## Getting Started
+### Subject:
+Introduction to mobile systems
 
-This project is a starting point for a Flutter application.
+### Programming language:
+Dart, Flutter + Firebase
 
-A few resources to get you started if this is your first Flutter project:
+### Date:
+2020
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Screenshots:
+####Login screen
+![Login screen](screenshots/login_screen.png?raw=true)
+####Statistics
+![Login screen](screenshots/statistics1.png?raw=true)
+![Login screen](screenshots/statistics2.png?raw=true)
+####Covid test laboratories
+![Login screen](screenshots/covid_laboratories.png?raw=true)
+####Announcements
+![Login screen](screenshots/announcements.png?raw=true)
+####Add new announcements
+![Login screen](screenshots/add_new_announcements.png?raw=true)
+####User profile screen
+![Login screen](screenshots/profile_screen.png?raw=true)
