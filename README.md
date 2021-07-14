@@ -13,16 +13,16 @@ Dart, Flutter + Firebase
 2020
 
 ### Screenshots:
-####Login screen
+#### Login screen
 ![Login screen](screenshots/login_screen.png?raw=true)
-####Statistics
-![Login screen](screenshots/statistics1.png?raw=true)
-![Login screen](screenshots/statistics2.png?raw=true)
-####Covid test laboratories
-![Login screen](screenshots/covid_laboratories.png?raw=true)
-####Announcements
-![Login screen](screenshots/announcements.png?raw=true)
-####Add new announcements
-![Login screen](screenshots/add_new_announcements.png?raw=true)
-####User profile screen
-![Login screen](screenshots/profile_screen.png?raw=true)
+#### Statistics
+![Statistics 1](screenshots/statistics1.png?raw=true)
+![Statistics 2](screenshots/statistics2.png?raw=true)
+#### Covid test laboratories
+![Covid test laboratories](screenshots/covid_laboratories.png?raw=true)
+#### Announcements
+![Announcements](screenshots/announcements.png?raw=true)
+#### Add new announcements
+![Add new announcements](screenshots/add_new_announcements.png?raw=true)
+#### User profile screen
+![User profile screen](screenshots/profile_screen.png?raw=true)
