@@ -15,10 +15,10 @@ Dart, Flutter + Firebase
 ### Screenshots:
 #### Login screen
 ![Login screen](screenshots/login_screen.png?raw=true)
-#### Statistics
-![Statistics 1](screenshots/statistics1.png?raw=true)
-![Statistics 2](screenshots/statistics2.png?raw=true)
-#### Covid test laboratories
+#### Covid statistics in Poland
+![Covid Statistics 1](screenshots/statistics1.png?raw=true)
+![Covid Statistics 2](screenshots/statistics2.png?raw=true)
+#### Covid test laboratories in Poland
 ![Covid test laboratories](screenshots/covid_laboratories.png?raw=true)
 #### Announcements
 ![Announcements](screenshots/announcements.png?raw=true)
